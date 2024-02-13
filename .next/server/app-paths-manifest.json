@@ -1,0 +1,4 @@
+{
+  "/auth/reset/page": "app/auth/reset/page.js",
+  "/auth/login/page": "app/auth/login/page.js"
+}
