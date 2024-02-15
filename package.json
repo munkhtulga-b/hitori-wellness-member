@@ -11,7 +11,7 @@
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
     "antd": "^5.14.0",
-    "framer-motion": "^11.0.3",
+    "framer-motion": "^11.0.5",
     "js-cookie": "^3.0.5",
     "next": "14.1.0",
     "next-themes": "^0.2.1",

@@ -1,4 +1,6 @@
 {
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/auth/login/page": "app/auth/login/page.js",
   "/auth/reset/page": "app/auth/reset/page.js",
-  "/auth/login/page": "app/auth/login/page.js"
+  "/auth/new-password/page": "app/auth/new-password/page.js"
 }

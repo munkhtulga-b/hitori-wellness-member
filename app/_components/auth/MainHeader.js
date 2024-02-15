@@ -1,24 +1,43 @@
-// import Image from "next/image";
+"use client";
+
+import Image from "next/image";
+import { useRouter, usePathname } from "next/navigation";
 
 const MainHeader = () => {
+  const router = useRouter();
+  const path = usePathname();
   return (
     <div className="tw-h-[84px] tw-w-full tw-bg-primary tw-relative">
-      {/* <Image
-        src="/assets/logo-white.png"
-        alt="Logo"
-        width={0}
-        height={0}
-        style={{
-          height: "auto",
-          width: "auto",
-          position: "absolute",
-          bottom: "12px",
-          left: "16px",
-        }}
-      /> */}
-      <span className="tw-text-white tw-absolute tw-left-4 tw-bottom-3">
-        MIRROR FIT
-      </span>
+      <div
+        className={`tw-absolute tw-left-4 tw-right-4 tw-bottom-3 tw-flex tw-justify-between tw-items-center`}
+      >
+        {path !== "/auth/login" && (
+          <Image
+            src="/assets/back-arrow-white.svg"
+            alt="back"
+            width={0}
+            height={0}
+            onClick={() => router.back()}
+            style={{
+              cursor: "pointer",
+              width: "auto",
+              height: "auto",
+            }}
+          />
+        )}
+        <Image
+          priority
+          src="/assets/logo-white.png"
+          alt="logo"
+          width={158}
+          height={24}
+          style={{
+            cursor: "pointer",
+          }}
+          onClick={() => router.push("/")}
+        />
+        <span className="tw-w-[28px] tw-h-[28px]"></span>
+      </div>
     </div>
   );
 };
