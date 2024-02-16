@@ -11,13 +11,16 @@ module.exports = {
     extend: {
       colors: {
         primary: "#232429",
+        grayLight: "#F4F5F6",
       },
       textColor: {
         primary: "#121316",
         secondary: "#525560",
       },
       borderColor: {
+        primary: "#BABCC4",
         form: "#D6D7DC",
+        info: "#B7DDFF",
       },
       placeholderColor: {
         primary: "#838795",

@@ -11,3 +11,7 @@ html, body {
 .ant-input::placeholder {
     font-weight: 300 !important;
 }
+
+.ant-form-item-explain {
+    font-size: 12px !important;
+}

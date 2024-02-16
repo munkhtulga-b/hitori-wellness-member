@@ -34,10 +34,15 @@ const AppProvider = ({ children, fontFamily }) => {
               labelColor: colors.primary,
               labelHeight: 22,
               verticalLabelPadding: "0 0 8px 0",
+              itemMarginBottom: 16,
             },
             Input: {
               controlHeight: 46,
               fontSize: 14,
+              colorTextPlaceholder: colors.inputPlaceholder,
+            },
+            DatePicker: {
+              controlHeight: 46,
               colorTextPlaceholder: colors.inputPlaceholder,
             },
           },
