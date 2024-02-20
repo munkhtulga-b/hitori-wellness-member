@@ -10,6 +10,7 @@ const colors = {
   secondary: "#B7DDFF",
   error: "#EA202B",
   inputPlaceholder: "#838795",
+  formRequiredMark: "#D51E27",
 };
 
 const AppProvider = ({ children, fontFamily }) => {
@@ -35,6 +36,7 @@ const AppProvider = ({ children, fontFamily }) => {
               labelHeight: 22,
               verticalLabelPadding: "0 0 8px 0",
               itemMarginBottom: 16,
+              labelRequiredMarkColor: colors.formRequiredMark,
             },
             Input: {
               controlHeight: 46,

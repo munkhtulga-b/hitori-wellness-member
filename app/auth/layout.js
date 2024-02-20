@@ -8,7 +8,7 @@ export default function AuthLayout({ children }) {
   const path = usePathname();
   return (
     <main className="tw-flex tw-flex-col">
-      <MainHeader />
+      {path === "/auth/login" && <MainHeader />}
       <motion.div
         key={path}
         initial={{ opacity: 0, x: "100%" }}
