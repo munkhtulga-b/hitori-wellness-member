@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import HeaderWithSteps from "@/app/_components/auth/HeaderWithSteps";
 import SignupStepOne from "@/app/_components/auth/sign-up/StepOne";
@@ -10,6 +10,15 @@ import SignupStepThree from "@/app/_components/auth/sign-up/StepThree";
 const AuthSignup = () => {
   const router = useRouter();
   const [currentForm, setCurrentForm] = useState(3);
+
+  useEffect( () => {
+    const resp = fetch("https://apis.postcode-jp.com/api/v5/postcodes/1000001", {
+      headers: {
+        'X-API-KEY': 'TB5GweBWnDJ6zGvW0oiv6lrleD9gHmTunBzwXiR'
+      }
+    }) 
+    console.log(resp)
+  }, [])
 
   const handleStepOne = (params) => {
     console.log(params);

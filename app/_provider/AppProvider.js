@@ -10,6 +10,7 @@ const colors = {
   secondary: "#B7DDFF",
   error: "#EA202B",
   inputPlaceholder: "#838795",
+  formInputBackground: "#FAFAFA",
   formRequiredMark: "#D51E27",
 };
 
@@ -41,10 +42,12 @@ const AppProvider = ({ children, fontFamily }) => {
             Input: {
               controlHeight: 46,
               fontSize: 14,
+              colorBgContainer: colors.formInputBackground,
               colorTextPlaceholder: colors.inputPlaceholder,
             },
             DatePicker: {
               controlHeight: 46,
+              colorBgContainer: colors.formInputBackground,
               colorTextPlaceholder: colors.inputPlaceholder,
             },
           },
