@@ -2,16 +2,33 @@
 
 import { useState } from "react";
 import { Button, Form, Input } from "antd";
-
-const SuccessMessage = () => {
-  return <>Success</>;
-};
+import SuccessAnimation from "@/app/_components/animation/SuccessAnimation";
 
 const NewPassword = () => {
   const [isSuccess, setIsSuccess] = useState(true);
   const [form] = Form.useForm();
   const onFinish = (values) => {
     console.log("Received values of form: ", values);
+  };
+
+  const SuccessMessage = () => {
+    return (
+      <>
+        <section className="tw-mt-[45px]">
+          <SuccessAnimation />
+        </section>
+        <section className="tw-bg-grayLight tw-mt-6 tw-p-4 tw-h-[80px] tw-rounded-[12px] tw-border tw-border-info tw-w-full tw-grid tw-place-items-center">
+          <span className="tw-tracking-[0.14px] tw-leading-[26px]">
+            パスワードのリセットが完了しました。
+          </span>
+        </section>
+        <section className="tw-mt-6 tw-w-full">
+          <Button type="primary" className="tw-w-full">
+            ログインページへ戻る
+          </Button>
+        </section>
+      </>
+    );
   };
 
   const SetNewPasswordForm = () => {

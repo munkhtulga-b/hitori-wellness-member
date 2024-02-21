@@ -11,20 +11,25 @@ module.exports = {
     extend: {
       colors: {
         primary: "#232429",
+        grayLight: "#F4F5F6",
       },
       textColor: {
         primary: "#121316",
         secondary: "#525560",
+        required: "#D51E27",
       },
       borderColor: {
+        primary: "#BABCC4",
         form: "#D6D7DC",
+        info: "#B7DDFF",
       },
       placeholderColor: {
         primary: "#838795",
       },
       fontSize: {
-        lg: ["16px", "28px"],
-        xl: ["20px", "30px"],
+        sm: ["12px", "20px"],
+        lg: ["16px", "24px"],
+        xl: ["18px", "28px"],
       },
     },
   },
