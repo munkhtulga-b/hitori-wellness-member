@@ -1,8 +1,11 @@
 "use client";
 
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const MainHeader = ({ onStepBack }) => {
+  const router = useRouter();
+
   return (
     <div className="tw-h-[84px] tw-w-full tw-bg-primary tw-relative">
       <div

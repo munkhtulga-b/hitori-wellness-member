@@ -65,7 +65,7 @@ const AuthLogin = () => {
       </section>
       <section className="tw-mt-[74px]">
         <span
-          onClick={() => router.push("/auth/register")}
+          onClick={() => router.push("/auth/sign-up")}
           className="tw-text-lg tw-tracking-[0.16px] tw-cursor-pointer"
         >
           会員登録
