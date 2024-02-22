@@ -10,6 +10,7 @@ const SignupStepThree = ({ onComplete }) => {
       return setShowWarning(true);
     }
     setShowWarning(false);
+    onComplete(confirm);
   };
 
   const isValidPassword = (value) => {
@@ -83,7 +84,7 @@ const SignupStepThree = ({ onComplete }) => {
 
       {showWarning && (
         <section className="tw-mt-[28px]">
-          <div className="tw-p-4 tw-rounded-xl tw-border tw-border-info">
+          <div className="tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info">
             <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px]">
               ８文字以上の半角英数記号、大文字、記号、それ以外をそれぞれ一文字以上使用してください。
             </p>
@@ -119,7 +120,9 @@ const SignupStepThree = ({ onComplete }) => {
             style={{ marginBottom: 24 }}
           >
             <Checkbox>
-              <span className="tw-text-lg">利用規約に同意する</span>
+              <span className="tw-text-lg after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
+                利用規約に同意する
+              </span>
             </Checkbox>
           </Form.Item>
         </div>

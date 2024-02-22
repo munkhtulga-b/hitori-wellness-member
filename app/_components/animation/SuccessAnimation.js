@@ -9,7 +9,7 @@ const SuccessAnimation = () => {
       animationData={SuccessAnimationJSON}
       loop={false}
       autoPlay
-      style={{ width: 110, height: 100 }}
+      style={{ width: 60, height: 60 }}
     />
   );
 };
