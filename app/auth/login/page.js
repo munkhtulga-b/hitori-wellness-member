@@ -2,12 +2,18 @@
 
 import { useRouter } from "next/navigation";
 import { Button, Form, Input } from "antd";
+import $api from "@/app/_api";
 
 const AuthLogin = () => {
   const router = useRouter();
   const [form] = Form.useForm();
-  const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+
+  const userLogin = async (params) => {
+    const { status, data } = await $api.auth.login(params);
+    if (status === 200) {
+      // Success response
+      console.log(data);
+    }
   };
 
   return (
@@ -16,7 +22,7 @@ const AuthLogin = () => {
         <span className="tw-text-xl tw-font-medium">ログイン</span>
       </section>
       <section className="tw-mt-10 tw-w-full">
-        <Form form={form} name="loginForm" onFinish={onFinish}>
+        <Form form={form} name="loginForm" onFinish={userLogin}>
           <Form.Item
             required={false}
             name="email"
@@ -60,15 +66,16 @@ const AuthLogin = () => {
           onClick={() => router.push("/auth/reset")}
           className="tw-tracking-[0.14px] tw-cursor-pointer"
         >
-          パスワードをお忘れの方はこちら
+          パスワードをお忘れの方は<u>こちら</u>
         </span>
       </section>
-      <section className="tw-mt-[74px]">
+      <div className="tw-bg-dividerLight tw-w-full tw-h-[1px] tw-mt-[36px]"></div>
+      <section className="tw-mt-[38px]">
         <span
           onClick={() => router.push("/auth/sign-up")}
           className="tw-text-lg tw-tracking-[0.16px] tw-cursor-pointer"
         >
-          会員登録
+          新規会員登録
         </span>
       </section>
     </div>

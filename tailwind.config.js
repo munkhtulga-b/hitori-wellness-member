@@ -12,6 +12,7 @@ module.exports = {
       colors: {
         primary: "#232429",
         grayLight: "#F4F5F6",
+        dividerLight: "#EFEFF1",
       },
       textColor: {
         primary: "#121316",

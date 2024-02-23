@@ -5,12 +5,14 @@ const SignupStepThree = ({ onComplete }) => {
   const [form] = Form.useForm();
   const [showWarning, setShowWarning] = useState(false);
 
-  const onFinish = ({ confirm }) => {
-    if (!isValidPassword(confirm)) {
+  const onFinish = (params) => {
+    if (!isValidPassword(params.confirm)) {
       return setShowWarning(true);
     }
     setShowWarning(false);
-    onComplete(confirm);
+    delete params.confirm;
+    delete params.termsAndConditions;
+    onComplete(params);
   };
 
   const isValidPassword = (value) => {
@@ -94,7 +96,7 @@ const SignupStepThree = ({ onComplete }) => {
 
       <section className="tw-mt-[130px] tw-flex tw-flex-col tw-gap-6">
         <Form.Item
-          name="agreementFirst"
+          name="isAcceptMail"
           valuePropName="checked"
           style={{ marginBottom: 0 }}
         >
@@ -107,7 +109,7 @@ const SignupStepThree = ({ onComplete }) => {
             下記規約に同意の上、【会員登録】ボタンを押してください。
           </p>
           <Form.Item
-            name="agreementSecond"
+            name="termsAndConditions"
             valuePropName="checked"
             rules={[
               {

@@ -22,7 +22,7 @@ const SignupStepOne = ({ onComplete }) => {
       onFinish={onComplete}
     >
       <Form.Item
-        name="email"
+        name="mailAddress"
         label="メールアドレス"
         rules={[
           {
@@ -103,7 +103,7 @@ const SignupStepOne = ({ onComplete }) => {
       </section>
 
       <Form.Item
-        name="dateOfBirth"
+        name="birthday"
         label="生年月日"
         rules={[
           {

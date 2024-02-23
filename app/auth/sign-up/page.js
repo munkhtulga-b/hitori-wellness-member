@@ -7,24 +7,29 @@ import SignupStepOne from "@/app/_components/auth/sign-up/StepOne";
 import SignupStepTwo from "@/app/_components/auth/sign-up/StepTwo";
 import SignupStepThree from "@/app/_components/auth/sign-up/StepThree";
 import SignupStepFour from "@/app/_components/auth/sign-up/StepFour";
+import { useSignupStore } from "@/app/_store/user-signup";
+import $api from "@/app/_api";
 
 const AuthSignup = () => {
   const router = useRouter();
+  const updateRequestBody = useSignupStore((state) => state.setBody);
+  const getRequestBody = useSignupStore((state) => state.getBody);
   const [currentForm, setCurrentForm] = useState(1);
 
   const handleStepOne = (params) => {
-    console.log(params);
+    updateRequestBody(params);
     setCurrentForm((prev) => prev + 1);
   };
 
   const handleStepTwo = (params) => {
     console.log(params);
+    updateRequestBody(params);
     setCurrentForm((prev) => prev + 1);
   };
 
   const handleStepThree = (params) => {
-    console.log(params);
-    setCurrentForm((prev) => prev + 1);
+    updateRequestBody(params);
+    registerUser(getRequestBody());
   };
 
   const onStepBack = () => {
@@ -32,6 +37,23 @@ const AuthSignup = () => {
       return router.push("/auth/login");
     }
     setCurrentForm((prev) => prev - 1);
+  };
+
+  const registerUser = async (params) => {
+    const { status, data } = await $api.auth.register(params);
+    console.log(data);
+    if (status === 200 || status === 201) {
+      sendVerificationEmail();
+    }
+  };
+
+  const sendVerificationEmail = async () => {
+    const { status, data } = await $api.auth.sendVerification({
+      email: getRequestBody().mailAddress,
+    });
+    if (status === 200 || status === 201 || status === 204) {
+      setCurrentForm((prev) => prev + 1);
+    }
   };
 
   return (

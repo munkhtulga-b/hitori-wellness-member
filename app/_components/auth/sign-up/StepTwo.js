@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 
 const SignupStepTwo = ({ onComplete }) => {
   const [form] = Form.useForm();
-  const postCode2 = Form.useWatch("postCode2", form);
+  const zipCode2 = Form.useWatch("zipCode2", form);
   const [address, setAddress] = useState(null);
 
   useEffect(() => {
-    const postCode1 = form.getFieldValue("postCode1");
-    const fullPostalCode = `${postCode1}${postCode2}`;
+    const zipCode1 = form.getFieldValue("zipCode1");
+    const fullPostalCode = `${zipCode1}${zipCode2}`;
     const fetchAddress = async () => {
       const result = await getAddressFromPostalCode(fullPostalCode);
       if (result.length) {
@@ -19,7 +19,7 @@ const SignupStepTwo = ({ onComplete }) => {
     if (fullPostalCode.toString().length === 7) {
       fetchAddress();
     }
-  }, [postCode2]);
+  }, [zipCode2]);
 
   useEffect(() => {
     if (address) {
@@ -61,7 +61,7 @@ const SignupStepTwo = ({ onComplete }) => {
         <label>郵便番号</label>
         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-min tw-gap-2">
           <Form.Item
-            name="postCode1"
+            name="zipCode1"
             rules={[
               {
                 required: true,
@@ -73,7 +73,7 @@ const SignupStepTwo = ({ onComplete }) => {
             <Input placeholder="226" type="number" maxLength={3} />
           </Form.Item>
           <Form.Item
-            name="postCode2"
+            name="zipCode2"
             rules={[
               {
                 required: true,
@@ -91,7 +91,7 @@ const SignupStepTwo = ({ onComplete }) => {
         name="address1"
         rules={[
           {
-            required: true,
+            required: false,
             message: "Please input your city!",
             whitespace: true,
           },
@@ -101,10 +101,10 @@ const SignupStepTwo = ({ onComplete }) => {
       </Form.Item>
 
       <Form.Item
-        name="address2"
+        name="prefecture"
         rules={[
           {
-            required: true,
+            required: false,
             message: "Please input your prefecture!",
             whitespace: true,
           },
@@ -114,10 +114,10 @@ const SignupStepTwo = ({ onComplete }) => {
       </Form.Item>
 
       <Form.Item
-        name="address3"
+        name="address2"
         rules={[
           {
-            required: true,
+            required: false,
             message: "Please input your town!",
             whitespace: true,
           },
@@ -127,8 +127,20 @@ const SignupStepTwo = ({ onComplete }) => {
       </Form.Item>
 
       <Form.Item
+        name="address3"
+        rules={[
+          {
+            required: false,
+            message: "Please input your town!",
+            whitespace: true,
+          },
+        ]}
+      >
+        <Input placeholder="番号" />
+      </Form.Item>
+
+      <Form.Item
         label="緊急連絡先"
-        name="emergency"
         rules={[
           {
             required: false,
