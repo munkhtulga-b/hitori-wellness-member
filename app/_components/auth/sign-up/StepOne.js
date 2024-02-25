@@ -1,9 +1,42 @@
+import dayjs from "dayjs";
 import { Button, Form, Input, DatePicker } from "antd";
+import { useSignupStore } from "@/app/_store/user-signup";
+import { useEffect, useState } from "react";
 
 const SignupStepOne = ({ onComplete }) => {
   const [form] = Form.useForm();
+  const signupStore = useSignupStore((state) => state.getBody);
+  const [genderValue, setGenderValue] = useState(null);
+
+  useEffect(() => {
+    assignFieldsValue();
+  }, []);
+
+  const assignFieldsValue = () => {
+    const formFields = [
+      "mailAddress",
+      "lastName",
+      "firstName",
+      "lastKana",
+      "firstKana",
+      "birthday",
+      "gender",
+    ];
+    for (const [key, value] of Object.entries(signupStore())) {
+      if (formFields.includes(key)) {
+        key === "birthday"
+          ? form.setFieldValue(key, dayjs(value))
+          : form.setFieldValue(key, value);
+
+        if (key === "gender") {
+          setGenderValue(value);
+        }
+      }
+    }
+  };
 
   const handleGenderSelect = (value) => {
+    setGenderValue(value);
     form.setFieldValue("gender", value);
   };
 
@@ -113,7 +146,11 @@ const SignupStepOne = ({ onComplete }) => {
           },
         ]}
       >
-        <DatePicker className="tw-w-full" placeholder="yyyy/mm/dd" />
+        <DatePicker
+          className="tw-w-full"
+          placeholder="yyyy/mm/dd"
+          format={"YYYY/MM/DD"}
+        />
       </Form.Item>
 
       <section className="tw-flex tw-flex-col tw-gap-2">
@@ -130,8 +167,24 @@ const SignupStepOne = ({ onComplete }) => {
           ]}
         >
           <div className="tw-flex tw-justify-start tw-items-center tw-gap-4">
-            <Button onClick={() => handleGenderSelect(1)}>男性</Button>
-            <Button onClick={() => handleGenderSelect(2)}>女性</Button>
+            <Button
+              style={{
+                borderColor: genderValue === 1 ? "#B7DDFF" : "",
+                color: genderValue === 1 ? "#1890FF" : "",
+              }}
+              onClick={() => handleGenderSelect(1)}
+            >
+              男性
+            </Button>
+            <Button
+              style={{
+                borderColor: genderValue === 2 ? "#B7DDFF" : "",
+                color: genderValue === 2 ? "#1890FF" : "",
+              }}
+              onClick={() => handleGenderSelect(2)}
+            >
+              女性
+            </Button>
           </div>
         </Form.Item>
       </section>

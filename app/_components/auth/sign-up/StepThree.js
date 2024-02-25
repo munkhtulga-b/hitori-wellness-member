@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button, Form, Input, Checkbox } from "antd";
 
-const SignupStepThree = ({ onComplete }) => {
+const SignupStepThree = ({ onComplete, isLoading }) => {
   const [form] = Form.useForm();
   const [showWarning, setShowWarning] = useState(false);
 
@@ -54,7 +54,6 @@ const SignupStepThree = ({ onComplete }) => {
             message: "Please input your password!",
           },
         ]}
-        hasFeedback
       >
         <Input.Password placeholder="半角英数8文字以上" />
       </Form.Item>
@@ -123,7 +122,7 @@ const SignupStepThree = ({ onComplete }) => {
           >
             <Checkbox>
               <span className="tw-text-lg after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
-                利用規約に同意する
+                <u>利用規約</u>に同意する
               </span>
             </Checkbox>
           </Form.Item>
@@ -131,7 +130,12 @@ const SignupStepThree = ({ onComplete }) => {
       </section>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="tw-w-full">
+        <Button
+          loading={isLoading}
+          type="primary"
+          htmlType="submit"
+          className="tw-w-full"
+        >
           会員登録
         </Button>
       </Form.Item>

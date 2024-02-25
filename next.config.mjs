@@ -7,6 +7,9 @@ const nextConfig = {
       permanent: true,
     },
   ],
+  env: {
+    APP_VERSION: "1.0.0",
+  },
 };
 
 export default nextConfig;

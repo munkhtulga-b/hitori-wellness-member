@@ -1,18 +1,19 @@
 "use client";
 
+import MainHeader from "../_components/auth/MainHeader";
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
-import MainHeader from "../_components/auth/MainHeader";
 
 export default function AuthLayout({ children }) {
-  const path = usePathname();
+  const pathName = usePathname();
+
   return (
     <main className="tw-flex tw-flex-col">
-      {path === "/auth/login" && <MainHeader />}
+      <MainHeader />
       <motion.div
-        key={path}
-        initial={{ opacity: 0, x: "100%" }}
-        animate={{ opacity: 1, x: 0 }}
+        key={pathName}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
         {children}

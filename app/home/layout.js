@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { redirect } from "next/navigation";
 
 const UserAuthenticatedLayout = ({ children }) => {
-  const token = Cookies.get("access-token");
+  const token = Cookies.get("token");
 
   if (!token) {
     redirect("/auth/login");

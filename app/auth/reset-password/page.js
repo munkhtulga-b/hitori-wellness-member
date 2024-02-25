@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Button, Form, Input } from "antd";
-import SuccessAnimation from "@/app/_components/animation/SuccessAnimation";
+import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
 
 const NewPassword = () => {
   const [isSuccess, setIsSuccess] = useState(true);

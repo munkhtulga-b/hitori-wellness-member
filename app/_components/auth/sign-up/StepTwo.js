@@ -1,33 +1,71 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { getAddressFromPostalCode } from "@/app/_utils/helpers";
 import { useEffect, useState } from "react";
+import { useSignupStore } from "@/app/_store/user-signup";
 
 const SignupStepTwo = ({ onComplete }) => {
   const [form] = Form.useForm();
+  const signupStore = useSignupStore((state) => state.getBody);
   const zipCode2 = Form.useWatch("zipCode2", form);
+  const zipCode1 = Form.useWatch("zipCode1", form);
+  const [isFetching, setIsFetching] = useState(false);
   const [address, setAddress] = useState(null);
 
   useEffect(() => {
-    const zipCode1 = form.getFieldValue("zipCode1");
+    assignFieldsValue();
+  }, []);
+
+  useEffect(() => {
     const fullPostalCode = `${zipCode1}${zipCode2}`;
     const fetchAddress = async () => {
+      setIsFetching(true);
       const result = await getAddressFromPostalCode(fullPostalCode);
       if (result.length) {
         setAddress(result[0]);
+      } else {
+        setAddress(null);
       }
+      setIsFetching(false);
     };
     if (fullPostalCode.toString().length === 7) {
       fetchAddress();
     }
-  }, [zipCode2]);
+  }, [zipCode2, zipCode1]);
 
   useEffect(() => {
     if (address) {
-      form.setFieldValue("address1", address?.city);
-      form.setFieldValue("address2", address?.pref);
-      form.setFieldValue("address3", address?.town);
+      form.setFieldsValue({
+        address1: address?.city,
+        address2: address?.town,
+        prefecture: address?.pref,
+      });
+    } else {
+      form.setFieldsValue({
+        address1: "",
+        address2: "",
+        address3: "",
+        prefecture: "",
+      });
     }
   }, [address]);
+
+  const assignFieldsValue = () => {
+    const formFields = [
+      "tel",
+      "zipCode1",
+      "zipCode2",
+      "address1",
+      "address2",
+      "address3",
+      "prefecture",
+    ];
+    for (const [key, value] of Object.entries(signupStore())) {
+      if (formFields.includes(key)) {
+        form.setFieldValue(key, value);
+      }
+    }
+  };
 
   const customizeRequiredMark = (label, { required }) => (
     <>
@@ -82,7 +120,24 @@ const SignupStepTwo = ({ onComplete }) => {
               },
             ]}
           >
-            <Input placeholder="0027" type="number" maxLength={4} />
+            <Input
+              placeholder="0027"
+              type="number"
+              maxLength={4}
+              suffix={
+                <Spin
+                  indicator={
+                    <LoadingOutlined
+                      style={{
+                        fontSize: 14,
+                        display: isFetching ? "block" : "none",
+                      }}
+                      spin
+                    />
+                  }
+                />
+              }
+            />
           </Form.Item>
         </div>
       </section>

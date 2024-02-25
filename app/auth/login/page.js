@@ -3,16 +3,20 @@
 import { useRouter } from "next/navigation";
 import { Button, Form, Input } from "antd";
 import $api from "@/app/_api";
+import { useUserStore } from "@/app/_store/user";
+import Cookies from "js-cookie";
 
 const AuthLogin = () => {
   const router = useRouter();
   const [form] = Form.useForm();
+  const setUser = useUserStore((state) => state.setUser);
 
   const userLogin = async (params) => {
-    const { status, data } = await $api.auth.login(params);
-    if (status === 200) {
-      // Success response
-      console.log(data);
+    const { isOk, data } = await $api.auth.login(params);
+    if (isOk) {
+      Cookies.set("token", data.tokens);
+      setUser(data.user);
+      router.push("/");
     }
   };
 
@@ -27,6 +31,7 @@ const AuthLogin = () => {
             required={false}
             name="email"
             label="メールアドレス"
+            validateTrigger="onBlur"
             rules={[
               {
                 type: "email",
@@ -63,7 +68,7 @@ const AuthLogin = () => {
       </section>
       <section className="tw-mt-[31px]">
         <span
-          onClick={() => router.push("/auth/reset")}
+          onClick={() => router.push("/auth/forgot-password")}
           className="tw-tracking-[0.14px] tw-cursor-pointer"
         >
           パスワードをお忘れの方は<u>こちら</u>
