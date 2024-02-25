@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 const fetchData = async (endpoint, method, body) => {
   const baseURL =
@@ -6,7 +7,7 @@ const fetchData = async (endpoint, method, body) => {
       ? process.env.NEXT_PUBLIC_DEV_BASE_URL
       : process.env.NEXT_PUBLIC_PROD_BASE_URL;
 
-  const token = sessionStorage.getItem("token");
+  const token = Cookies.get("token");
 
   try {
     const headers = {
