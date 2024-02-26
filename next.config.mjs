@@ -10,6 +10,9 @@ const nextConfig = {
   env: {
     APP_VERSION: "1.0.0",
   },
+  experimental: {
+    missingSuspenseWithCSRBailout: false,
+  },
 };
 
 export default nextConfig;
