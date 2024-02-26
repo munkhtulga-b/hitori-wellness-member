@@ -1,6 +1,5 @@
 "use client";
 
-import HeaderWithSteps from "@/app/_components/auth/HeaderWithSteps";
 import StatusAnimation from "@/app/_components/animation/StatusAnimation";
 import { Button } from "antd";
 import $api from "@/app/_api";
@@ -23,8 +22,10 @@ const VerifyEmail = () => {
     setIsLoading(true);
     const verifyToken = searchParams.get("token");
     if (verifyToken) {
-      const { isOk } = await $api.auth.verify(verifyToken);
-      setIsVerificationSuccessful(isOk);
+      const { status } = await $api.auth.verify(verifyToken);
+      if (status === 204) {
+        setIsVerificationSuccessful(true);
+      }
     }
     setIsLoading(false);
   };
@@ -87,7 +88,6 @@ const VerifyEmail = () => {
 
   return (
     <div className="tw-flex tw-flex-col">
-      <HeaderWithSteps onStepBack={() => {}} />
       <div className="tw-py-[28px] tw-px-5">
         <div className="tw-flex tw-flex-col tw-items-center tw-gap-6 tw-mt-[68px]">
           {isLoading ? (

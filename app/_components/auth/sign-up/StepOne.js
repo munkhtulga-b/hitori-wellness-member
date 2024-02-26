@@ -25,7 +25,7 @@ const SignupStepOne = ({ onComplete }) => {
     for (const [key, value] of Object.entries(signupStore())) {
       if (formFields.includes(key)) {
         key === "birthday"
-          ? form.setFieldValue(key, dayjs(value))
+          ? form.setFieldValue(key, dayjs(value ? value : dayjs()))
           : form.setFieldValue(key, value);
 
         if (key === "gender") {

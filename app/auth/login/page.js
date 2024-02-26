@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Form, Input } from "antd";
 import $api from "@/app/_api";
@@ -9,15 +10,18 @@ import Cookies from "js-cookie";
 const AuthLogin = () => {
   const router = useRouter();
   const [form] = Form.useForm();
+  const [isLoading, setIsLoading] = useState(false);
   const setUser = useUserStore((state) => state.setUser);
 
   const userLogin = async (params) => {
+    setIsLoading(true);
     const { isOk, data } = await $api.auth.login(params);
     if (isOk) {
       Cookies.set("token", data.tokens);
       setUser(data.user);
       router.push("/");
     }
+    setIsLoading(false);
   };
 
   return (
@@ -60,7 +64,12 @@ const AuthLogin = () => {
             <Input.Password placeholder="半角英数8文字以上" />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit" className="tw-w-full">
+            <Button
+              loading={isLoading}
+              type="primary"
+              htmlType="submit"
+              className="tw-w-full"
+            >
               ログイン
             </Button>
           </Form.Item>

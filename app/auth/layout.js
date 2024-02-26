@@ -1,10 +1,17 @@
 "use client";
 
+import Cookies from "js-cookie";
 import MainHeader from "../_components/auth/MainHeader";
 import { motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, redirect } from "next/navigation";
 
 export default function AuthLayout({ children }) {
+  const token = Cookies.get("token");
+
+  if (token) {
+    redirect("/");
+  }
+
   const pathName = usePathname();
 
   return (

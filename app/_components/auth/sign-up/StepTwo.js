@@ -143,19 +143,6 @@ const SignupStepTwo = ({ onComplete }) => {
       </section>
 
       <Form.Item
-        name="address1"
-        rules={[
-          {
-            required: false,
-            message: "Please input your city!",
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input placeholder="都道府県" />
-      </Form.Item>
-
-      <Form.Item
         name="prefecture"
         rules={[
           {
@@ -166,6 +153,19 @@ const SignupStepTwo = ({ onComplete }) => {
         ]}
       >
         <Input placeholder="市区町村" />
+      </Form.Item>
+
+      <Form.Item
+        name="address1"
+        rules={[
+          {
+            required: false,
+            message: "Please input your city!",
+            whitespace: true,
+          },
+        ]}
+      >
+        <Input placeholder="都道府県" />
       </Form.Item>
 
       <Form.Item
