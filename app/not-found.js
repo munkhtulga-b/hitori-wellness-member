@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { Button, Result } from "antd";
 import MainHeader from "./_components/auth/MainHeader";
 import { useRouter } from "next/navigation";
@@ -9,7 +10,9 @@ export default function NotFound() {
 
   return (
     <main className="tw-flex tw-flex-col">
-      <MainHeader />
+      <Suspense fallback={<></>}>
+        <MainHeader />
+      </Suspense>
       <Result
         status="404"
         title="404"

@@ -1,20 +1,29 @@
 "use client";
 
 import Cookies from "js-cookie";
-import { redirect } from "next/navigation";
 import NavigationBar from "../_components/home/NavigationBar";
+import { useLayoutEffect, useState } from "react";
+import { redirect } from "next/navigation";
 
 const UserAuthenticatedLayout = ({ children }) => {
-  const token = Cookies.get("token");
+  const [isMounted, setIsMounted] = useState(false);
 
-  if (!token) {
-    redirect("/auth/login");
-  }
+  useLayoutEffect(() => {
+    const token = Cookies.get("token");
+    if (!token) {
+      redirect("/auth/login");
+    }
+    setIsMounted(true);
+  }, []);
 
   return (
     <div className="tw-flex tw-flex-col">
-      <NavigationBar />
-      <div className="tw-p-4">{children}</div>
+      {isMounted ? (
+        <>
+          <NavigationBar />
+          <div className="tw-p-4">{children}</div>
+        </>
+      ) : null}
     </div>
   );
 };
