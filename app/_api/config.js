@@ -1,46 +1,45 @@
-import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
-function useFetch(endpoint, method, body) {
-  const baseURL = "https://gymapi.reddtech.ai";
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const fetchData = async (endpoint, method, body) => {
+  const baseURL =
+    process.env.NODE_ENV === "development"
+      ? process.env.NEXT_PUBLIC_DEV_BASE_URL
+      : process.env.NEXT_PUBLIC_PROD_BASE_URL;
 
-  useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
+  const token = Cookies.get("token");
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`${baseURL}/${endpoint}`, {
-          method: method,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-          signal: signal,
-        });
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const json = await response.json();
-        setData(json);
-        setLoading(false);
-      } catch (error) {
-        setError(error);
-        setLoading(false);
-      }
+  try {
+    const headers = {
+      "Content-Type": "application/json",
     };
 
-    fetchData();
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
 
-    return () => {
-      // Cleanup function
-      abortController.abort();
+    const response = await fetch(`${baseURL}/${endpoint}`, {
+      method: method,
+      headers: headers,
+      body: JSON.stringify(body),
+    });
+
+    const isOk = response.ok;
+    const status = response.status;
+    const data = await response.json();
+
+    if (!isOk) {
+      toast.error(data.error.message ?? "An error occurred");
+    }
+
+    return {
+      isOk,
+      status,
+      data,
     };
-  }, [body, endpoint, method]);
+  } catch (error) {
+    return error;
+  }
+};
 
-  return { data, loading, error };
-}
-
-export default useFetch;
+export default fetchData;

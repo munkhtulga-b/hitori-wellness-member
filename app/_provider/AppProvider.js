@@ -8,6 +8,7 @@ const colors = {
   primaryHover: "#1D1F24",
   primaryDisabled: "#EFEFF1",
   secondary: "#B7DDFF",
+  textSecondary: "#1890FF",
   error: "#EA202B",
   inputPlaceholder: "#838795",
   formInputBackground: "#FAFAFA",
@@ -27,6 +28,10 @@ const AppProvider = ({ children, fontFamily }) => {
           },
           components: {
             Button: {
+              defaultActiveBorderColor: colors.secondary,
+              defaultHoverBorderColor: colors.secondary,
+              defaultHoverColor: colors.textSecondary,
+              defaultActiveColor: colors.textSecondary,
               colorBgContainerDisabled: colors.primaryDisabled,
               colorTextDisabled: "#BABCC4",
               borderRadius: 8,

@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Button, Form, Input, Checkbox } from "antd";
 
-const SignupStepThree = ({ onComplete }) => {
+const SignupStepThree = ({ onComplete, isLoading }) => {
   const [form] = Form.useForm();
   const [showWarning, setShowWarning] = useState(false);
 
-  const onFinish = ({ confirm }) => {
-    if (!isValidPassword(confirm)) {
+  const onFinish = (params) => {
+    if (!isValidPassword(params.confirm)) {
       return setShowWarning(true);
     }
     setShowWarning(false);
-    onComplete(confirm);
+    delete params.confirm;
+    delete params.termsAndConditions;
+    onComplete(params);
   };
 
   const isValidPassword = (value) => {
@@ -52,7 +54,6 @@ const SignupStepThree = ({ onComplete }) => {
             message: "Please input your password!",
           },
         ]}
-        hasFeedback
       >
         <Input.Password placeholder="半角英数8文字以上" />
       </Form.Item>
@@ -94,7 +95,7 @@ const SignupStepThree = ({ onComplete }) => {
 
       <section className="tw-mt-[130px] tw-flex tw-flex-col tw-gap-6">
         <Form.Item
-          name="agreementFirst"
+          name="isAcceptMail"
           valuePropName="checked"
           style={{ marginBottom: 0 }}
         >
@@ -107,7 +108,7 @@ const SignupStepThree = ({ onComplete }) => {
             下記規約に同意の上、【会員登録】ボタンを押してください。
           </p>
           <Form.Item
-            name="agreementSecond"
+            name="termsAndConditions"
             valuePropName="checked"
             rules={[
               {
@@ -121,7 +122,7 @@ const SignupStepThree = ({ onComplete }) => {
           >
             <Checkbox>
               <span className="tw-text-lg after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
-                利用規約に同意する
+                <u>利用規約</u>に同意する
               </span>
             </Checkbox>
           </Form.Item>
@@ -129,7 +130,12 @@ const SignupStepThree = ({ onComplete }) => {
       </section>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="tw-w-full">
+        <Button
+          loading={isLoading}
+          type="primary"
+          htmlType="submit"
+          className="tw-w-full"
+        >
           会員登録
         </Button>
       </Form.Item>

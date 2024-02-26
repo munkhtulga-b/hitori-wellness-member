@@ -2,16 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
-    font-size: 14px;
-    line-height: 22px;
-    color: #121316;
+html,
+body {
+  font-size: 14px;
+  line-height: 22px;
+  color: #121316;
 }
 
 .ant-input::placeholder {
-    font-weight: 300 !important;
+  font-weight: 300 !important;
 }
 
 .ant-form-item-explain {
-    font-size: 12px !important;
+  font-size: 12px !important;
+}
+
+u {
+  text-underline-offset: 4px !important;
 }
