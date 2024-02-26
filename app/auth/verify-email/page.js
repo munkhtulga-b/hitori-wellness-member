@@ -22,8 +22,9 @@ const VerifyEmail = () => {
     setIsLoading(true);
     const verifyToken = searchParams.get("token");
     if (verifyToken) {
-      const { status } = await $api.auth.verify(verifyToken);
-      if (status === 204) {
+      const { status, isOk } = await $api.auth.verify(verifyToken);
+      console.log(status);
+      if (isOk || status === 200) {
         setIsVerificationSuccessful(true);
       }
     }
