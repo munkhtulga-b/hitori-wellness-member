@@ -28,7 +28,7 @@ const SignupStepTwo = ({ onComplete }) => {
       }
       setIsFetching(false);
     };
-    if (fullPostalCode.toString().length === 7) {
+    if (!isNaN(+fullPostalCode) && fullPostalCode.toString().length === 7) {
       fetchAddress();
     }
   }, [zipCode2, zipCode1]);

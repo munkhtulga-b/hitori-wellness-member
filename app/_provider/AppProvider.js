@@ -2,6 +2,16 @@
 
 import { ThemeProvider } from "next-themes";
 import { ConfigProvider } from "antd";
+import "dayjs/locale/ja";
+import locale from "antd/locale/ja_JP";
+import dayjs from "dayjs";
+import updateLocale from "dayjs/plugin/updateLocale";
+
+dayjs.locale("ja");
+dayjs.extend(updateLocale);
+dayjs.updateLocale("ja", {
+  weekStart: 1,
+});
 
 const colors = {
   primary: "#121316",
@@ -19,6 +29,7 @@ const AppProvider = ({ children, fontFamily }) => {
   return (
     <ThemeProvider enableSystem={false} attribute="class">
       <ConfigProvider
+        locale={locale}
         theme={{
           token: {
             fontFamily,
