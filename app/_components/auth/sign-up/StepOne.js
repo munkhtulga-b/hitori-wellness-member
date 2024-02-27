@@ -25,7 +25,7 @@ const SignupStepOne = ({ onComplete }) => {
     for (const [key, value] of Object.entries(signupStore())) {
       if (formFields.includes(key)) {
         key === "birthday"
-          ? form.setFieldValue(key, dayjs(value ? value : dayjs()))
+          ? form.setFieldValue(key, value ? dayjs(value) : null)
           : form.setFieldValue(key, value);
 
         if (key === "gender") {
@@ -149,6 +149,7 @@ const SignupStepOne = ({ onComplete }) => {
         <DatePicker
           className="tw-w-full"
           placeholder="yyyy/mm/dd"
+          disabledDate={(current) => current && current > dayjs().endOf("day")}
           format={"YYYY/MM/DD"}
         />
       </Form.Item>
