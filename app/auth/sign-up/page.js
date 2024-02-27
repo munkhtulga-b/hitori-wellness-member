@@ -98,7 +98,7 @@ const AuthSignup = () => {
       {currentForm !== "complete" && (
         <section className="tw-mt-6">
           <span
-            onClick={() => router.push("/auth/reset")}
+            onClick={() => router.push("/auth/login")}
             className="tw-tracking-[0.14px] tw-cursor-pointer"
           >
             アカウントを既にお持ちの方は<u>こちら</u>
