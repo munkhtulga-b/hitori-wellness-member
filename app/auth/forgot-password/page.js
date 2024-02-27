@@ -11,7 +11,7 @@ const AuthPasswordReset = () => {
 
   const onFinish = async (params) => {
     setIsLoading(true);
-    const { isOk } = await $api.auth.sendVerification(params);
+    const { isOk } = await $api.auth.forgotPassword(params);
     if (isOk) {
       setIsSent(true);
     }
