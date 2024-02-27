@@ -23,6 +23,7 @@ const colors = {
   inputPlaceholder: "#838795",
   formInputBackground: "#FAFAFA",
   formRequiredMark: "#D51E27",
+  headerBg: "#232429",
 };
 
 const AppProvider = ({ children, fontFamily }) => {
@@ -65,6 +66,10 @@ const AppProvider = ({ children, fontFamily }) => {
               controlHeight: 46,
               colorBgContainer: colors.formInputBackground,
               colorTextPlaceholder: colors.inputPlaceholder,
+            },
+            Layout: {
+              headerBg: colors.headerBg,
+              siderBg: colors.headerBg,
             },
           },
         }}

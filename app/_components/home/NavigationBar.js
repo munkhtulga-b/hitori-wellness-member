@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 
-const NavigationBar = () => {
+const NavigationBar = ({ setCollapsed, collapsed }) => {
   const router = useRouter();
   const path = usePathname();
 
@@ -43,6 +43,7 @@ const NavigationBar = () => {
           width={0}
           height={0}
           style={{ cursor: "pointer", width: "auto", height: "auto" }}
+          onClick={() => setCollapsed(!collapsed)}
         />
       </div>
     </div>
