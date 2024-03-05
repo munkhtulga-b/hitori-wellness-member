@@ -17,6 +17,7 @@ module.exports = {
       textColor: {
         primary: "#121316",
         secondary: "#525560",
+        support: "#1890FF",
         required: "#D51E27",
       },
       borderColor: {
@@ -31,6 +32,7 @@ module.exports = {
         sm: ["12px", "20px"],
         lg: ["16px", "24px"],
         xl: ["18px", "28px"],
+        xxl: ["20px", "30px"],
       },
     },
   },
