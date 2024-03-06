@@ -1,12 +1,19 @@
 import Image from "next/image";
+import { nullSafety } from "@/app/_utils/helpers";
+import { useRouter } from "next/navigation";
 
-const BranchCard = () => {
+const BranchCard = ({ branch }) => {
+  const router = useRouter();
+
   return (
-    <div className="tw-p-2 tw-rounded-[16px] tw-shadow tw-w-fit">
+    <div
+      onClick={() => router.push(`/home/branch/${branch.id}`)}
+      className="tw-p-2 tw-rounded-[16px] tw-shadow tw-w-fit tw-snap-center"
+    >
       <div className="tw-flex tw-flex-col tw-gap-2">
         <section className="tw-rounded-xl tw-min-h-[190px] tw-max-h-[190px] tw-min-w-[220px] tw-max-w-[220px] tw-overflow-hidden tw-bg-gray-200"></section>
         <section className="tw-flex tw-flex-col tw-gap-1 tw-max-w-[220px]">
-          <span className="tw-text-lg">KARADA BESTA Ginza store</span>
+          <span className="tw-text-lg">{nullSafety(branch.name)}</span>
           <div className="tw-flex tw-flex-col tw-gap-[2px]">
             <section className="tw-flex tw-justify-start tw-items-center tw-gap-1">
               <Image
@@ -15,11 +22,15 @@ const BranchCard = () => {
                 width={20}
                 height={20}
               />
-              <span className="tw-tracking-[0.14px]">位置</span>
+              <span className="tw-tracking-[0.14px]">
+                {nullSafety(branch.prefecture)}
+              </span>
             </section>
             <section>
               <p className="tw-text-sm tw-tracking-[0.12px]">
-                104-0061 東京都中央区築地1-10-11 RATIO広路701
+                {`${nullSafety(branch.address1)} ${nullSafety(
+                  branch.address2
+                )} ${nullSafety(branch.address3)}`}
               </p>
             </section>
           </div>

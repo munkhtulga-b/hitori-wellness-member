@@ -3,14 +3,14 @@
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 
-const NavigationBar = () => {
+const NavigationBar = ({ setCollapsed, collapsed }) => {
   const router = useRouter();
   const path = usePathname();
 
   return (
-    <div className="tw-h-[84px] tw-w-full tw-bg-primary tw-relative">
+    <div className="tw-h-auto tw-w-full tw-bg-primary tw-relative">
       <div
-        className={`tw-absolute tw-left-4 tw-right-4 tw-bottom-3 tw-flex tw-justify-between tw-items-center`}
+        className={`tw-mt-[36px] tw-py-3 tw-px-4 tw-flex tw-justify-between tw-items-center`}
       >
         {path !== "/home" ? (
           <Image
@@ -30,8 +30,8 @@ const NavigationBar = () => {
           priority
           src="/assets/logo-white.png"
           alt="logo"
-          width={158}
-          height={24}
+          width={188}
+          height={28}
           style={{
             cursor: "pointer",
           }}
@@ -43,6 +43,7 @@ const NavigationBar = () => {
           width={0}
           height={0}
           style={{ cursor: "pointer", width: "auto", height: "auto" }}
+          onClick={() => setCollapsed(!collapsed)}
         />
       </div>
     </div>

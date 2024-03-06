@@ -8,8 +8,8 @@ import "react-toastify/dist/ReactToastify.css";
 const fontFamily = Noto_Sans_JP({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Mirror Fit",
-  description: "Gym Reservation",
+  title: process.env.BASE_META_TITLE,
+  description: process.env.BASE_META_DESCRIPTION,
 };
 
 export default function RootLayout({ children }) {

@@ -1,0 +1,28 @@
+{
+  "main": [
+    {
+      "text": "新規予約",
+      "icon": "/assets/sidebar/calendar-icon.svg",
+      "alt": "calendar",
+      "route": "/"
+    },
+    {
+      "text": "プロフィール",
+      "icon": "/assets/sidebar/user-icon.svg",
+      "alt": "user",
+      "route": "/"
+    },
+    {
+      "text": "予約履歴",
+      "icon": "/assets/sidebar/time-icon.svg",
+      "alt": "time",
+      "route": "/"
+    },
+    {
+      "text": "会員ID",
+      "icon": "/assets/sidebar/member-id-icon.svg",
+      "alt": "member-id",
+      "route": "/"
+    }
+  ]
+}

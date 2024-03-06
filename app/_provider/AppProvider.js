@@ -14,15 +14,17 @@ dayjs.updateLocale("ja", {
 });
 
 const colors = {
-  primary: "#121316",
-  primaryHover: "#1D1F24",
+  primary: "#635D50",
+  primaryHover: "#635D50",
   primaryDisabled: "#EFEFF1",
   secondary: "#B7DDFF",
+  textPrimary: "#121316",
   textSecondary: "#1890FF",
   error: "#EA202B",
   inputPlaceholder: "#838795",
   formInputBackground: "#FAFAFA",
   formRequiredMark: "#D51E27",
+  headerBg: "#E4DCD5",
 };
 
 const AppProvider = ({ children, fontFamily }) => {
@@ -35,6 +37,7 @@ const AppProvider = ({ children, fontFamily }) => {
             fontFamily,
             colorPrimary: colors.primary,
             colorPrimaryHover: colors.primaryHover,
+            colorPrimaryText: colors.textPrimary,
             colorError: colors.error,
           },
           components: {
@@ -46,10 +49,13 @@ const AppProvider = ({ children, fontFamily }) => {
               colorBgContainerDisabled: colors.primaryDisabled,
               colorTextDisabled: "#BABCC4",
               borderRadius: 8,
+              borderRadiusSM: 8,
               controlHeight: 48,
+              controlHeightSM: 40,
+              paddingInline: 16,
+              paddingInlineSM: 16,
             },
             Form: {
-              labelColor: colors.primary,
               labelHeight: 22,
               verticalLabelPadding: "0 0 8px 0",
               itemMarginBottom: 16,
@@ -65,6 +71,10 @@ const AppProvider = ({ children, fontFamily }) => {
               controlHeight: 46,
               colorBgContainer: colors.formInputBackground,
               colorTextPlaceholder: colors.inputPlaceholder,
+            },
+            Layout: {
+              headerBg: colors.headerBg,
+              siderBg: colors.headerBg,
             },
           },
         }}

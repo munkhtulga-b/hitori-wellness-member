@@ -6,6 +6,9 @@ import verify from "@/app/_api/auth/VerifyEmailController";
 import forgotPassword from "./auth/ForgotPasswordController";
 import resetPassword from "./auth/ResetPasswordController";
 
+// Member API
+import * as branch from "./member/BranchController";
+
 const $api = {
   auth: {
     login,
@@ -14,6 +17,9 @@ const $api = {
     verify,
     forgotPassword,
     resetPassword,
+  },
+  member: {
+    branch,
   },
 };
 

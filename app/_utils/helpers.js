@@ -10,3 +10,11 @@ export const getAddressFromPostalCode = async (postCode) => {
 
   return resp.json();
 };
+
+export const nullSafety = (value) => {
+  let result = "-";
+  if (value !== null && value !== undefined) {
+    result = value;
+  }
+  return result;
+};
