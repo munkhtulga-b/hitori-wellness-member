@@ -8,9 +8,9 @@ const NavigationBar = ({ setCollapsed, collapsed }) => {
   const path = usePathname();
 
   return (
-    <div className="tw-h-[84px] tw-w-full tw-bg-primary tw-relative">
+    <div className="tw-h-auto tw-w-full tw-bg-primary tw-relative">
       <div
-        className={`tw-absolute tw-left-4 tw-right-4 tw-bottom-3 tw-flex tw-justify-between tw-items-center`}
+        className={`tw-mt-[36px] tw-py-3 tw-px-4 tw-flex tw-justify-between tw-items-center`}
       >
         {path !== "/home" ? (
           <Image
@@ -30,8 +30,8 @@ const NavigationBar = ({ setCollapsed, collapsed }) => {
           priority
           src="/assets/logo-white.png"
           alt="logo"
-          width={158}
-          height={24}
+          width={188}
+          height={28}
           style={{
             cursor: "pointer",
           }}

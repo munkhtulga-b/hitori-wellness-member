@@ -9,6 +9,8 @@ const nextConfig = {
   ],
   env: {
     APP_VERSION: "1.0.0",
+    BASE_META_TITLE: "Hitori Wellness",
+    BASE_META_DESCRIPTION: "Gym Reservation",
   },
 };
 

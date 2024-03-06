@@ -3,15 +3,17 @@
 import Cookies from "js-cookie";
 import NavigationBar from "../_components/home/NavigationBar";
 import { useLayoutEffect, useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { redirect, useRouter, usePathname } from "next/navigation";
 import { Layout } from "antd";
 import { useUserStore } from "../_store/user";
 import SideBar from "../_components/home/SideBar";
+import { motion } from "framer-motion";
 
 const { Header, Content, Sider } = Layout;
 
 const UserAuthenticatedLayout = ({ children }) => {
   const router = useRouter();
+  const pathName = usePathname();
   const [isMounted, setIsMounted] = useState(false);
   const clearUser = useUserStore((state) => state.logOut);
 
@@ -81,7 +83,14 @@ const UserAuthenticatedLayout = ({ children }) => {
                     className="tw-fixed tw-top-0 tw-bottom-0 tw-left-0 tw-right-0 tw-bg-black/20 tw-z-[9999]"
                   ></div>
                 )}
-                {children}
+                <motion.div
+                  key={pathName}
+                  initial={{ opacity: 0, x: "100%" }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5 }}
+                >
+                  {children}
+                </motion.div>
               </Content>
             </Layout>
           </Layout>

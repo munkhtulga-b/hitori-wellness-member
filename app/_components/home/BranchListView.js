@@ -1,0 +1,51 @@
+import { nullSafety } from "@/app/_utils/helpers";
+import { useRouter } from "next/navigation";
+
+const BranchListView = ({ list }) => {
+  const router = useRouter();
+
+  return (
+    <>
+      {list?.length ? (
+        <div className="tw-flex tw-flex-col tw-gap-2">
+          <section className="tw-flex tw-justify-start tw-items-center tw-gap-1">
+            <span className="tw-text-xxl tw-font-medium">
+              {nullSafety(list[0].category_name)}
+            </span>
+            <span className="tw-text-secondary tw-text-lg tw-leading-7 tw-tracking-[0.16px]">
+              {list.length}
+            </span>
+          </section>
+          <section className="tw-flex tw-flex-col tw-gap-4">
+            {list.map((branch) => {
+              return (
+                <div
+                  onClick={() => router.push(`/home/branch/${branch.id}`)}
+                  key={branch.id}
+                  className="tw-flex tw-justify-start tw-items-start tw-gap-2 tw-p-2 tw-rounded-lg tw-shadow"
+                >
+                  <section className="tw-self-stretch tw-rounded-lg tw-min-w-[30%] tw-max-w-[30%] tw-bg-gray-200"></section>
+                  <section className="tw-flex tw-flex-col">
+                    <span className="tw-leading-[22px] tw-tracking-[0.14px]">
+                      {nullSafety(branch.name)}
+                    </span>
+                    <span className="tw-mt-2 tw-text-sm tw-tracking-[0.12px]">
+                      {`${nullSafety(branch.address1)} ${nullSafety(
+                        branch.address2
+                      )} ${nullSafety(branch.address3)}`}
+                    </span>
+                    <p className="tw-mt-1 tw-whitespace-pre-line">
+                      {`${nullSafety(branch.business_hours)}`}
+                    </p>
+                  </section>
+                </div>
+              );
+            })}
+          </section>
+        </div>
+      ) : null}
+    </>
+  );
+};
+
+export default BranchListView;
