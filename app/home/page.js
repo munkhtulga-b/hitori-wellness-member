@@ -34,9 +34,10 @@ const HomePage = () => {
       {!isLoading ? (
         <>
           <FilterButtonGroup
-            branches={branchList}
+            options={branchList}
             activeFilterId={activeFilterId}
             setActiveFilterId={setActiveFilterId}
+            filterName={"category_name"}
           />
 
           {branchList?.length ? (

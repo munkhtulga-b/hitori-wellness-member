@@ -85,8 +85,12 @@ const UserAuthenticatedLayout = ({ children }) => {
                 )}
                 <motion.div
                   key={pathName}
-                  initial={{ opacity: 0, x: "100%" }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{
+                    opacity: 0,
+                  }}
+                  animate={{
+                    opacity: 1,
+                  }}
                   transition={{ duration: 0.5 }}
                 >
                   {children}

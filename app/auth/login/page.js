@@ -1,31 +1,47 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Form, Input } from "antd";
 import $api from "@/app/_api";
 import { useUserStore } from "@/app/_store/user";
 import Cookies from "js-cookie";
+import { motion, AnimatePresence } from "framer-motion";
 
 const AuthLogin = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const [isLoading, setIsLoading] = useState(false);
+  const [loginErrorMessage, setLoginErrorMessage] = useState(null);
   const setUser = useUserStore((state) => state.setUser);
+
+  useEffect(() => {
+    if (loginErrorMessage !== null) {
+      setTimeout(() => {
+        setLoginErrorMessage(null);
+      }, 5000);
+    }
+  }, [loginErrorMessage]);
 
   const userLogin = async (params) => {
     setIsLoading(true);
+    params.email = params.email.toLowerCase().trim();
     const { isOk, data } = await $api.auth.login(params);
     if (isOk) {
       Cookies.set("token", data.tokens);
       setUser(data.user);
       router.push("/");
+    } else {
+      setLoginErrorMessage(data.error.message ?? "An error occurred");
     }
     setIsLoading(false);
   };
 
   return (
-    <div className="tw-py-[28px] tw-px-5 tw-flex tw-flex-col tw-items-center">
+    <motion.div
+      layout
+      className="tw-py-[28px] tw-px-5 tw-flex tw-flex-col tw-items-center"
+    >
       <section>
         <span className="tw-text-xl tw-font-medium">ログイン</span>
       </section>
@@ -63,6 +79,21 @@ const AuthLogin = () => {
           >
             <Input.Password placeholder="半角英数8文字以上" />
           </Form.Item>
+          <AnimatePresence>
+            {loginErrorMessage !== null && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+                className="tw-text-right"
+              >
+                <span className="tw-text-sm tw-text-required">
+                  {loginErrorMessage}
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <Form.Item>
             <Button
               loading={isLoading}
@@ -92,7 +123,7 @@ const AuthLogin = () => {
           新規会員登録
         </span>
       </section>
-    </div>
+    </motion.div>
   );
 };
 

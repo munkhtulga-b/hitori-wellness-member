@@ -51,7 +51,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
         rules={[
           {
             required: true,
-            message: "Please input your password!",
+            message: "パスワードをご記入ください。",
           },
         ]}
       >
@@ -66,7 +66,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
         rules={[
           {
             required: true,
-            message: "Please confirm your password!",
+            message: "パスワード（確認用）をご記入ください。",
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
@@ -115,7 +115,11 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
                 validator: (_, value) =>
                   value
                     ? Promise.resolve()
-                    : Promise.reject(new Error("Should accept agreement")),
+                    : Promise.reject(
+                        new Error(
+                          "会員登録には利用規約に同意する必要があります。"
+                        )
+                      ),
               },
             ]}
             style={{ marginBottom: 24 }}

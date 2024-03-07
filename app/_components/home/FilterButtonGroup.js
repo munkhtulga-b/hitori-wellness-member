@@ -2,7 +2,12 @@ import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 
-const FilterButtonGroup = ({ activeFilterId, setActiveFilterId, branches }) => {
+const FilterButtonGroup = ({
+  activeFilterId,
+  setActiveFilterId,
+  filterName,
+  options,
+}) => {
   const handleFilterClick = (value) => {
     if (activeFilterId === value) {
       return setActiveFilterId(null);
@@ -34,7 +39,7 @@ const FilterButtonGroup = ({ activeFilterId, setActiveFilterId, branches }) => {
             ) : null}
           </div>
         </Button>
-        {branches.map((filter, idx) => {
+        {options.map((filter, idx) => {
           return (
             <Button
               size="small"
@@ -46,7 +51,7 @@ const FilterButtonGroup = ({ activeFilterId, setActiveFilterId, branches }) => {
               }}
             >
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
-                <span>{nullSafety(filter[0].category_name)}</span>
+                <span>{nullSafety(filter[0][filterName])}</span>
                 {activeFilterId === idx ? (
                   <Image
                     src="/assets/branch/close-icon-blue.svg"

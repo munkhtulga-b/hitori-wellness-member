@@ -17,7 +17,7 @@ const BranchScroller = ({ list, setActiveFilterId, filterId }) => {
               全て
             </span>
           </section>
-          <section className="tw-flex tw-justify-start tw-items-stretch tw-gap-4 tw-overflow-x-auto tw-snap-x tw-pb-1">
+          <section className="tw-flex tw-justify-start tw-items-stretch tw-gap-4 tw-overflow-x-auto tw-pb-1">
             {list.map((item) => {
               return <BranchCard key={item.id} branch={item} />;
             })}
