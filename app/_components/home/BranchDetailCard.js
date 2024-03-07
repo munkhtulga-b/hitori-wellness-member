@@ -1,8 +1,18 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button, Checkbox } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 
 const BranchDetailCard = ({ branch }) => {
+  const router = useRouter();
+  const [isHomeBranch, setIsHomeBranch] = useState(false);
+  const handleMakeReservation = () => {
+    router.push("/home/reservation");
+  };
+
   return (
     <>
       <div className="tw-flex tw-flex-col tw-gap-4">
@@ -66,10 +76,20 @@ const BranchDetailCard = ({ branch }) => {
           <Button size="small">買う</Button>
         </section>
         <section className="tw-py-6">
-          <Checkbox>所属店舗にする。</Checkbox>
+          <Checkbox
+            checked={isHomeBranch}
+            onChange={(e) => setIsHomeBranch(e.target.checked)}
+          >
+            所属店舗にする。
+          </Checkbox>
         </section>
         <section className="tw-mt-1">
-          <Button type="primary" className="tw-w-full">
+          <Button
+            onClick={handleMakeReservation}
+            size="large"
+            type="primary"
+            className="tw-w-full"
+          >
             予約する
           </Button>
         </section>

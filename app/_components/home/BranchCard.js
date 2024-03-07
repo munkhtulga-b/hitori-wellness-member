@@ -8,7 +8,7 @@ const BranchCard = ({ branch }) => {
   return (
     <div
       onClick={() => router.push(`/home/branch/${branch.id}`)}
-      className="tw-p-2 tw-rounded-[16px] tw-shadow tw-w-fit tw-snap-center"
+      className="tw-p-2 tw-rounded-[16px] tw-shadow tw-w-fit"
     >
       <div className="tw-flex tw-flex-col tw-gap-2">
         <section className="tw-rounded-xl tw-min-h-[190px] tw-max-h-[190px] tw-min-w-[220px] tw-max-w-[220px] tw-overflow-hidden tw-bg-gray-200"></section>

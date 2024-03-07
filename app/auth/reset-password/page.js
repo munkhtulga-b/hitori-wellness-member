@@ -89,7 +89,7 @@ const NewPassword = () => {
               rules={[
                 {
                   required: true,
-                  message: "パスワードをご記入ください。",
+                  message: "新しいパスワードをご記入ください。",
                 },
               ]}
             >
@@ -105,7 +105,7 @@ const NewPassword = () => {
               rules={[
                 {
                   required: true,
-                  message: "Please confirm your password!",
+                  message: "新しいパスワード（確認用）をご記入ください。",
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {
@@ -113,9 +113,7 @@ const NewPassword = () => {
                       return Promise.resolve();
                     }
                     return Promise.reject(
-                      new Error(
-                        "The new password that you entered do not match!"
-                      )
+                      new Error("パスワードが一致しません。")
                     );
                   },
                 }),

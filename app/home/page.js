@@ -3,7 +3,7 @@
 import { Empty } from "antd";
 import BranchScrollView from "../_components/home/BranchScrollView";
 import BranchListView from "../_components/home/BranchListView";
-import FilterButtonGroup from "../_components/home/FilterButtonGroup";
+import FilterButtonGroup from "../_components/custom/FilterButtonGroup";
 import { useState, useEffect } from "react";
 import $api from "../_api";
 import _ from "lodash";
@@ -34,9 +34,10 @@ const HomePage = () => {
       {!isLoading ? (
         <>
           <FilterButtonGroup
-            branches={branchList}
+            options={branchList}
             activeFilterId={activeFilterId}
             setActiveFilterId={setActiveFilterId}
+            filterName={"category_name"}
           />
 
           {branchList?.length ? (

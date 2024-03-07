@@ -208,7 +208,12 @@ const SignupStepTwo = ({ onComplete }) => {
       </Form.Item>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="tw-w-full">
+        <Button
+          size="large"
+          type="primary"
+          htmlType="submit"
+          className="tw-w-full"
+        >
           次へ
         </Button>
       </Form.Item>

@@ -81,19 +81,19 @@ const SignupStepOne = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "Please input your nickname!",
+                message: "姓（氏名）を入力してください。",
                 whitespace: true,
               },
             ]}
           >
-            <Input placeholder="氏" />
+            <Input placeholder="姓" />
           </Form.Item>
           <Form.Item
             name="firstName"
             rules={[
               {
                 required: true,
-                message: "Please input your nickname!",
+                message: "名（氏名）を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -113,19 +113,19 @@ const SignupStepOne = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "Please input your nickname!",
+                message: "姓（フリガナ）を入力してください。",
                 whitespace: true,
               },
             ]}
           >
-            <Input placeholder="氏" />
+            <Input placeholder="姓" />
           </Form.Item>
           <Form.Item
             name="firstKana"
             rules={[
               {
                 required: true,
-                message: "Please input your nickname!",
+                message: "名（フリガナ）を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -142,7 +142,7 @@ const SignupStepOne = ({ onComplete }) => {
           {
             type: "object",
             required: true,
-            message: "Please select time!",
+            message: "誕生日をご選択ください。",
           },
         ]}
       >
@@ -163,7 +163,7 @@ const SignupStepOne = ({ onComplete }) => {
           rules={[
             {
               required: true,
-              message: "Select your gender!",
+              message: "性別をご選択ください。",
             },
           ]}
         >
@@ -191,7 +191,12 @@ const SignupStepOne = ({ onComplete }) => {
       </section>
 
       <Form.Item>
-        <Button type="primary" htmlType="submit" className="tw-w-full">
+        <Button
+          size="large"
+          type="primary"
+          htmlType="submit"
+          className="tw-w-full"
+        >
           次へ
         </Button>
       </Form.Item>

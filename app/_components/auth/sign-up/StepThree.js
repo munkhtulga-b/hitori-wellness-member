@@ -51,7 +51,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
         rules={[
           {
             required: true,
-            message: "Please input your password!",
+            message: "パスワードをご記入ください。",
           },
         ]}
       >
@@ -66,16 +66,14 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
         rules={[
           {
             required: true,
-            message: "Please confirm your password!",
+            message: "パスワード（確認用）をご記入ください。",
           },
           ({ getFieldValue }) => ({
             validator(_, value) {
               if (!value || getFieldValue("password") === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(
-                new Error("The new password that you entered do not match!")
-              );
+              return Promise.reject(new Error("パスワードが一致しません。"));
             },
           }),
         ]}
@@ -115,7 +113,11 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
                 validator: (_, value) =>
                   value
                     ? Promise.resolve()
-                    : Promise.reject(new Error("Should accept agreement")),
+                    : Promise.reject(
+                        new Error(
+                          "会員登録には利用規約に同意する必要があります。"
+                        )
+                      ),
               },
             ]}
             style={{ marginBottom: 24 }}
@@ -131,6 +133,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
 
       <Form.Item>
         <Button
+          size="large"
           loading={isLoading}
           type="primary"
           htmlType="submit"

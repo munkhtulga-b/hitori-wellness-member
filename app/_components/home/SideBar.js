@@ -44,7 +44,12 @@ const SideBar = ({ setCollapsed, onLogOut }) => {
               );
             })}
           </ul>
-          <Button type="primary" onClick={onLogOut} className="tw-mb-20">
+          <Button
+            size="large"
+            type="primary"
+            onClick={onLogOut}
+            className="tw-mb-20"
+          >
             <div className="tw-flex tw-justify-between tw-items-center">
               <span className="tw-text-white tw-tracking-[0.14px]">
                 ログアウト

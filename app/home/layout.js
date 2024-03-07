@@ -2,7 +2,7 @@
 
 import Cookies from "js-cookie";
 import NavigationBar from "../_components/home/NavigationBar";
-import { useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState, Suspense } from "react";
 import { redirect, useRouter, usePathname } from "next/navigation";
 import { Layout } from "antd";
 import { useUserStore } from "../_store/user";
@@ -85,11 +85,15 @@ const UserAuthenticatedLayout = ({ children }) => {
                 )}
                 <motion.div
                   key={pathName}
-                  initial={{ opacity: 0, x: "100%" }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{
+                    opacity: 0,
+                  }}
+                  animate={{
+                    opacity: 1,
+                  }}
                   transition={{ duration: 0.5 }}
                 >
-                  {children}
+                  <Suspense fallback={<></>}>{children}</Suspense>
                 </motion.div>
               </Content>
             </Layout>
