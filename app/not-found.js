@@ -19,6 +19,7 @@ export default function NotFound() {
         subTitle="申し訳ありませんが、アクセスしたページは存在しません。"
         extra={
           <Button
+            size="large"
             onClick={() => router.push("/")}
             className="tw-w-full"
             type="primary"

@@ -73,9 +73,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
               if (!value || getFieldValue("password") === value) {
                 return Promise.resolve();
               }
-              return Promise.reject(
-                new Error("The new password that you entered do not match!")
-              );
+              return Promise.reject(new Error("パスワードが一致しません。"));
             },
           }),
         ]}
@@ -135,6 +133,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
 
       <Form.Item>
         <Button
+          size="large"
           loading={isLoading}
           type="primary"
           htmlType="submit"

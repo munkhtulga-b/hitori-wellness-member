@@ -1,11 +1,16 @@
-import { useState } from "react";
+"use client";
 
-const SwitchSlider = ({ options, setActiveStepId }) => {
-  const [indicatorPosition, setIndicatorPosition] = useState(2);
-  const onOptionClick = (e, option) => {
-    setIndicatorPosition(e.target.offsetLeft);
-    setActiveStepId(option.id);
-  };
+import { useState, useEffect } from "react";
+
+const SwitchSlider = ({ options, activeStepId, setActiveStepId }) => {
+  const [indicatorPosition, setIndicatorPosition] = useState(0);
+
+  useEffect(() => {
+    const el = document.getElementById(`slider-option-${activeStepId}`);
+    if (el) {
+      setIndicatorPosition(el.offsetLeft);
+    }
+  }, [activeStepId]);
 
   return (
     <>
@@ -18,7 +23,8 @@ const SwitchSlider = ({ options, setActiveStepId }) => {
           {options.map((option) => {
             return (
               <section
-                onClick={(e) => onOptionClick(e, option)}
+                id={`slider-option-${option.id}`}
+                onClick={() => setActiveStepId(option.id)}
                 key={option.id}
                 className={`tw-cursor-pointer tw-h-[30px] tw-w-[110px] tw-rounded-full tw-flex tw-justify-center tw-items-center tw-z-10`}
               >

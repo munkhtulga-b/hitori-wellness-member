@@ -6,6 +6,7 @@ const FilterButtonGroup = ({
   activeFilterId,
   setActiveFilterId,
   filterName,
+  filterNameSuffix,
   options,
 }) => {
   const handleFilterClick = (value) => {
@@ -51,7 +52,9 @@ const FilterButtonGroup = ({
               }}
             >
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
-                <span>{nullSafety(filter[0][filterName])}</span>
+                <span>{`${nullSafety(filter[0][filterName])}${
+                  filterNameSuffix || ""
+                }`}</span>
                 {activeFilterId === idx ? (
                   <Image
                     src="/assets/branch/close-icon-blue.svg"
