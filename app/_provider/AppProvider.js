@@ -10,7 +10,7 @@ import updateLocale from "dayjs/plugin/updateLocale";
 dayjs.locale("ja");
 dayjs.extend(updateLocale);
 dayjs.updateLocale("ja", {
-  weekStart: 1,
+  weekStart: 0,
 });
 
 const colors = {

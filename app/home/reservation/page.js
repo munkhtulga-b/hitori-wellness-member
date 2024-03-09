@@ -9,6 +9,7 @@ import ProgramListView from "@/app/_components/program/ProgramListView";
 import ProgramScrollView from "@/app/_components/program/ProgramScrollView";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
+import TimeSlotSelect from "@/app/_components/time-slot/TimeSlotSelect";
 
 const sliderOptions = [
   {
@@ -160,7 +161,15 @@ const ProgramsPage = () => {
               <>{coachList?.length ? <>Coach page</> : <>No data</>}</>
             )}
             {activeStepId === 3 && (
-              <>{timeslotList?.length ? <>Time Slot page</> : <>No data</>}</>
+              <>
+                {timeslotList?.length ? (
+                  <>
+                    <TimeSlotSelect />
+                  </>
+                ) : (
+                  <>No data</>
+                )}
+              </>
             )}
           </>
         ) : (
