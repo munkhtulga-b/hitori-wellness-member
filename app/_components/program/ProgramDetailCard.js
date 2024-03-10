@@ -1,10 +1,32 @@
 "use client";
 
 // import Image from "next/image";
+import { useCallback } from "react";
 import { nullSafety } from "@/app/_utils/helpers";
 import { Button } from "antd";
+import { useReservationStore } from "@/app/_store/reservation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const ProgramDetailCard = ({ program }) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const setProgram = useReservationStore((state) => state.setBody);
+
+  const onProgramSelect = () => {
+    setProgram({ program: program });
+    router.push(`/home/reservation?${createQueryString("select", "slot")}`);
+  };
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
+
   return (
     <>
       <div className="tw-flex tw-flex-col">
@@ -27,7 +49,12 @@ const ProgramDetailCard = ({ program }) => {
           </section>
         </div>
         <div className="tw-mt-10">
-          <Button size="large" type="primary" className="tw-w-full">
+          <Button
+            onClick={() => onProgramSelect()}
+            size="large"
+            type="primary"
+            className="tw-w-full"
+          >
             選ぶ
           </Button>
         </div>

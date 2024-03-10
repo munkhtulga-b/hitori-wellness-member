@@ -25,6 +25,9 @@ module.exports = {
         primary: "#BABCC4",
         form: "#D6D7DC",
         info: "#B7DDFF",
+        available: "#1890FF",
+        subtle: "#EFEFF1",
+        warning: "#F0ACB0",
       },
       placeholderColor: {
         primary: "#838795",

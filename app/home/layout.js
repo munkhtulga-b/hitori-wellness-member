@@ -92,6 +92,7 @@ const UserAuthenticatedLayout = ({ children }) => {
                     opacity: 1,
                   }}
                   transition={{ duration: 0.5 }}
+                  className="tw-h-full"
                 >
                   <Suspense fallback={<></>}>{children}</Suspense>
                 </motion.div>

@@ -1,8 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useReservationStore } from "@/app/_store/reservation";
+import Image from "next/image";
 
 const SwitchSlider = ({ options, activeStepId, setActiveStepId }) => {
+  const reservationBody = useReservationStore((state) => state.getBody());
   const [indicatorPosition, setIndicatorPosition] = useState(0);
 
   useEffect(() => {
@@ -26,9 +29,18 @@ const SwitchSlider = ({ options, activeStepId, setActiveStepId }) => {
                 id={`slider-option-${option.id}`}
                 onClick={() => setActiveStepId(option.id)}
                 key={option.id}
-                className={`tw-cursor-pointer tw-h-[30px] tw-w-[110px] tw-rounded-full tw-flex tw-justify-center tw-items-center tw-z-10`}
+                className={`tw-cursor-pointer tw-h-[30px] tw-w-[110px] tw-rounded-full tw-flex tw-justify-center tw-items-center tw-gap-2 tw-z-10`}
               >
-                {option.text}
+                <span>{option.text}</span>
+                {reservationBody[option.dataIndex] ? (
+                  <Image
+                    src="/assets/step-completed.svg"
+                    alt="completed"
+                    width={0}
+                    height={0}
+                    style={{ width: "auto", height: "auto" }}
+                  />
+                ) : null}
               </section>
             );
           })}
