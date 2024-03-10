@@ -22,7 +22,7 @@ const BranchListView = ({ list }) => {
                 <div
                   onClick={() => router.push(`/home/branch/${branch.id}`)}
                   key={branch.id}
-                  className="tw-flex tw-justify-start tw-items-start tw-gap-2 tw-p-2 tw-rounded-lg tw-shadow"
+                  className="tw-bg-white tw-flex tw-justify-start tw-items-start tw-gap-2 tw-p-2 tw-rounded-lg tw-shadow"
                 >
                   <section className="tw-self-stretch tw-rounded-lg tw-min-w-[30%] tw-max-w-[30%] tw-bg-gray-200"></section>
                   <section className="tw-flex tw-flex-col">

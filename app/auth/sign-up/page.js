@@ -15,7 +15,7 @@ const AuthSignup = () => {
   const pathName = usePathname();
   const searchParams = useSearchParams();
   const updateRequestBody = useSignupStore((state) => state.setBody);
-  const getRequestBody = useSignupStore((state) => state.getBody);
+  const getRequestBody = useSignupStore((state) => state.getBody());
   const resetRequestBody = useSignupStore((state) => state.resetBody);
   const [currentForm, setCurrentForm] = useState("1");
   const [isLoading, setIsLoading] = useState(false);
@@ -41,7 +41,7 @@ const AuthSignup = () => {
 
   const handleStepThree = (params) => {
     updateRequestBody(params);
-    registerUser(getRequestBody());
+    registerUser(getRequestBody);
   };
 
   const registerUser = async (params) => {
@@ -57,7 +57,7 @@ const AuthSignup = () => {
 
   const sendVerificationEmail = async () => {
     const { isOk } = await $api.auth.sendVerification({
-      email: getRequestBody().mailAddress,
+      email: getRequestBody.mailAddress,
     });
     if (isOk) {
       setCurrentForm((prev) => prev + 1);

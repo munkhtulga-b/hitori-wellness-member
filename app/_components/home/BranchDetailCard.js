@@ -5,11 +5,15 @@ import { useRouter } from "next/navigation";
 import { Button, Checkbox } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
+import { useReservationStore } from "@/app/_store/reservation";
 
 const BranchDetailCard = ({ branch }) => {
   const router = useRouter();
+  const setBranch = useReservationStore((state) => state.setBody);
   const [isHomeBranch, setIsHomeBranch] = useState(false);
+
   const handleMakeReservation = () => {
+    setBranch({ branch: branch });
     router.push("/home/reservation");
   };
 

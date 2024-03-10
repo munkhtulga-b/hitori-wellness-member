@@ -6,7 +6,7 @@ import { useSignupStore } from "@/app/_store/user-signup";
 
 const SignupStepTwo = ({ onComplete }) => {
   const [form] = Form.useForm();
-  const signupStore = useSignupStore((state) => state.getBody);
+  const signupStore = useSignupStore((state) => state.getBody());
   const zipCode2 = Form.useWatch("zipCode2", form);
   const zipCode1 = Form.useWatch("zipCode1", form);
   const [isFetching, setIsFetching] = useState(false);
@@ -60,7 +60,7 @@ const SignupStepTwo = ({ onComplete }) => {
       "address3",
       "prefecture",
     ];
-    for (const [key, value] of Object.entries(signupStore())) {
+    for (const [key, value] of Object.entries(signupStore)) {
       if (formFields.includes(key)) {
         form.setFieldValue(key, value);
       }

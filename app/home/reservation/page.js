@@ -15,16 +15,19 @@ const sliderOptions = [
   {
     id: 1,
     text: "プログラム",
+    dataIndex: "program",
     route: "",
   },
   {
     id: 2,
     text: "スタッフ",
+    dataIndex: "coach",
     route: "",
   },
   {
     id: 3,
     text: "日時",
+    dataIndex: "time",
     route: "",
   },
 ];

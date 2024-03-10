@@ -27,6 +27,7 @@ module.exports = {
         info: "#B7DDFF",
         available: "#1890FF",
         subtle: "#EFEFF1",
+        warning: "#F0ACB0",
       },
       placeholderColor: {
         primary: "#838795",

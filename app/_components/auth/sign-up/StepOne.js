@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 
 const SignupStepOne = ({ onComplete }) => {
   const [form] = Form.useForm();
-  const signupStore = useSignupStore((state) => state.getBody);
+  const signupStore = useSignupStore((state) => state.getBody());
   const [genderValue, setGenderValue] = useState(null);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const SignupStepOne = ({ onComplete }) => {
       "birthday",
       "gender",
     ];
-    for (const [key, value] of Object.entries(signupStore())) {
+    for (const [key, value] of Object.entries(signupStore)) {
       if (formFields.includes(key)) {
         key === "birthday"
           ? form.setFieldValue(key, value ? dayjs(value) : null)

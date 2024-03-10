@@ -73,12 +73,12 @@ const TimeSlotSelect = () => {
                 </section>
                 {day.timeSlots.map((time) => {
                   return (
-                    <section
+                    <button
                       key={time}
                       className={`tw-bg-white tw-w-full tw-h-[38px] tw-px-1 tw-py-2 tw-rounded-lg tw-border tw-border-available tw-text-center`}
                     >
                       <span className="tw-tracking-[0.14px]">{time}</span>
-                    </section>
+                    </button>
                   );
                 })}
               </div>
