@@ -1,10 +1,29 @@
+import { useCallback } from "react";
 import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useReservationStore } from "@/app/_store/reservation";
 
 const ProgramCard = ({ program }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const setProgram = useReservationStore((state) => state.setBody);
+
+  const onProgramSelect = () => {
+    setProgram({ program: program });
+    router.push(`/home/reservation?${createQueryString("select", "coach")}`);
+  };
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   return (
     <>
@@ -35,7 +54,9 @@ const ProgramCard = ({ program }) => {
                 />
               </div>
             </Button>
-            <Button size="small">選ぶ</Button>
+            <Button size="small" onClick={() => onProgramSelect()}>
+              選ぶ
+            </Button>
           </div>
         </section>
       </div>

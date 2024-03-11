@@ -10,6 +10,7 @@ import ProgramScrollView from "@/app/_components/program/ProgramScrollView";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
 import TimeSlotSelect from "@/app/_components/time-slot/TimeSlotSelect";
+import CoachSelect from "@/app/_components/coach/CoachSelect";
 
 const sliderOptions = [
   {
@@ -55,7 +56,7 @@ const ProgramsPage = () => {
       return setActiveStepId(ReservationEnum.TIMESLOT.value);
     }
     setActiveStepId(ReservationEnum.PROGRAM.value);
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     if (activeStepId === 1) {
@@ -161,7 +162,15 @@ const ProgramsPage = () => {
               </>
             )}
             {activeStepId === 2 && (
-              <>{coachList?.length ? <>Coach page</> : <>No data</>}</>
+              <>
+                {coachList?.length ? (
+                  <>
+                    <CoachSelect />
+                  </>
+                ) : (
+                  <>No data</>
+                )}
+              </>
             )}
             {activeStepId === 3 && (
               <>

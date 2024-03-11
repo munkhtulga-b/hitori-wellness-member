@@ -12,6 +12,7 @@ export const useReservationStore = create(
       },
       setBody: (payload) => set({ body: { ...get().body, ...payload } }),
       getBody: () => get().body,
+      resetBody: () => set({ body: {} }),
     }),
     {
       name: "reservation-storage", // name of the item in the storage (must be unique)

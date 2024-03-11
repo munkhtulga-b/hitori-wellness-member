@@ -87,7 +87,7 @@ const SignupStepTwo = ({ onComplete }) => {
         rules={[
           {
             required: true,
-            message: "Please input your phone number!",
+            message: "電話番号をご記入ください。",
             whitespace: false,
           },
         ]}
@@ -102,9 +102,9 @@ const SignupStepTwo = ({ onComplete }) => {
             name="zipCode1"
             rules={[
               {
-                required: true,
-                message: "Please input your post code!",
-                whitespace: true,
+                required: false,
+                // message: "Please input your post code!",
+                whitespace: false,
               },
             ]}
           >
@@ -114,9 +114,9 @@ const SignupStepTwo = ({ onComplete }) => {
             name="zipCode2"
             rules={[
               {
-                required: true,
-                message: "Please input your post code!",
-                whitespace: true,
+                required: false,
+                // message: "Please input your post code!",
+                whitespace: false,
               },
             ]}
           >

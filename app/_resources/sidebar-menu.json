@@ -10,7 +10,7 @@
       "text": "プロフィール",
       "icon": "/assets/sidebar/user-icon.svg",
       "alt": "user",
-      "route": "/"
+      "route": "/home/profile"
     },
     {
       "text": "予約履歴",
