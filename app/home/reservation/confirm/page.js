@@ -5,6 +5,7 @@ import Image from "next/image";
 import { Button, Modal } from "antd";
 import { useReservationStore } from "@/app/_store/reservation";
 import { nullSafety } from "@/app/_utils/helpers";
+import dayjs from "dayjs";
 
 const ReservationConfirm = () => {
   const reservationBody = useReservationStore((state) => state.getBody());
@@ -119,7 +120,13 @@ const ReservationConfirm = () => {
               </div>
               <div>
                 <span className="tw-text-secondary">
-                  2024/01/03(土) 07:00-07:30
+                  {`${dayjs(reservationBody?.time?.day).format(
+                    "YYYY/MM/DD"
+                  )}(土) ${reservationBody?.time?.slots[0]}-${
+                    reservationBody?.time?.slots[
+                      reservationBody?.time?.slots.length - 1
+                    ]
+                  }`}
                 </span>
               </div>
             </section>

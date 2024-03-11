@@ -14,6 +14,7 @@ module.exports = {
         grayLight: "#F4F5F6",
         grayMedium: "#DCDDE0",
         dividerLight: "#EFEFF1",
+        aquaLight: "#B7DDFF",
       },
       textColor: {
         primary: "#121316",
@@ -28,6 +29,9 @@ module.exports = {
         available: "#1890FF",
         subtle: "#EFEFF1",
         warning: "#F0ACB0",
+      },
+      ringColor: {
+        active: "#B7DDFF",
       },
       placeholderColor: {
         primary: "#838795",
