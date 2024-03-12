@@ -6,14 +6,42 @@ import { Button, Modal } from "antd";
 import { useReservationStore } from "@/app/_store/reservation";
 import { nullSafety } from "@/app/_utils/helpers";
 import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import ReservationEnum from "@/app/_enums/EEnumReservation";
 
 const ReservationConfirm = () => {
+  const router = useRouter();
   const reservationBody = useReservationStore((state) => state.getBody());
+  const editReservationBody = useReservationStore((state) => state.editBody);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bodyType, setBodyType] = useState(null);
 
   const handleEdit = (type) => {
-    console.log(type);
+    setBodyType(type);
     setIsModalOpen(true);
+  };
+
+  const handleEditConfirm = () => {
+    editReservationBody(bodyType);
+    setIsModalOpen(false);
+    if (bodyType === "branch") {
+      router.push(`/home/`);
+    }
+    if (bodyType === ReservationEnum.PROGRAM.queryString) {
+      router.push(
+        `/home/reservation?select=${ReservationEnum.PROGRAM.queryString}`
+      );
+    }
+    if (bodyType === ReservationEnum.COACH.queryString) {
+      router.push(
+        `/home/reservation?select=${ReservationEnum.COACH.queryString}`
+      );
+    }
+    if (bodyType === ReservationEnum.TIMESLOT.queryString) {
+      router.push(
+        `/home/reservation?select=${ReservationEnum.TIMESLOT.queryString}`
+      );
+    }
   };
 
   return (
@@ -153,7 +181,11 @@ const ReservationConfirm = () => {
             </p>
           </section>
           <section className="tw-flex tw-justify-center">
-            <Button type="primary" size="large">
+            <Button
+              onClick={() => handleEditConfirm()}
+              type="primary"
+              size="large"
+            >
               編集する
             </Button>
           </section>

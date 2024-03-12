@@ -6,6 +6,7 @@ import { nullSafety } from "@/app/_utils/helpers";
 import { Button } from "antd";
 import { useReservationStore } from "@/app/_store/reservation";
 import { useRouter, useSearchParams } from "next/navigation";
+import ReservationEnum from "@/app/_enums/EEnumReservation";
 
 const ProgramDetailCard = ({ program }) => {
   const router = useRouter();
@@ -14,7 +15,12 @@ const ProgramDetailCard = ({ program }) => {
 
   const onProgramSelect = () => {
     setProgram({ program: program });
-    router.push(`/home/reservation?${createQueryString("select", "slot")}`);
+    router.push(
+      `/home/reservation?${createQueryString(
+        "select",
+        ReservationEnum.PROGRAM.next
+      )}`
+    );
   };
 
   const createQueryString = useCallback(

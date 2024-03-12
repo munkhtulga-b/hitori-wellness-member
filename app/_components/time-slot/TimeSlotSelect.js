@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { useState } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import Image from "next/image";
 import { useReservationStore } from "@/app/_store/reservation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 
 const TimeSlotSelect = () => {
   const router = useRouter();
+  const [messageApi, contextHolder] = message.useMessage();
   const slotInterval = 30;
   const getReservation = useReservationStore((state) => state.getBody());
   const setReservation = useReservationStore((state) => state.setBody);
@@ -18,6 +19,12 @@ const TimeSlotSelect = () => {
   const [selectedSlots, setSelectedSlots] = useState(null);
 
   const onSlotSelect = ({ day, timeSlots }, idx) => {
+    if (!getReservation.program) {
+      return messageApi.open({
+        type: "warning",
+        content: "Please select a program",
+      });
+    }
     const slotsToCheck = getReservation.program.service_minutes / slotInterval;
     const shallowSlots = [];
     for (let i = 0; i <= slotsToCheck; i++) {
@@ -67,6 +74,7 @@ const TimeSlotSelect = () => {
 
   return (
     <>
+      {contextHolder}
       <div className="tw-flex tw-flex-col tw-gap-4 tw-mb-[150px]">
         <section>
           <span className="tw-text-xxl tw-font-medium">日時</span>

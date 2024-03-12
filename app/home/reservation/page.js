@@ -19,12 +19,12 @@ const sliderOptions = [
     dataIndex: "program",
     route: "",
   },
-  {
-    id: 2,
-    text: "スタッフ",
-    dataIndex: "coach",
-    route: "",
-  },
+  // {
+  //   id: 2,
+  //   text: "スタッフ",
+  //   dataIndex: "coach",
+  //   route: "",
+  // },
   {
     id: 3,
     text: "日時",
@@ -38,7 +38,7 @@ const ProgramsPage = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState({
-    isFetching: true,
+    isFetching: false,
     isRequesting: false,
   });
   const [programList, setProgramList] = useState(null);

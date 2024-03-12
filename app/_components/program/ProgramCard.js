@@ -4,6 +4,7 @@ import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useReservationStore } from "@/app/_store/reservation";
+import ReservationEnum from "@/app/_enums/EEnumReservation";
 
 const ProgramCard = ({ program }) => {
   const router = useRouter();
@@ -12,7 +13,12 @@ const ProgramCard = ({ program }) => {
 
   const onProgramSelect = () => {
     setProgram({ program: program });
-    router.push(`/home/reservation?${createQueryString("select", "coach")}`);
+    router.push(
+      `/home/reservation?${createQueryString(
+        "select",
+        ReservationEnum.PROGRAM.next
+      )}`
+    );
   };
 
   const createQueryString = useCallback(
