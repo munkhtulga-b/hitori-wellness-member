@@ -13,6 +13,7 @@ const ReservationConfirm = () => {
   const router = useRouter();
   const reservationBody = useReservationStore((state) => state.getBody());
   const editReservationBody = useReservationStore((state) => state.editBody);
+  const resetReservationBody = useReservationStore((state) => state.resetBody);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bodyType, setBodyType] = useState(null);
 
@@ -162,7 +163,10 @@ const ReservationConfirm = () => {
         </div>
         <div>
           <Button
-            onClick={() => router.push("/home/reservation/success")}
+            onClick={() => {
+              resetReservationBody();
+              router.push("/home/reservation/success");
+            }}
             type="primary"
             size="large"
             className="tw-w-full"
