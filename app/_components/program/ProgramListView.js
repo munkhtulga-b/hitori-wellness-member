@@ -30,9 +30,9 @@ const ProgramListView = ({ list }) => {
                       width={0}
                       height={0}
                       style={{
-                        objectFit: "contain",
-                        width: "100%",
-                        height: "auto",
+                        objectFit: "cover",
+                        width: "auto",
+                        height: "100%",
                       }}
                       unoptimized
                     />

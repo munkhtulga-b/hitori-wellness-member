@@ -35,7 +35,7 @@ const ProgramCard = ({ program }) => {
     <>
       <div className="tw-bg-white tw-flex tw-flex-col tw-gap-3 tw-p-3 tw-rounded-xl tw-shadow tw-min-w-[285px] tw-max-w-[285px]">
         <section className="tw-flex tw-justify-start tw-items-center tw-gap-3">
-          <div className="tw-rounded-lg tw-bg-gray-200 tw-min-w-[80px] tw-max-w-[80px] tw-max-h-[80px] tw-min-h-[80px] tw-overflow-hidden">
+          <div className="tw-rounded-lg tw-bg-gray-200 tw-min-w-[80px] tw-max-w-[80px] tw-h-[80px] tw-overflow-hidden">
             {program.thumbnail_code ? (
               <Image
                 priority
@@ -43,7 +43,7 @@ const ProgramCard = ({ program }) => {
                 alt="thumbnail"
                 width={0}
                 height={0}
-                style={{ objectFit: "contain", width: "100%", height: "auto" }}
+                style={{ objectFit: "cover", width: "auto", height: "100%" }}
                 unoptimized
               />
             ) : null}
