@@ -19,7 +19,15 @@ export const useReservationStore = create(
           set({ body: { ...get().body, [keys[i]]: null } });
         }
       },
-      resetBody: () => set({ body: {} }),
+      resetBody: () =>
+        set({
+          body: {
+            branch: null,
+            program: null,
+            coach: null,
+            time: null,
+          },
+        }),
     }),
     {
       name: "reservation-storage", // name of the item in the storage (must be unique)
