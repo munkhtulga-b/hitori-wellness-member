@@ -33,12 +33,14 @@ const HomePage = () => {
     <div className="tw-flex tw-flex-col tw-gap-y-4">
       {!isLoading ? (
         <>
-          <FilterButtonGroup
-            options={branchList}
-            activeFilterId={activeFilterId}
-            setActiveFilterId={setActiveFilterId}
-            filterName={"category_name"}
-          />
+          {branchList?.length ? (
+            <FilterButtonGroup
+              options={branchList}
+              activeFilterId={activeFilterId}
+              setActiveFilterId={setActiveFilterId}
+              filterName={"category_name"}
+            />
+          ) : null}
 
           {branchList?.length ? (
             <>
