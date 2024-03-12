@@ -134,6 +134,7 @@ const NewPassword = () => {
 
             <Form.Item>
               <Button
+                size="large"
                 loading={isLoading}
                 onClick={() => setIsSuccess(false)}
                 type="primary"
