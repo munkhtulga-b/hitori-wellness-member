@@ -1,0 +1,46 @@
+{
+    "1": [
+        {
+            "text": "加入中プラン・所持チケット",
+            "icon": "/assets/profile/current-plan.svg",
+            "alt": "plan",
+            "route": "/"
+        },
+        {
+            "text": "チケット購入",
+            "icon": "/assets/profile/purchase-ticket.svg",
+            "alt": "purchase",
+            "route": "/"
+        }
+    ],
+    "2": [
+        {
+            "text": "保存しているクレジットカード",
+            "icon": "/assets/profile/credit-card.svg",
+            "alt": "card",
+            "route": "/"
+        },
+        {
+            "text": "支払い履歴",
+            "icon": "/assets/profile/payment-history.svg",
+            "alt": "payment",
+            "route": "/"
+        }
+    ],
+    "3": [
+        {
+            "text": "パスワードを変更する",
+            "icon": "/assets/profile/change-password.svg",
+            "alt": "password",
+            "route": "/"
+        }
+    ],
+    "4": [
+        {
+            "text": "チェックイン履歴",
+            "icon": "/assets/profile/check-in-history.svg",
+            "alt": "check-in",
+            "route": "/"
+        }
+    ]
+}

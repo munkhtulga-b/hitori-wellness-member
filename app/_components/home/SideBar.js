@@ -1,8 +1,16 @@
 import Menus from "@/app/_resources/sidebar-menu.json";
 import Image from "next/image";
 import { Button } from "antd";
+import { useRouter } from "next/navigation";
 
 const SideBar = ({ setCollapsed, onLogOut }) => {
+  const router = useRouter();
+
+  const handleMenuClick = ({ route }) => {
+    router.push(route);
+    setCollapsed(true);
+  };
+
   return (
     <>
       <div className="tw-h-full tw-flex tw-flex-col relative">
@@ -31,6 +39,7 @@ const SideBar = ({ setCollapsed, onLogOut }) => {
                 <li
                   key={menu.text}
                   className="tw-py-2 tw-flex tw-justify-start tw-items-center tw-gap-4"
+                  onClick={() => handleMenuClick(menu)}
                 >
                   <Image
                     src={menu.icon}
@@ -39,7 +48,7 @@ const SideBar = ({ setCollapsed, onLogOut }) => {
                     height={0}
                     style={{ height: "auto", width: "auto" }}
                   />
-                  <span className="tw-text-lg">{menu.text}</span>
+                  <span className="tw-grow tw-text-lg">{menu.text}</span>
                 </li>
               );
             })}

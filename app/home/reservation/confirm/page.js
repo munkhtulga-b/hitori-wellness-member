@@ -5,14 +5,43 @@ import Image from "next/image";
 import { Button, Modal } from "antd";
 import { useReservationStore } from "@/app/_store/reservation";
 import { nullSafety } from "@/app/_utils/helpers";
+import dayjs from "dayjs";
+import { useRouter } from "next/navigation";
+import ReservationEnum from "@/app/_enums/EEnumReservation";
 
 const ReservationConfirm = () => {
+  const router = useRouter();
   const reservationBody = useReservationStore((state) => state.getBody());
+  const editReservationBody = useReservationStore((state) => state.editBody);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [bodyType, setBodyType] = useState(null);
 
   const handleEdit = (type) => {
-    console.log(type);
+    setBodyType(type);
     setIsModalOpen(true);
+  };
+
+  const handleEditConfirm = () => {
+    editReservationBody(bodyType);
+    setIsModalOpen(false);
+    if (bodyType === "branch") {
+      router.push(`/home/`);
+    }
+    if (bodyType === ReservationEnum.PROGRAM.queryString) {
+      router.push(
+        `/home/reservation?select=${ReservationEnum.PROGRAM.queryString}`
+      );
+    }
+    if (bodyType === ReservationEnum.COACH.queryString) {
+      router.push(
+        `/home/reservation?select=${ReservationEnum.COACH.queryString}`
+      );
+    }
+    if (bodyType === ReservationEnum.TIMESLOT.queryString) {
+      router.push(
+        `/home/reservation?select=${ReservationEnum.TIMESLOT.queryString}`
+      );
+    }
   };
 
   return (
@@ -119,7 +148,13 @@ const ReservationConfirm = () => {
               </div>
               <div>
                 <span className="tw-text-secondary">
-                  2024/01/03(土) 07:00-07:30
+                  {`${dayjs(reservationBody?.time?.day).format(
+                    "YYYY/MM/DD"
+                  )}(土) ${reservationBody?.time?.slots[0]}-${
+                    reservationBody?.time?.slots[
+                      reservationBody?.time?.slots.length - 1
+                    ]
+                  }`}
                 </span>
               </div>
             </section>
@@ -146,7 +181,11 @@ const ReservationConfirm = () => {
             </p>
           </section>
           <section className="tw-flex tw-justify-center">
-            <Button type="primary" size="large">
+            <Button
+              onClick={() => handleEditConfirm()}
+              type="primary"
+              size="large"
+            >
               編集する
             </Button>
           </section>

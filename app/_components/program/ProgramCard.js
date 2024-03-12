@@ -1,16 +1,53 @@
+import { useCallback } from "react";
 import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useReservationStore } from "@/app/_store/reservation";
+import ReservationEnum from "@/app/_enums/EEnumReservation";
 
 const ProgramCard = ({ program }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const setProgram = useReservationStore((state) => state.setBody);
+
+  const onProgramSelect = () => {
+    setProgram({ program: program });
+    router.push(
+      `/home/reservation?${createQueryString(
+        "select",
+        ReservationEnum.PROGRAM.next
+      )}`
+    );
+  };
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   return (
     <>
       <div className="tw-bg-white tw-flex tw-flex-col tw-gap-3 tw-p-3 tw-rounded-xl tw-shadow tw-min-w-[285px] tw-max-w-[285px]">
         <section className="tw-flex tw-justify-start tw-items-center tw-gap-3">
-          <div className="tw-rounded-lg tw-bg-gray-200 tw-min-w-[80px] tw-max-w-[80px] tw-max-h-[80px] tw-min-h-[80px]"></div>
+          <div className="tw-rounded-lg tw-bg-gray-200 tw-min-w-[80px] tw-max-w-[80px] tw-max-h-[80px] tw-min-h-[80px] tw-overflow-hidden">
+            {program.thumbnail_code ? (
+              <Image
+                priority
+                src={`https://${process.env.BASE_IMAGE_URL}${program.thumbnail_code}`}
+                alt="thumbnail"
+                width={0}
+                height={0}
+                style={{ objectFit: "contain", width: "100%", height: "auto" }}
+                unoptimized
+              />
+            ) : null}
+          </div>
           <p className="tw-leading-[22px] tw-tracking-[0.14px]">
             {nullSafety(program.name)}
           </p>
@@ -35,7 +72,9 @@ const ProgramCard = ({ program }) => {
                 />
               </div>
             </Button>
-            <Button size="small">選ぶ</Button>
+            <Button size="small" onClick={() => onProgramSelect()}>
+              選ぶ
+            </Button>
           </div>
         </section>
       </div>
