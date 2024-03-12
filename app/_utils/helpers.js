@@ -45,3 +45,25 @@ export const getFullName = (lastName, firstName) => {
   }
   return result;
 };
+
+/**
+ * Validate if the input value is a valid password.
+ *
+ * @param {string} value - The value to be validated
+ * @return {boolean} Whether the value is a valid password or not
+ */
+export const isValidPassword = (value) => {
+  // Regular expressions to check for symbol, uppercase character, and number
+  const symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
+  const uppercaseRegex = /[A-Z]/;
+  const numberRegex = /[0-9]/;
+
+  // Check if the string contains at least one of each
+  const containsSymbol = symbolRegex.test(value);
+  const containsUppercase = uppercaseRegex.test(value);
+  const containsNumber = numberRegex.test(value);
+
+  return (
+    value.length >= 8 && containsSymbol && containsUppercase && containsNumber
+  );
+};

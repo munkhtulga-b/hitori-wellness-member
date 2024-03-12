@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button, Form, Input, Checkbox } from "antd";
+import { isValidPassword } from "@/app/_utils/helpers";
 
 const SignupStepThree = ({ onComplete, isLoading }) => {
   const [form] = Form.useForm();
@@ -13,22 +14,6 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
     delete params.confirm;
     delete params.termsAndConditions;
     onComplete(params);
-  };
-
-  const isValidPassword = (value) => {
-    // Regular expressions to check for symbol, uppercase character, and number
-    const symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    const uppercaseRegex = /[A-Z]/;
-    const numberRegex = /[0-9]/;
-
-    // Check if the string contains at least one of each
-    const containsSymbol = symbolRegex.test(value);
-    const containsUppercase = uppercaseRegex.test(value);
-    const containsNumber = numberRegex.test(value);
-
-    return (
-      value.length >= 8 && containsSymbol && containsUppercase && containsNumber
-    );
   };
 
   const customizeRequiredMark = (label, { required }) => (
