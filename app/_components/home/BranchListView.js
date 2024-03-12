@@ -1,5 +1,6 @@
 import { nullSafety } from "@/app/_utils/helpers";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const BranchListView = ({ list }) => {
   const router = useRouter();
@@ -24,7 +25,23 @@ const BranchListView = ({ list }) => {
                   key={branch.id}
                   className="tw-bg-white tw-flex tw-justify-start tw-items-start tw-gap-2 tw-p-2 tw-rounded-lg tw-shadow"
                 >
-                  <section className="tw-self-stretch tw-rounded-lg tw-min-w-[30%] tw-max-w-[30%] tw-bg-gray-200"></section>
+                  <section className="tw-self-stretch tw-rounded-lg tw-min-w-[30%] tw-max-w-[30%] tw-bg-gray-200 tw-overflow-hidden">
+                    {branch.thumbnail_code ? (
+                      <Image
+                        priority
+                        src={`https://${process.env.BASE_IMAGE_URL}${branch.thumbnail_code}`}
+                        alt="thumbnail"
+                        width={0}
+                        height={0}
+                        style={{
+                          objectFit: "contain",
+                          width: "100%",
+                          height: "auto",
+                        }}
+                        unoptimized
+                      />
+                    ) : null}
+                  </section>
                   <section className="tw-flex tw-flex-col">
                     <span className="tw-leading-[22px] tw-tracking-[0.14px]">
                       {nullSafety(branch.name)}
@@ -34,7 +51,7 @@ const BranchListView = ({ list }) => {
                         branch.address2
                       )} ${nullSafety(branch.address3)}`}
                     </span>
-                    <p className="tw-mt-1 tw-whitespace-pre-line">
+                    <p className="tw-mt-1 tw-whitespace-pre-line tw-line-clamp-3">
                       {`${nullSafety(branch.business_hours)}`}
                     </p>
                   </section>

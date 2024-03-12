@@ -7,6 +7,7 @@ import { Button } from "antd";
 import { useReservationStore } from "@/app/_store/reservation";
 import { useRouter, useSearchParams } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
+import Image from "next/image";
 
 const ProgramDetailCard = ({ program }) => {
   const router = useRouter();
@@ -38,7 +39,25 @@ const ProgramDetailCard = ({ program }) => {
       <div className="tw-flex tw-flex-col">
         <div className="tw-flex tw-flex-col tw-gap-4">
           <section className="tw-flex tw-flex-col tw-gap-1">
-            <div className="tw-w-full tw-h-[150px] tw-bg-gray-200 tw-rounded-xl"></div>
+            <div
+              className={`tw-w-full tw-h-[150px] tw-bg-gray-200 tw-rounded-xl tw-overflow-hidden`}
+            >
+              {program.thumbnail_code ? (
+                <Image
+                  priority
+                  src={`https://${process.env.BASE_IMAGE_URL}${program.thumbnail_code}`}
+                  alt="thumbnail"
+                  width={0}
+                  height={0}
+                  style={{
+                    objectFit: "contain",
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  unoptimized
+                />
+              ) : null}
+            </div>
             <span className="tw-text-xxl tw-font-medium">
               {nullSafety(program.name)}
             </span>

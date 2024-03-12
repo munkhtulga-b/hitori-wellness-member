@@ -11,7 +11,23 @@ const BranchCard = ({ branch }) => {
       className="tw-p-2 tw-rounded-[16px] tw-shadow tw-w-fit tw-bg-white"
     >
       <div className="tw-flex tw-flex-col tw-gap-2">
-        <section className="tw-rounded-xl tw-min-h-[190px] tw-max-h-[190px] tw-min-w-[220px] tw-max-w-[220px] tw-overflow-hidden tw-bg-gray-200"></section>
+        <section
+          className={`tw-rounded-xl ${
+            !branch.thumbnail_code ? "tw-min-h-[190px]" : ""
+          } tw-max-h-[190px] tw-min-w-[220px] tw-max-w-[220px] tw-overflow-hidden tw-bg-gray-200`}
+        >
+          {branch.thumbnail_code ? (
+            <Image
+              priority
+              src={`https://${process.env.BASE_IMAGE_URL}${branch.thumbnail_code}`}
+              alt="thumbnail"
+              width={0}
+              height={0}
+              style={{ objectFit: "contain", width: "100%", height: "auto" }}
+              unoptimized
+            />
+          ) : null}
+        </section>
         <section className="tw-flex tw-flex-col tw-gap-1 tw-max-w-[220px]">
           <span className="tw-text-lg">{nullSafety(branch.name)}</span>
           <div className="tw-flex tw-flex-col tw-gap-[2px]">

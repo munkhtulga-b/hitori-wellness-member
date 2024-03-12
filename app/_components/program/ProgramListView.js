@@ -1,5 +1,6 @@
 import { useRouter } from "next/navigation";
 import { nullSafety } from "@/app/_utils/helpers";
+import Image from "next/image";
 
 const ProgramListView = ({ list }) => {
   const router = useRouter();
@@ -20,7 +21,23 @@ const ProgramListView = ({ list }) => {
                 key={program.id}
                 className="tw-bg-white tw-flex tw-justify-start tw-items-start tw-gap-2 tw-p-2 tw-rounded-lg tw-shadow"
               >
-                <section className="tw-self-stretch tw-rounded-lg tw-min-w-[30%] tw-max-w-[30%] tw-min-h-[155px] tw-max-h-[155px] tw-bg-gray-200"></section>
+                <section className="tw-self-stretch tw-rounded-lg tw-min-w-[30%] tw-max-w-[30%] tw-min-h-[155px] tw-max-h-[155px] tw-bg-gray-200 tw-overflow-hidden">
+                  {program.thumbnail_code ? (
+                    <Image
+                      priority
+                      src={`https://${process.env.BASE_IMAGE_URL}${program.thumbnail_code}`}
+                      alt="thumbnail"
+                      width={0}
+                      height={0}
+                      style={{
+                        objectFit: "contain",
+                        width: "100%",
+                        height: "auto",
+                      }}
+                      unoptimized
+                    />
+                  ) : null}
+                </section>
                 <section className="tw-flex tw-flex-col">
                   <span className="tw-leading-[22px] tw-tracking-[0.14px]">
                     {nullSafety(program.name)}

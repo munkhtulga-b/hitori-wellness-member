@@ -11,6 +11,17 @@ const nextConfig = {
     APP_VERSION: "1.0.0",
     BASE_META_TITLE: "Hitori Wellness",
     BASE_META_DESCRIPTION: "Gym Reservation",
+    BASE_IMAGE_URL: "audioadsmaker-bucket.s3.ap-northeast-1.amazonaws.com/gym/",
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "audioadsmaker-bucket.s3.ap-northeast-1.amazonaws.com",
+        port: "",
+        pathname: "/gym/**",
+      },
+    ],
   },
 };
 
