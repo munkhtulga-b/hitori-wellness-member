@@ -143,7 +143,7 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">プログラム</span>
                 <Button onClick={() => handleEdit("time")} size="small">
-                  日時
+                  編集
                 </Button>
               </div>
               <div>
