@@ -161,7 +161,12 @@ const ReservationConfirm = () => {
           ) : null}
         </div>
         <div>
-          <Button type="primary" size="large" className="tw-w-full">
+          <Button
+            onClick={() => router.push("/home/reservation/success")}
+            type="primary"
+            size="large"
+            className="tw-w-full"
+          >
             確定
           </Button>
         </div>

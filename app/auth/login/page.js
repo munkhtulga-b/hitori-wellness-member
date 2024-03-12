@@ -96,6 +96,7 @@ const AuthLogin = () => {
           </AnimatePresence>
           <Form.Item>
             <Button
+              size="large"
               loading={isLoading}
               type="primary"
               htmlType="submit"
