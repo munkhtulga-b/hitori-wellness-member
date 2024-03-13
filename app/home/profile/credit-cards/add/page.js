@@ -1,9 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import { Button, Form, Input } from "antd";
 import dayjs from "dayjs";
 
 const AddCreditCard = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
 
   const onFinish = (params) => {
@@ -15,7 +17,13 @@ const AddCreditCard = () => {
       }-01`,
       "YYYY-MM-DD"
     );
-    console.log(params);
+    addCard(params);
+  };
+
+  const addCard = async (body) => {
+    setIsLoading(true);
+    console.log(body);
+    setIsLoading(false);
   };
 
   return (
@@ -30,6 +38,7 @@ const AddCreditCard = () => {
             form={form}
             name="signupStepOne"
             onFinish={onFinish}
+            validateTrigger="onSubmit"
           >
             <Form.Item
               name="cardNumber"
@@ -39,6 +48,17 @@ const AddCreditCard = () => {
                   required: true,
                   message: "姓（氏名）を入力してください。",
                 },
+                // () => ({
+                //   validator(_, value) {
+                //     console.log(value);
+                //     if (value && value.replace(/\D/g, "").length !== 16) {
+                //       return Promise.reject(
+                //         "カード番号は16桁で入力してください。"
+                //       );
+                //     }
+                //     return Promise.resolve();
+                //   },
+                // }),
               ]}
               getValueFromEvent={(e) => {
                 const value = e.target.value;
@@ -119,6 +139,7 @@ const AddCreditCard = () => {
               </Button>
               <Form.Item>
                 <Button
+                  loading={isLoading}
                   size="large"
                   type="primary"
                   htmlType="submit"

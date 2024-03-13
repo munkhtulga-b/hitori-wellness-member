@@ -76,7 +76,13 @@ const UserAuthenticatedLayout = ({ children }) => {
                   collapsed={collapsed}
                 />
               </Header>
-              <Content style={{ padding: "16px", marginTop: "84px" }}>
+              <Content
+                style={{
+                  padding: "16px",
+                  marginTop: "84px",
+                  overflow: "hidden",
+                }}
+              >
                 {!collapsed && (
                   <div
                     onClick={() => setCollapsed(true)}
