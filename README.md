@@ -1,14 +1,12 @@
----
-
+```
 @author - Munkhtulga Borgil
 @since - Feb 05, 2024
 @contact - munkhtulga@mirai.mn
-
----
+```
 
 ## Getting Started
 
-First, run the development server:
+After cloning the project, first run "yarn" or "npm install" then start your dev server:
 
 ```bash
 npm run dev
@@ -20,23 +18,24 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Project Structure
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+"app" folder -> This folder contains the all development related files including layouts, page, components, providers, and much more. Folders names starting with an underscore ("\_") are not for routing purposes.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+>>* `_api` -> The folder containing all the http request config and controllers
 
-## Learn More
+>>* `_components` -> The folder containing all the components used in the project
 
-To learn more about Next.js, take a look at the following resources:
+>>* `_enums` -> The folder containing all the enums used in the project
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+>>* `_lottie` -> The folder containing all the lottie files for the animation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+>>* `_provider` -> The folder containing the provider component (wrapper component for the whole app)
 
-## Deploy on Vercel
+>>* `_store` -> The folder containing the config and stores of Zustand (state management library for React)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+>>* `_utils` -> The folder containing all the helper functions used in the project (e.g. `getFullName()`, `nullSafety()`)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+".github" folder -> This folder contains the config for github CI/CD
+
+"public" folder -> This folder contains all the assets including icons and vectors used in the project
