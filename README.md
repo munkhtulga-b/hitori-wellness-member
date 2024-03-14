@@ -20,7 +20,7 @@ bun dev
 
 ## Project Structure
 
-"app" folder -> This folder contains the all development related files including `layouts`, `page`, `components`, `providers`, and much more. Folders names starting with an underscore `("_")` are not for routing purposes but the ones without are for pure routing purposes only.
+"app" folder -> This folder contains the all development related files including `layouts`, `page`, `components`, `providers`, and much more. Folders names starting with an underscore `_` are not for routing purposes but the ones without are for pure routing purposes only.
 
 > > - `_api` -> The folder containing all the http request config and controllers
 

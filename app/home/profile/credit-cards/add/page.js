@@ -36,7 +36,7 @@ const AddCreditCard = () => {
           <Form
             requiredMark={false}
             form={form}
-            name="signupStepOne"
+            name="AddCreditCard"
             onFinish={onFinish}
             validateTrigger="onSubmit"
           >

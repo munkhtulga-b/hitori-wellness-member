@@ -47,6 +47,20 @@ export const getFullName = (lastName, firstName) => {
 };
 
 /**
+ * Function to add a thousands separator to a number.
+ *
+ * @param {number} value - The number to add the separator to
+ * @return {string} The number with the thousands separator added
+ */
+export const thousandSeparator = (value) => {
+  let result = "-";
+  if (!isNaN(+value)) {
+    result = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  return result;
+};
+
+/**
  * Validate if the input value is a valid password.
  *
  * @param {string} value - The value to be validated

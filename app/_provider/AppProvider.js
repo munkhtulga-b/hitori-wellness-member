@@ -56,6 +56,11 @@ const AppProvider = ({ children, fontFamily }) => {
               paddingInline: 16,
               paddingInlineSM: 16,
             },
+            Radio: {
+              colorPrimary: colors.textSecondary,
+              radioSize: 20,
+              dotSize: 10,
+            },
             Form: {
               labelHeight: 22,
               verticalLabelPadding: "0 0 8px 0",
