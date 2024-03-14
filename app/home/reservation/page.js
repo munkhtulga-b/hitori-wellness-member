@@ -3,6 +3,7 @@
 import { useState, useEffect, useLayoutEffect, useCallback } from "react";
 import FilterButtonGroup from "@/app/_components/custom/FilterButtonGroup";
 import SwitchSlider from "@/app/_components/custom/SwitchSlider";
+import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 import _ from "lodash";
 import $api from "@/app/_api";
 import ProgramListView from "@/app/_components/program/ProgramListView";
@@ -11,6 +12,7 @@ import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
 import TimeSlotSelect from "@/app/_components/time-slot/TimeSlotSelect";
 import CoachSelect from "@/app/_components/coach/CoachSelect";
+import NoData from "@/app/_components/custom/NoData";
 
 const sliderOptions = [
   {
@@ -157,7 +159,7 @@ const ProgramsPage = () => {
                     )}
                   </>
                 ) : (
-                  <>No data</>
+                  <NoData message={"No Data"} />
                 )}
               </>
             )}
@@ -168,7 +170,7 @@ const ProgramsPage = () => {
                     <CoachSelect />
                   </>
                 ) : (
-                  <>No data</>
+                  <NoData message={"No Data"} />
                 )}
               </>
             )}
@@ -179,13 +181,13 @@ const ProgramsPage = () => {
                     <TimeSlotSelect />
                   </>
                 ) : (
-                  <>No data</>
+                  <NoData message={"No Data"} />
                 )}
               </>
             )}
           </>
         ) : (
-          <>Loading...</>
+          <FullScreenLoading isLoading={isLoading.isFetching} />
         )}
       </div>
     </>

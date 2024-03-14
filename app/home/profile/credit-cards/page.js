@@ -7,6 +7,7 @@ import { Button, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { nullSafety } from "@/app/_utils/helpers";
 import { motion, AnimatePresence } from "framer-motion";
+import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 
 const CreditCards = () => {
   const router = useRouter();
@@ -298,7 +299,7 @@ const CreditCards = () => {
             </AnimatePresence>
           </section>
         ) : (
-          <>Loader</>
+          <FullScreenLoading isLoading={isLoading.isFetching} />
         )}
       </div>
     </>

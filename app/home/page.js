@@ -1,8 +1,9 @@
 "use client";
 
-import { Empty } from "antd";
+import NoData from "../_components/custom/NoData";
 import BranchScrollView from "../_components/home/BranchScrollView";
 import BranchListView from "../_components/home/BranchListView";
+import FullScreenLoading from "../_components/animation/FullScreenLoading";
 import FilterButtonGroup from "../_components/custom/FilterButtonGroup";
 import { useState, useEffect } from "react";
 import $api from "../_api";
@@ -64,13 +65,11 @@ const HomePage = () => {
               )}
             </>
           ) : (
-            <div className="tw-text-center tw-py-20">
-              <Empty description="No Branch" />
-            </div>
+            <NoData message={"No data found"} />
           )}
         </>
       ) : (
-        <div>Loading</div>
+        <FullScreenLoading isLoading={isLoading} />
       )}
     </div>
   );

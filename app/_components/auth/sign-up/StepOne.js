@@ -114,11 +114,8 @@ const SignupStepOne = ({ onComplete }) => {
               {
                 required: true,
                 message: "姓（フリガナ）を入力してください。",
-                whitespace: true,
-              },
-              {
-                required: true,
                 pattern: /^[\u30A1-\u30F6\s]+$/, // Katakana characters and spaces
+                whitespace: true,
               },
             ]}
           >
@@ -130,11 +127,8 @@ const SignupStepOne = ({ onComplete }) => {
               {
                 required: true,
                 message: "名（フリガナ）を入力してください。",
-                whitespace: true,
-              },
-              {
-                required: true,
                 pattern: /^[\u30A1-\u30F6\s]+$/, // Katakana characters and spaces
+                whitespace: true,
               },
             ]}
           >

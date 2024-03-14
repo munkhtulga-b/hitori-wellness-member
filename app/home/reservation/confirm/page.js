@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useLayoutEffect } from "react";
 import Image from "next/image";
 import { Button, Modal } from "antd";
 import { useReservationStore } from "@/app/_store/reservation";
@@ -8,6 +8,7 @@ import { nullSafety } from "@/app/_utils/helpers";
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
+import _ from "lodash";
 
 const ReservationConfirm = () => {
   const router = useRouter();
@@ -16,6 +17,13 @@ const ReservationConfirm = () => {
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bodyType, setBodyType] = useState(null);
+
+  useLayoutEffect(() => {
+    // Check if all fields are filled
+    if (_.some(reservationBody, (value) => value === null)) {
+      return router.push("/home/");
+    }
+  }, []);
 
   const handleEdit = (type) => {
     setBodyType(type);

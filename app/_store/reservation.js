@@ -1,15 +1,17 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+const initialState = {
+  branch: null,
+  program: null,
+  // coach: null,
+  time: null,
+};
+
 export const useReservationStore = create(
   persist(
     (set, get) => ({
-      body: {
-        branch: null,
-        program: null,
-        coach: null,
-        time: null,
-      },
+      body: initialState,
       setBody: (payload) => set({ body: { ...get().body, ...payload } }),
       getBody: () => get().body,
       editBody: (payload) => {
@@ -21,12 +23,7 @@ export const useReservationStore = create(
       },
       resetBody: () =>
         set({
-          body: {
-            branch: null,
-            program: null,
-            coach: null,
-            time: null,
-          },
+          body: initialState,
         }),
     }),
     {
