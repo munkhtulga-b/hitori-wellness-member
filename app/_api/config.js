@@ -30,6 +30,12 @@ const fetchData = async (endpoint, method, body) => {
 
     if (!isOk) {
       toast.error(data.error.message ?? "An error occurred");
+
+      // Redirects the user back to login page if their token has expired
+      // if (status === 401) {
+      //   Cookies.remove("token");
+      //   window.location.href = "/auth/login";
+      // }
     }
 
     return {

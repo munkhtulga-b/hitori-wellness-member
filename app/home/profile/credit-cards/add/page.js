@@ -1,33 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import dayjs from "dayjs";
+import $api from "@/app/_api";
+import { useRouter } from "next/navigation";
 
 const AddCreditCard = () => {
+  const router = useRouter();
+  const [messageApi, contextHolder] = message.useMessage();
   const [isLoading, setIsLoading] = useState(false);
   const [form] = Form.useForm();
 
   const onFinish = (params) => {
     params.cardNumber = +params.cardNumber;
-    params.cardCVV = +params.cardCVV;
-    params.validUntil = dayjs(
-      `${params.validUntil.split("/")[1]}-${
-        params.validUntil.split("/")[0]
-      }-01`,
-      "YYYY-MM-DD"
-    );
-    addCard(params);
+    params.cvc = +params.cvc;
+
+    const body = {
+      cardName: params.cardName,
+      cardNumber: params.cardNumber,
+      cvc: params.cvc,
+      expireYear: +dayjs()
+        .set("year", `20${params.expiry.split("/")[1]}`)
+        .format("YYYY"),
+      expireMonth: +dayjs(params.expiry.split("/")[0]).format("MM"),
+    };
+
+    addCard(body);
   };
 
   const addCard = async (body) => {
     setIsLoading(true);
-    console.log(body);
+    const { isOk } = await $api.member.card.create(body);
+    if (isOk) {
+      messageApi.success("Card added successfully.");
+      router.push("/home/profile/credit-cards");
+    }
     setIsLoading(false);
   };
 
   return (
     <>
+      {contextHolder}
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section>
           <span className="tw-text-xxl tw-font-medium">カードの追加</span>
@@ -73,7 +87,7 @@ const AddCreditCard = () => {
             </Form.Item>
 
             <Form.Item
-              name="cardHolder"
+              name="cardName"
               label="クレジットカード名義人氏名"
               rules={[
                 {
@@ -88,7 +102,7 @@ const AddCreditCard = () => {
 
             <section className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
               <Form.Item
-                name="validUntil"
+                name="expiry"
                 label="有効期限"
                 rules={[
                   {
@@ -112,7 +126,7 @@ const AddCreditCard = () => {
                 <Input placeholder="MM/YY" />
               </Form.Item>
               <Form.Item
-                name="cardCVV"
+                name="cvc"
                 label="CVVコード"
                 rules={[
                   {

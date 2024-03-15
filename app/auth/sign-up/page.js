@@ -48,20 +48,10 @@ const AuthSignup = () => {
     setIsLoading(true);
     const { isOk } = await $api.auth.register(params);
     if (isOk) {
-      await sendVerificationEmail();
       router.push(pathName + "?" + createQueryString("step", "complete"));
       resetRequestBody();
     }
     setIsLoading(false);
-  };
-
-  const sendVerificationEmail = async () => {
-    const { isOk } = await $api.auth.sendVerification({
-      email: getRequestBody.mailAddress,
-    });
-    if (isOk) {
-      setCurrentForm((prev) => prev + 1);
-    }
   };
 
   const createQueryString = useCallback(

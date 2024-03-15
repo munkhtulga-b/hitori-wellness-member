@@ -1,9 +1,10 @@
 "use client";
 
+import $api from "@/app/_api/index";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Button, Spin } from "antd";
+import { Button, Spin, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import { nullSafety } from "@/app/_utils/helpers";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,6 +12,7 @@ import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 
 const CreditCards = () => {
   const router = useRouter();
+  const [messageApi, contextHolder] = message.useMessage();
   const [isLoading, setIsLoading] = useState({
     isFetching: false,
     isUpdating: false,
@@ -25,38 +27,38 @@ const CreditCards = () => {
 
   const fetchCards = async () => {
     setIsLoading((prev) => ({ ...prev, isFetching: true }));
-    setCards([
-      {
-        id: 1,
-        cardHolderName: "Test Holder 1",
-        cardNumber: "3456",
-        expiry: "12/24",
-        cvv: "123",
-      },
-      // {
-      //   id: 2,
-      //   cardHolderName: "Test Holder 2",
-      //   cardNumber: "3078",
-      //   expiry: "01/26",
-      //   cvv: "999",
-      // },
-    ]);
+    const { isOk, data } = await $api.member.card.getMany();
+    if (isOk) {
+      setCards(data);
+    }
     setIsLoading((prev) => ({ ...prev, isFetching: false }));
   };
 
   const updateCard = async () => {
-    setIsLoading((prev) => ({ ...prev, isUpdating: true }));
-    console.log("updating");
-    setIsLoading((prev) => ({ ...prev, isUpdating: false }));
+    setIsLoading({ isUpdating: true });
+    const { isOk } = await $api.member.card.update(selectedCard.id, {
+      is_default: true,
+    });
+    if (isOk) {
+      await fetchCards();
+      setSelectedCard(null);
+      messageApi.success("Card updated");
+    }
+    setIsLoading({ isUpdating: false });
   };
 
   const deleteCard = async () => {
     setIsLoading((prev) => ({ ...prev, isDeleting: true }));
-    console.log("deleting");
+    const { isOk } = await $api.member.card.remove(selectedCard.id);
+    if (isOk) {
+      await fetchCards();
+      setSelectedCard(null);
+      messageApi.success("Card deleted");
+    }
     setIsLoading((prev) => ({ ...prev, isDeleting: false }));
   };
 
-  const CardTemplate = ({ card, idx }) => {
+  const CardTemplate = ({ card }) => {
     const onSelect = () => {
       if (!selectedCard) {
         setSelectedCard(card);
@@ -69,7 +71,7 @@ const CreditCards = () => {
           <Image
             priority
             src={`/assets/profile/credit-cards/card-template-${
-              idx && idx === 1 ? "blue" : "indigo"
+              card.is_default ? "indigo" : "blue"
             }.svg`}
             alt="card-template"
             width={0}
@@ -97,7 +99,7 @@ const CreditCards = () => {
               <section className="tw-grow tw-mt-[30px] tw-flex tw-flex-col tw-justify-between">
                 <div>
                   <span className="tw-text-white tw-text-lg tw-tracking-[2px]">
-                    **** **** **** {nullSafety(card.cardNumber)}
+                    **** **** **** {nullSafety(card.card_last4)}
                   </span>
                 </div>
                 <div className="tw-flex tw-justify-between">
@@ -106,7 +108,7 @@ const CreditCards = () => {
                       Card Holder Name
                     </li>
                     <li className="tw-text-white tw-text-xl">
-                      {nullSafety(card.cardHolderName)}
+                      {nullSafety(card.card_name)}
                     </li>
                   </ul>
                   <ul>
@@ -114,7 +116,9 @@ const CreditCards = () => {
                       Expiry Date
                     </li>
                     <li className="tw-text-white tw-text-xl">
-                      {nullSafety(card.expiry)}
+                      {`${nullSafety(card.expire_month)}/${nullSafety(
+                        card.expire_year.toString().slice(-2)
+                      )}`}
                     </li>
                   </ul>
                 </div>
@@ -152,14 +156,7 @@ const CreditCards = () => {
   const SelectedCardComponent = () => {
     return (
       <>
-        <motion.div
-          key={`selected-card-view`}
-          variants={motionVariants}
-          initial="initial"
-          animate="visible"
-          exit="exit"
-          className="tw-flex tw-flex-col tw-gap-6"
-        >
+        <div className="tw-flex tw-flex-col tw-gap-6">
           <CardTemplate card={selectedCard} />
           <section className="tw-flex tw-flex-col tw-gap-4">
             <div className="tw-flex tw-flex-col tw-gap-1">
@@ -167,7 +164,7 @@ const CreditCards = () => {
                 名義人
               </span>
               <span className="tw-text-sm tw-text-secondary tw-tracking-[0.12px]">
-                Z.Solongo
+                {nullSafety(selectedCard.card_name)}
               </span>
             </div>
             <div className="tw-flex tw-flex-col tw-gap-1">
@@ -175,7 +172,9 @@ const CreditCards = () => {
                 利用期限
               </span>
               <span className="tw-text-sm tw-text-secondary tw-tracking-[0.12px]">
-                02/30
+                {`${nullSafety(selectedCard.expire_month)}/${nullSafety(
+                  selectedCard.expire_year.toString().slice(-2)
+                )}`}
               </span>
             </div>
             <div className="tw-flex tw-flex-col tw-gap-1">
@@ -183,7 +182,7 @@ const CreditCards = () => {
                 カード番号
               </span>
               <span className="tw-text-sm tw-text-secondary tw-tracking-[0.12px]">
-                **** **** **** 2345
+                **** **** **** {nullSafety(selectedCard.card_last4)}
               </span>
             </div>
             <div
@@ -229,7 +228,7 @@ const CreditCards = () => {
               </Button>
             </div>
           </section>
-        </motion.div>
+        </div>
       </>
     );
   };
@@ -260,6 +259,7 @@ const CreditCards = () => {
 
   return (
     <>
+      {contextHolder}
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section>
           <span className="tw-text-xxl tw-font-medium">
@@ -284,17 +284,23 @@ const CreditCards = () => {
                 >
                   {cards?.length ? (
                     <>
-                      {cards.map((card, idx) => {
-                        return (
-                          <CardTemplate key={card.id} card={card} idx={idx} />
-                        );
+                      {cards.map((card) => {
+                        return <CardTemplate key={card.id} card={card} />;
                       })}
                     </>
                   ) : null}
                   {cards?.length < 2 ? <AddCard /> : null}
                 </motion.div>
               ) : (
-                <SelectedCardComponent />
+                <motion.div
+                  key={`selected-card-view`}
+                  variants={motionVariants}
+                  initial="initial"
+                  animate="visible"
+                  exit="exit"
+                >
+                  <SelectedCardComponent />
+                </motion.div>
               )}
             </AnimatePresence>
           </section>

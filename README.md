@@ -6,7 +6,7 @@
 
 ## Getting Started
 
-After cloning the project, first run "yarn" or "npm install" then start your dev server:
+After cloning the project, first run `yarn` (recommended) or `npm install` then start your dev server:
 
 ```bash
 npm run dev
@@ -54,7 +54,7 @@ After importing the object, access to your corresponding controller. For example
 const response = await $api.global.auth.login();
 ```
 
-The response returns `isOk`, `status`, and `data` of the request. `isOk` is for checking if the request was succesful or not, `status` is the status code returned from the request, and `data` is the data received from the request.
+The response returns `isOk` (boolean), `status` (number), and `data` (any) of the request. `isOk` is for checking if the request was succesful or not, `status` is the status code returned from the request, and `data` is the data received from the request.
 
 ## Creating a new http request controller
 
@@ -77,6 +77,8 @@ export const getOne = (id) => {
 ```
 
 The `fetchData` method takes three arguments `endpoint`: string, `request method`: string, and `request body`: any.
+
+After creating the controller file, import and register the file under the `index.js` file located in `app/_api/index.js`
 
 ## Modifying UI components (Ant Design React)
 
