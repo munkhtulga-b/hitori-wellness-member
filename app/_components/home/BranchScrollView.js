@@ -1,7 +1,8 @@
 import BranchCard from "./BranchCard";
+import PurchaseBranchCard from "./profile/plan/BranchCard";
 import { nullSafety } from "@/app/_utils/helpers";
 
-const BranchScroller = ({ list, setActiveFilterId, filterId }) => {
+const BranchScroller = ({ list, setActiveFilterId, filterId, cardType }) => {
   return (
     <>
       {list?.length ? (
@@ -19,7 +20,11 @@ const BranchScroller = ({ list, setActiveFilterId, filterId }) => {
           </section>
           <section className="tw-flex tw-justify-start tw-items-stretch tw-gap-4 tw-overflow-x-auto tw-pb-1">
             {list.map((item) => {
-              return <BranchCard key={item.id} branch={item} />;
+              return cardType === "purchase" ? (
+                <PurchaseBranchCard key={item.id} branch={item} />
+              ) : (
+                <BranchCard key={item.id} branch={item} />
+              );
             })}
           </section>
         </div>

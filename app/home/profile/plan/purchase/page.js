@@ -6,40 +6,29 @@ import Image from "next/image";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 import NoData from "@/app/_components/custom/NoData";
 import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
+import $api from "@/app/_api";
+import { usePurchaseStore } from "@/app/_store/purchase";
+import { useRouter } from "next/navigation";
 
 const PurchaseSubscription = () => {
+  const router = useRouter();
+  const getPurchaseBody = usePurchaseStore((state) => state.getBody());
   const [isLoading, setIsLoading] = useState(true);
-  const [subscriptions, setSubscriptions] = useState(null);
+  const [plans, setPlans] = useState(null);
 
   useEffect(() => {
-    fetchSubsriptions();
+    fetchPlans();
   }, []);
 
-  const fetchSubsriptions = async () => {
+  const fetchPlans = async () => {
     setIsLoading(true);
-    setSubscriptions([
-      {
-        id: 1,
-        name: "月会費プラン",
-        description:
-          "しっかり週2（月8回まで）「フィットネスエリア・ロッカールーム、シャワー、お風呂、サウナ」の施設がご利用いただけます。",
-        price: 8000,
-      },
-      {
-        id: 2,
-        name: "年会費プラン",
-        description:
-          "しっかり週2（月8回まで）「フィットネスエリア・ロッカールーム、シャワー、お風呂、サウナ」の施設がご利用い：",
-        price: 8000,
-      },
-      {
-        id: 3,
-        name: "年会費プラン",
-        description:
-          "しっかり週2（月8回まで）「フィットネスエリア・ロッカールーム、シャワー、お風呂、サウナ」の施設がご利用い：",
-        price: 8000,
-      },
-    ]);
+    const filters = {
+      branch: getPurchaseBody?.branch?.id ?? null,
+    };
+    const { isOk, data } = await $api.member.plan.getMany(filters);
+    if (isOk) {
+      setPlans(data);
+    }
     setIsLoading(false);
   };
 
@@ -51,26 +40,32 @@ const PurchaseSubscription = () => {
         </section>
         {!isLoading ? (
           <>
-            {subscriptions?.length ? (
+            {plans?.length ? (
               <>
-                {subscriptions.map((subscription) => {
+                {plans.map((plan) => {
                   return (
                     <section
-                      key={subscription.id}
+                      key={plan.id}
                       className="tw-p-3 tw-rounded-xl tw-bg-white tw-shadow"
                     >
                       <div className="tw-flex tw-flex-col tw-gap-2">
                         <span className="tw-text-lg">
-                          {nullSafety(subscription.name)}
+                          {nullSafety(plan.name)}
                         </span>
-                        <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-                          {nullSafety(subscription.description)}
+                        <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-wrap tw-line-clamp-3">
+                          {nullSafety(plan.description)}
                         </p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
-                          subscription.price
+                          8000
                         )}（税込）／月～`}</span>
                         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
-                          <Button size="small" className="tw-w-full">
+                          <Button
+                            onClick={() =>
+                              router.push(`/home/profile/plan/${plan.id}`)
+                            }
+                            size="small"
+                            className="tw-w-full"
+                          >
                             <div className="tw-flex tw-justify-center tw-items-center tw-gap-2">
                               <span>詳細</span>
                               <Image

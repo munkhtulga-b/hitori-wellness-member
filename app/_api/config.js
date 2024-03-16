@@ -14,15 +14,20 @@ const fetchData = async (endpoint, method, body) => {
       "Content-Type": "application/json",
     };
 
+    const init = {
+      method: method,
+      headers: headers,
+    };
+
+    if (body) {
+      init[body] = JSON.stringify(body);
+    }
+
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${baseURL}/${endpoint}`, {
-      method: method,
-      headers: headers,
-      body: JSON.stringify(body),
-    });
+    const response = await fetch(`${baseURL}/${endpoint}`, init);
 
     const isOk = response.ok;
     const status = response.status;

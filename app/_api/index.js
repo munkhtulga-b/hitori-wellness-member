@@ -10,6 +10,7 @@ import resetPassword from "./auth/ResetPasswordController";
 import * as branch from "./member/BranchController";
 import * as program from "./member/ProgramController";
 import * as card from "./member/CreditCardController";
+import * as plan from "./member/PlanController";
 
 const $api = {
   auth: {
@@ -24,6 +25,7 @@ const $api = {
     branch,
     program,
     card,
+    plan,
   },
 };
 

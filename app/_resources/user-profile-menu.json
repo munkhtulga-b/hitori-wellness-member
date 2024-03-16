@@ -4,13 +4,13 @@
             "text": "加入中プラン・所持チケット",
             "icon": "/assets/profile/current-plan.svg",
             "alt": "plan",
-            "route": "/home/profile/subscription"
+            "route": "/home/profile/plan"
         },
         {
             "text": "チケット購入",
             "icon": "/assets/profile/purchase-ticket.svg",
             "alt": "purchase",
-            "route": "/home/profile/subscription/purchase"
+            "route": "/home/profile/plan/purchase/branch"
         }
     ],
     "2": [

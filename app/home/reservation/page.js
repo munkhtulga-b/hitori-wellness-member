@@ -6,11 +6,11 @@ import SwitchSlider from "@/app/_components/custom/SwitchSlider";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 import _ from "lodash";
 import $api from "@/app/_api";
-import ProgramListView from "@/app/_components/program/ProgramListView";
-import ProgramScrollView from "@/app/_components/program/ProgramScrollView";
+import ProgramListView from "@/app/_components/home/program/ProgramListView";
+import ProgramScrollView from "@/app/_components/home/program/ProgramScrollView";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
-import TimeSlotSelect from "@/app/_components/time-slot/TimeSlotSelect";
+import TimeSlotSelect from "@/app/_components/home/time-slot/TimeSlotSelect";
 import CoachSelect from "@/app/_components/coach/CoachSelect";
 import NoData from "@/app/_components/custom/NoData";
 

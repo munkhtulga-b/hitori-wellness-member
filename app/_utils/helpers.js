@@ -81,3 +81,28 @@ export const isValidPassword = (value) => {
     value.length >= 8 && containsSymbol && containsUppercase && containsNumber
   );
 };
+
+/**
+ * Creates a query string from the given query object.
+ *
+ * @param {Object} queryObject - the object containing key-value pairs for the query parameters
+ * @return {string} the query string generated from the query object
+ */
+export const createQueryString = (queryObject) => {
+  if (!queryObject) {
+    return "";
+  }
+
+  let queryString = "?";
+  const keys = Object.keys(queryObject);
+
+  keys.forEach((key, idx) => {
+    if (idx === keys.length - 1) {
+      queryString += `${key}=${queryObject[key]}`;
+    } else {
+      queryString += `${key}=${queryObject[key]}&`;
+    }
+  });
+
+  return queryString;
+};
