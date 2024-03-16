@@ -39,29 +39,19 @@ const AuthSignup = () => {
     setCurrentForm((prev) => prev + 1);
   };
 
-  const handleStepThree = (params) => {
-    updateRequestBody(params);
-    registerUser(getRequestBody);
+  const handleStepThree = async (params) => {
+    let body = { ...getRequestBody, ...params }; // Ensuring that password is not exposed to the session storage
+    registerUser(body);
   };
 
   const registerUser = async (params) => {
     setIsLoading(true);
     const { isOk } = await $api.auth.register(params);
     if (isOk) {
-      await sendVerificationEmail();
       router.push(pathName + "?" + createQueryString("step", "complete"));
       resetRequestBody();
     }
     setIsLoading(false);
-  };
-
-  const sendVerificationEmail = async () => {
-    const { isOk } = await $api.auth.sendVerification({
-      email: getRequestBody.mailAddress,
-    });
-    if (isOk) {
-      setCurrentForm((prev) => prev + 1);
-    }
   };
 
   const createQueryString = useCallback(

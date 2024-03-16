@@ -45,3 +45,64 @@ export const getFullName = (lastName, firstName) => {
   }
   return result;
 };
+
+/**
+ * Function to add a thousands separator to a number.
+ *
+ * @param {number} value - The number to add the separator to
+ * @return {string} The number with the thousands separator added
+ */
+export const thousandSeparator = (value) => {
+  let result = "-";
+  if (!isNaN(+value)) {
+    result = value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  return result;
+};
+
+/**
+ * Validate if the input value is a valid password.
+ *
+ * @param {string} value - The value to be validated
+ * @return {boolean} Whether the value is a valid password or not
+ */
+export const isValidPassword = (value) => {
+  // Regular expressions to check for symbol, uppercase character, and number
+  const symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
+  const uppercaseRegex = /[A-Z]/;
+  const numberRegex = /[0-9]/;
+
+  // Check if the string contains at least one of each
+  const containsSymbol = symbolRegex.test(value);
+  const containsUppercase = uppercaseRegex.test(value);
+  const containsNumber = numberRegex.test(value);
+
+  return (
+    value.length >= 8 && containsSymbol && containsUppercase && containsNumber
+  );
+};
+
+/**
+ * Creates a query string from the given query object.
+ *
+ * @param {Object} queryObject - the object containing key-value pairs for the query parameters
+ * @return {string} the query string generated from the query object
+ */
+export const createQueryString = (queryObject) => {
+  if (!queryObject) {
+    return "";
+  }
+
+  let queryString = "?";
+  const keys = Object.keys(queryObject);
+
+  keys.forEach((key, idx) => {
+    if (idx === keys.length - 1) {
+      queryString += `${key}=${queryObject[key]}`;
+    } else {
+      queryString += `${key}=${queryObject[key]}&`;
+    }
+  });
+
+  return queryString;
+};

@@ -14,6 +14,7 @@ module.exports = {
         grayLight: "#F4F5F6",
         grayMedium: "#DCDDE0",
         dividerLight: "#EFEFF1",
+        dividerMedium: "#D6D7DC",
         aquaLight: "#B7DDFF",
       },
       textColor: {
@@ -21,6 +22,7 @@ module.exports = {
         secondary: "#525560",
         support: "#1890FF",
         required: "#D51E27",
+        grayLight: "#505050",
       },
       borderColor: {
         primary: "#BABCC4",
@@ -37,6 +39,7 @@ module.exports = {
         primary: "#838795",
       },
       fontSize: {
+        xs: ["10px", "14px"],
         sm: ["12px", "20px"],
         lg: ["16px", "24px"],
         xl: ["18px", "28px"],

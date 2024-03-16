@@ -1,4 +1,5 @@
 import $api from "@/app/_api";
+import NoData from "@/app/_components/custom/NoData";
 import BranchDetailCard from "@/app/_components/home/BranchDetailCard";
 
 export const generateMetadata = async ({ params }) => {
@@ -21,7 +22,9 @@ const BranchDetail = async ({ params }) => {
           <BranchDetailCard branch={branch} />
         </>
       ) : (
-        <>Empty</>
+        <>
+          <NoData message={"No branch found"} />
+        </>
       )}
     </>
   );

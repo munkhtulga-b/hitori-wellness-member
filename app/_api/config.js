@@ -14,15 +14,20 @@ const fetchData = async (endpoint, method, body) => {
       "Content-Type": "application/json",
     };
 
+    const init = {
+      method: method,
+      headers: headers,
+    };
+
+    if (body) {
+      init[body] = JSON.stringify(body);
+    }
+
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${baseURL}/${endpoint}`, {
-      method: method,
-      headers: headers,
-      body: JSON.stringify(body),
-    });
+    const response = await fetch(`${baseURL}/${endpoint}`, init);
 
     const isOk = response.ok;
     const status = response.status;
@@ -30,6 +35,12 @@ const fetchData = async (endpoint, method, body) => {
 
     if (!isOk) {
       toast.error(data.error.message ?? "An error occurred");
+
+      // Redirects the user back to login page if their token has expired
+      // if (status === 401) {
+      //   Cookies.remove("token");
+      //   window.location.href = "/auth/login";
+      // }
     }
 
     return {

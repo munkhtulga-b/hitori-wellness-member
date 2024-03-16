@@ -59,16 +59,22 @@ const BranchDetailCard = ({ branch }) => {
             </p>
           </div>
           <div className="tw-flex tw-flex-col tw-gap-1">
-            <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
+            <a
+              href={branch.gmap_url ? branch.gmap_url : "#"}
+              target="_blank"
+              rel="noreferrer"
+              className="tw-flex tw-justify-start tw-items-center tw-gap-2 tw-text-current"
+            >
               <Image
                 src="/assets/branch/location-icon.svg"
                 alt="location"
-                width={0}
-                height={0}
-                style={{ width: "auto", height: "auto" }}
+                width={20}
+                height={20}
               />
-              <span className="tw-text-lg">住所</span>
-            </div>
+              <span className="tw-tracking-[0.14px]">
+                {nullSafety(branch.prefecture)}
+              </span>
+            </a>
             <p className="tw-whitespace-normal">
               {`${nullSafety(branch.address1)} ${nullSafety(
                 branch.address2

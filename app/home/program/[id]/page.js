@@ -1,5 +1,6 @@
 import $api from "@/app/_api";
-import ProgramDetailCard from "@/app/_components/program/ProgramDetailCard";
+import NoData from "@/app/_components/custom/NoData";
+import ProgramDetailCard from "@/app/_components/home/program/ProgramDetailCard";
 
 export const generateMetadata = async ({ params }) => {
   const { id } = params;
@@ -21,7 +22,9 @@ const ProgramDetail = async ({ params }) => {
           <ProgramDetailCard program={program} />
         </>
       ) : (
-        <>Empty</>
+        <>
+          <NoData message={"No program found"} />
+        </>
       )}
     </>
   );

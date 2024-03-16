@@ -1,12 +1,12 @@
 "use client";
 
-import NoData from "../_components/custom/NoData";
-import BranchScrollView from "../_components/home/BranchScrollView";
-import BranchListView from "../_components/home/BranchListView";
-import FullScreenLoading from "../_components/animation/FullScreenLoading";
-import FilterButtonGroup from "../_components/custom/FilterButtonGroup";
+import NoData from "@/app/_components/custom/NoData";
+import BranchScrollView from "@/app/_components/home/BranchScrollView";
+import BranchListView from "@/app/_components/home/BranchListView";
+import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
+import FilterButtonGroup from "@/app/_components/custom/FilterButtonGroup";
 import { useState, useEffect } from "react";
-import $api from "../_api";
+import $api from "@/app/_api";
 import _ from "lodash";
 
 const HomePage = () => {
@@ -54,13 +54,17 @@ const HomePage = () => {
                         list={branches}
                         filterId={idx}
                         setActiveFilterId={setActiveFilterId}
+                        cardType={`purchase`}
                       />
                     );
                   })}
                 </>
               ) : (
                 <>
-                  <BranchListView list={branchList[activeFilterId]} />
+                  <BranchListView
+                    list={branchList[activeFilterId]}
+                    cardType={`purchase`}
+                  />
                 </>
               )}
             </>
