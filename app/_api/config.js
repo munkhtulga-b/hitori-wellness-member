@@ -20,7 +20,7 @@ const fetchData = async (endpoint, method, body) => {
     };
 
     if (body) {
-      init[body] = JSON.stringify(body);
+      init["body"] = JSON.stringify(body);
     }
 
     if (token) {
