@@ -16,6 +16,7 @@ module.exports = {
         dividerLight: "#EFEFF1",
         dividerMedium: "#D6D7DC",
         aquaLight: "#B7DDFF",
+        bgForm: "#FAFAFA",
       },
       textColor: {
         primary: "#121316",
