@@ -10,7 +10,7 @@
             "text": "チケット購入",
             "icon": "/assets/profile/purchase-ticket.svg",
             "alt": "purchase",
-            "route": "/home/profile/plan/purchase/branch"
+            "route": "/home/profile/purchase"
         }
     ],
     "2": [

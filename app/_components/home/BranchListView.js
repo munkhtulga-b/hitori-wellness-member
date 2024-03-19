@@ -68,7 +68,7 @@ const BranchListView = ({ list, cardType }) => {
                     <section>
                       <Button
                         onClick={() =>
-                          router.push(`/home/profile/plan/purchase`)
+                          router.push(`/home/profile/purchase/plan`)
                         }
                         size="small"
                         className="tw-w-full"

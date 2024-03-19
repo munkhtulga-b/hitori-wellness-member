@@ -10,9 +10,9 @@ const CheckInHistory = () => {
         </section>
 
         <section className="tw-flex tw-flex-wrap tw-justify-start tw-items-center tw-gap-2">
-          <Button>All</Button>
-          <Button>Check in</Button>
-          <Button>Check out</Button>
+          <Button>全て</Button>
+          <Button>チェックイン</Button>
+          <Button>チェックアウト</Button>
         </section>
 
         <section className="tw-p-4 tw-rounded-xl tw-bg-white tw-shadow">
@@ -26,7 +26,7 @@ const CheckInHistory = () => {
                 style={{ width: "auto", height: "auto" }}
               />
               <span className="tw-text-xs tw-leading-5 tw-tracking-[0.1px]">
-                Check out
+                チェックアウト
               </span>
             </section>
             <section className="tw-bg-dividerMedium tw-w-[1px] tw-self-stretch"></section>
@@ -34,7 +34,7 @@ const CheckInHistory = () => {
               <ul className="tw-flex tw-flex-col tw-gap-2">
                 <li className="tw-flex tw-justify-start tw-gap-2">
                   <span className="tw-text-sm tw-tracking-[0.12px] tw-w-[20%]">
-                    Time
+                    日時
                   </span>
                   <span className="tw-text-sm tw-text-grayLight tw-tracking-[0.12px]">
                     2024/01/03(土) 07:00-07:30
@@ -42,7 +42,7 @@ const CheckInHistory = () => {
                 </li>
                 <li className="tw-flex tw-justify-start tw-gap-2">
                   <span className="tw-text-sm tw-tracking-[0.12px] tw-w-[20%]">
-                    Branch
+                    店舗
                   </span>
                   <span className="tw-text-sm tw-text-grayLight tw-tracking-[0.12px]">
                     KARADA BESTA Umeda store
