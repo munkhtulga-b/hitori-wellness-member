@@ -150,7 +150,7 @@ const ReservationConfirm = () => {
                   height={0}
                   style={{ width: "auto", height: "auto" }}
                 />
-                <span className="tw-grow tw-text-lg">プログラム</span>
+                <span className="tw-grow tw-text-lg">日時</span>
                 <Button onClick={() => handleEdit("time")} size="small">
                   編集
                 </Button>

@@ -19,6 +19,7 @@ const AuthSignup = () => {
   const resetRequestBody = useSignupStore((state) => state.resetBody);
   const [currentForm, setCurrentForm] = useState("1");
   const [isLoading, setIsLoading] = useState(false);
+  const [registeredEmail, setRegisteredEmail] = useState(null);
 
   useEffect(() => {
     const step = searchParams.get("step");
@@ -48,6 +49,7 @@ const AuthSignup = () => {
     setIsLoading(true);
     const { isOk } = await $api.auth.register(params);
     if (isOk) {
+      setRegisteredEmail(params.email);
       router.push(pathName + "?" + createQueryString("step", "complete"));
       resetRequestBody();
     }
@@ -83,7 +85,9 @@ const AuthSignup = () => {
         {currentForm === "3" && (
           <SignupStepThree onComplete={handleStepThree} isLoading={isLoading} />
         )}
-        {currentForm === "complete" && <SignupStepFour />}
+        {currentForm === "complete" && (
+          <SignupStepFour registeredEmail={registeredEmail} />
+        )}
       </motion.section>
       {currentForm !== "complete" && (
         <section className="tw-mt-6">

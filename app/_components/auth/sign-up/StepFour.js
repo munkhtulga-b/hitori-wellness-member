@@ -1,6 +1,6 @@
 import StatusAnimation from "../../animation/StatusAnimation";
 
-const SignupStepFour = () => {
+const SignupStepFour = ({ registeredEmail }) => {
   return (
     <div className="tw-flex tw-flex-col tw-items-center tw-gap-6 tw-mt-[68px]">
       <StatusAnimation />
@@ -11,7 +11,9 @@ const SignupStepFour = () => {
       </section>
       <section>
         <p className="tw-leading-[26px] tw-tracking-[0.14px] tw-text-center">
-          登録されたメールアドレス（mailaddress）に確認メールを送信しました。メールを確認して本文内のリンクから確認ページにアクセスしてください。
+          {`登録されたメールアドレス（${
+            registeredEmail ?? "mailaddress"
+          }）に確認メールを送信しました。メールを確認して本文内のリンクから確認ページにアクセスしてください。`}
         </p>
       </section>
     </div>
