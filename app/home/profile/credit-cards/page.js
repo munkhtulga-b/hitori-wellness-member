@@ -65,6 +65,44 @@ const CreditCards = () => {
       }
     };
 
+    const getCardIcon = () => {
+      const brands = [
+        {
+          name: "visa",
+          icon: "/assets/profile/credit-cards/card-visa.svg",
+        },
+        {
+          name: "master card",
+          icon: "/assets/profile/credit-cards/card-master.svg",
+        },
+        {
+          name: "american express",
+          icon: "/assets/profile/credit-cards/card-american-express.svg",
+        },
+        {
+          name: "diners club",
+          icon: "/assets/profile/credit-cards/card-diners.svg",
+        },
+        {
+          name: "jcb",
+          icon: "/assets/profile/credit-cards/card-jcb.svg",
+        },
+        {
+          name: "discover",
+          icon: "/assets/profile/credit-cards/card-discover.svg",
+        },
+      ];
+
+      const matched = brands.find((brand) => {
+        return (
+          brand.name.toLowerCase().replace(/\s/g, "") ===
+          nullSafety(card.brand).toLowerCase().replace(/\s/g, "")
+        );
+      });
+
+      return matched ? matched.icon : brands[0].icon;
+    };
+
     return (
       <>
         <section className="tw-relative" onClick={() => onSelect()}>
@@ -89,7 +127,7 @@ const CreditCards = () => {
                   style={{ width: "auto", height: "auto" }}
                 />
                 <Image
-                  src="/assets/profile/credit-cards/card-visa.svg"
+                  src={getCardIcon()}
                   alt="visa"
                   width={0}
                   height={0}

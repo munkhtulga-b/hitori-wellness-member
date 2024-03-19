@@ -56,7 +56,7 @@ const PurchaseSubscription = () => {
                           {nullSafety(plan.description)}
                         </p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
-                          8000
+                          plan.total_price
                         )}（税込）／月～`}</span>
                         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
                           <Button

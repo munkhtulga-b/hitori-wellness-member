@@ -38,6 +38,7 @@ const SignupStepOne = ({ onComplete }) => {
   const handleGenderSelect = (value) => {
     setGenderValue(value);
     form.setFieldValue("gender", value);
+    form.validateFields(["gender"]);
   };
 
   const customizeRequiredMark = (label, { required }) => (
@@ -168,6 +169,7 @@ const SignupStepOne = ({ onComplete }) => {
               message: "性別をご選択ください。",
             },
           ]}
+          validateFirst
         >
           <div className="tw-flex tw-justify-start tw-items-center tw-gap-4">
             <Button

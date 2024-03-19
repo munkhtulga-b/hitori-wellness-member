@@ -8,7 +8,10 @@ import "react-toastify/dist/ReactToastify.css";
 const fontFamily = Noto_Sans_JP({ subsets: ["latin"] });
 
 export const metadata = {
-  title: process.env.BASE_META_TITLE,
+  title: {
+    default: process.env.BASE_META_TITLE,
+    template: "%s | " + process.env.BASE_META_TITLE,
+  },
   description: process.env.BASE_META_DESCRIPTION,
 };
 
