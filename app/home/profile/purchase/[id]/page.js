@@ -1,27 +1,72 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
 import { Form, Button, Input, Radio, Checkbox, Modal } from "antd";
 import Image from "next/image";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
+import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 import { motion, AnimatePresence } from "framer-motion";
-
-const subscription = {
-  id: 1,
-  name: "月会費プラン",
-  description:
-    "しっかり週2（月8回まで）「フィットネスエリア・ロッカールーム、シャワー、お風呂、サウナ」の施設がご利用いただけます。",
-  price: 8000,
-};
+import $api from "@/app/_api";
+import dayjs from "dayjs";
+import { usePurchaseStore } from "@/app/_store/purchase";
 
 const SubscriptionDetail = () => {
   const [form] = Form.useForm();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const getPuchaseBody = usePurchaseStore((state) => state.getBody());
   const [step, setStep] = useState(1);
+  const [cards, setCards] = useState(null);
+  const [selectedCard, setSelectedCard] = useState(null);
+  const [isLoading, setIsLoading] = useState({
+    isFetching: true,
+    isRequesting: false,
+  });
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleSubscription = ({ coupon }) => {
-    console.log(coupon);
+  useEffect(() => {
+    fetchCreditCards();
+  }, []);
+
+  const fetchCreditCards = async () => {
+    setIsLoading((prev) => ({ ...prev, isFetching: true }));
+    const { isOk, data } = await $api.member.card.getMany();
+    if (isOk) {
+      setCards(data);
+    }
+    setIsLoading((prev) => ({ ...prev, isFetching: false }));
+  };
+
+  const addCard = async (body) => {
+    setIsLoading((prev) => ({ ...prev, isRequesting: true }));
+    const { isOk } = await $api.member.card.create(body);
+    if (isOk) {
+      await fetchCreditCards();
+      setStep(2);
+    }
+    setIsLoading((prev) => ({ ...prev, isRequesting: false }));
+  };
+
+  const createPurchase = async (body) => {
+    setIsLoading((prev) => ({ ...prev, isRequesting: true }));
+    const { isOk } = await $api.member.purchase.create(body);
+    if (isOk) {
+      setStep(3);
+    } else {
+      setIsModalOpen(true);
+    }
+    setIsLoading((prev) => ({ ...prev, isRequesting: false }));
+  };
+
+  const onPurchase = async () => {
+    const body = {
+      studioId: getPuchaseBody.branch?.id,
+      planId: getPuchaseBody.plan?.id,
+      cardId: selectedCard?.id,
+    };
+    createPurchase(body);
+  };
+
+  const onPlanConfirm = () => {
     setStep(2);
   };
 
@@ -36,37 +81,32 @@ const SubscriptionDetail = () => {
     return result;
   };
 
-  const SelectedSubscription = () => {
-    return (
+  const SelectedPlan = () => {
+    return getPuchaseBody?.plan ? (
       <>
-        <motion.section
-          variants={motionVariants}
-          initial="initial"
-          animate="animate"
-          exit="initial"
-          key="subscription-select"
-          className="tw-p-3 tw-rounded-xl tw-bg-white tw-shadow"
-        >
+        <section className="tw-p-3 tw-rounded-xl tw-bg-white tw-shadow">
           <div className="tw-flex tw-flex-col tw-gap-2">
-            <span className="tw-text-lg">{nullSafety(subscription.name)}</span>
+            <span className="tw-text-lg">
+              {nullSafety(getPuchaseBody.plan.name)}
+            </span>
             <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-              {nullSafety(subscription.description)}
+              {nullSafety(getPuchaseBody.plan.description)}
             </p>
             <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
-              subscription.price
+              getPuchaseBody.plan.monthly_price
             )}（税込）／月～`}</span>
           </div>
-        </motion.section>
+        </section>
         <section className="tw-grow">
           <Form
             form={form}
-            name="PurchaseSubscription"
-            onFinish={handleSubscription}
+            name="PurchasePlan"
+            onFinish={onPlanConfirm}
             style={{ height: "100%" }}
           >
             <div className="tw-flex tw-flex-col tw-justify-between tw-h-full">
               <section>
-                <Form.Item
+                {/* <Form.Item
                   name="coupon"
                   label="クーポンを選択してください"
                   rules={[
@@ -78,12 +118,14 @@ const SubscriptionDetail = () => {
                   ]}
                 >
                   <Input placeholder="クーポンコードを入力する" />
-                </Form.Item>
+                </Form.Item> */}
               </section>
               <section className="tw-flex tw-flex-col tw-gap-4 tw-pt-4 tw-border-t tw-border-dividerLight">
                 <div className="tw-flex tw-justify-between">
                   <span className="tw-text-lg">合計額</span>
-                  <span className="tw-text-lg">8,000円 （税込）／月～</span>
+                  <span className="tw-text-lg">{`${thousandSeparator(
+                    getPuchaseBody.plan.monthly_price
+                  )}円 （税込）／月～`}</span>
                 </div>
                 <Form.Item>
                   <Button
@@ -100,40 +142,49 @@ const SubscriptionDetail = () => {
           </Form>
         </section>
       </>
-    );
+    ) : null;
   };
 
   const SelectCreditCard = () => {
     return (
       <>
-        <motion.section
-          variants={motionVariants}
-          initial="initial"
-          animate="animate"
-          exit="initial"
-          key="card-select"
-          className="tw-flex tw-flex-col tw-justify-between tw-h-full"
-        >
-          <ul className="tw-flex tw-flex-col tw-gap-4">
-            <li className="tw-flex tw-justify-between tw-items-center tw-rounded-xl tw-bg-white tw-p-4 tw-shadow">
-              <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
-                <Image
-                  src="/assets/profile/purchase/credit-card-black.svg"
-                  alt="credit-card"
-                  width={0}
-                  height={0}
-                  style={{ width: "auto", height: "auto" }}
-                />
-                <span className="tw-text-lg">xxxx xxxx xxxx 8998</span>
-              </div>
-              <div className="tw-flex tw-justify-end tw-items-center tw-gap-2">
-                <span className="tw-text-sm tw-tracking-[0.12px] tw-text-secondary">
-                  VISA
-                </span>
-                <Radio />
-              </div>
-            </li>
-            <li className="tw-flex tw-justify-between tw-items-center tw-rounded-xl tw-bg-white tw-p-4 tw-shadow">
+        <ul className="tw-flex tw-flex-col tw-gap-4">
+          {cards?.length
+            ? cards?.map((card) => (
+                <li
+                  key={card.id}
+                  className="tw-flex tw-justify-between tw-items-center tw-rounded-xl tw-bg-white tw-p-4 tw-shadow"
+                  onClick={() => setSelectedCard(card)}
+                >
+                  <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
+                    <Image
+                      src="/assets/profile/purchase/credit-card-black.svg"
+                      alt="credit-card"
+                      width={0}
+                      height={0}
+                      style={{ width: "auto", height: "auto" }}
+                    />
+                    <span className="tw-text-lg">{`**** **** **** ${nullSafety(
+                      card.card_last4
+                    )}`}</span>
+                  </div>
+                  <div className="tw-flex tw-justify-end tw-items-center tw-gap-2">
+                    <span className="tw-text-sm tw-tracking-[0.12px] tw-text-secondary">
+                      {nullSafety(card.brand)}
+                    </span>
+                    <Radio
+                      checked={card.id === selectedCard?.id}
+                      value={card.id}
+                    />
+                  </div>
+                </li>
+              ))
+            : null}
+          {cards?.length < 2 && (
+            <li
+              onClick={() => setStep("add")}
+              className="tw-flex tw-justify-between tw-items-center tw-rounded-xl tw-bg-white tw-p-4 tw-shadow"
+            >
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
                 <Image
                   src="/assets/profile/purchase/credit-card-black.svg"
@@ -152,16 +203,19 @@ const SubscriptionDetail = () => {
                 style={{ width: "auto", height: "auto" }}
               />
             </li>
-          </ul>
-          <Button
-            size="large"
-            type="primary"
-            htmlType="submit"
-            className="tw-w-full"
-          >
-            支払う
-          </Button>
-        </motion.section>
+          )}
+        </ul>
+        <Button
+          disabled={!selectedCard}
+          loading={isLoading.isRequesting}
+          size="large"
+          type="primary"
+          htmlType="submit"
+          className="tw-w-full"
+          onClick={() => onPurchase()}
+        >
+          支払う
+        </Button>
 
         <Modal
           title="カード決済に失敗しました。"
@@ -193,13 +247,30 @@ const SubscriptionDetail = () => {
   };
 
   const RegisterCreditCard = () => {
+    const onFinish = (params) => {
+      params.cardNumber = +params.cardNumber;
+      params.cvc = +params.cvc;
+
+      const body = {
+        cardName: params.cardName,
+        cardNumber: params.cardNumber,
+        cvc: params.cvc,
+        expireYear: +dayjs()
+          .set("year", `20${params.expiry.split("/")[1]}`)
+          .format("YYYY"),
+        expireMonth: +dayjs(params.expiry.split("/")[0]).format("MM"),
+      };
+
+      addCard(body);
+    };
+
     return (
       <>
         <Form
           requiredMark={false}
           form={form}
           name="AddCreditCard"
-          onFinish={(params) => console.log(params)}
+          onFinish={onFinish}
         >
           <Form.Item
             name="cardNumber"
@@ -234,7 +305,7 @@ const SubscriptionDetail = () => {
           </Form.Item>
 
           <Form.Item
-            name="cardHolder"
+            name="cardName"
             label="クレジットカード名義人氏名"
             rules={[
               {
@@ -249,7 +320,7 @@ const SubscriptionDetail = () => {
 
           <section className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
             <Form.Item
-              name="validUntil"
+              name="expiry"
               label="有効期限"
               rules={[
                 {
@@ -272,7 +343,7 @@ const SubscriptionDetail = () => {
               <Input placeholder="MM/YY" />
             </Form.Item>
             <Form.Item
-              name="cardCVV"
+              name="cvc"
               label="CVVコード"
               rules={[
                 {
@@ -303,6 +374,7 @@ const SubscriptionDetail = () => {
                 戻る
               </Button>
               <Button
+                loading={isLoading.isRequesting}
                 size="large"
                 type="primary"
                 htmlType="submit"
@@ -326,14 +398,7 @@ const SubscriptionDetail = () => {
 
   const PurchaseSuccess = () => {
     return (
-      <motion.section
-        key="purchase-success"
-        variants={motionVariants}
-        initial="initial"
-        animate="animate"
-        exit="initial"
-        className="tw-flex tw-flex-col tw-items-center tw-gap-6"
-      >
+      <section className="tw-flex tw-flex-col tw-items-center tw-gap-6">
         <section className="tw-mt-[100px]">
           <SuccessAnimation />
         </section>
@@ -347,7 +412,7 @@ const SubscriptionDetail = () => {
             予約履歴を見る
           </Button>
         </section>
-      </motion.section>
+      </section>
     );
   };
 
@@ -376,17 +441,55 @@ const SubscriptionDetail = () => {
         <section>
           <span className="tw-text-xxl tw-font-medium">{pageHeader()}</span>
         </section>
-        <AnimatePresence mode="wait">
-          {step === 1 ? (
-            <SelectedSubscription />
-          ) : step === 2 ? (
-            <SelectCreditCard />
-          ) : step === 3 ? (
-            <PurchaseSuccess />
-          ) : step === "add" ? (
-            <RegisterCreditCard />
-          ) : null}
-        </AnimatePresence>
+        {!isLoading.isFetching ? (
+          <AnimatePresence mode="wait">
+            {step === 1 ? (
+              <motion.div
+                key={1}
+                variants={motionVariants}
+                initial="initial"
+                animate="animate"
+                exit="initial"
+                className="tw-flex tw-flex-col tw-justify-between tw-h-full"
+              >
+                <SelectedPlan />
+              </motion.div>
+            ) : step === 2 ? (
+              <motion.div
+                key={2}
+                variants={motionVariants}
+                initial="initial"
+                animate="animate"
+                exit="initial"
+                className="tw-flex tw-flex-col tw-justify-between tw-h-full"
+              >
+                <SelectCreditCard />
+              </motion.div>
+            ) : step === 3 ? (
+              <motion.div
+                key={3}
+                variants={motionVariants}
+                initial="initial"
+                animate="animate"
+                exit="initial"
+              >
+                <PurchaseSuccess />
+              </motion.div>
+            ) : step === "add" ? (
+              <motion.div
+                key={4}
+                variants={motionVariants}
+                initial="initial"
+                animate="animate"
+                exit="initial"
+              >
+                <RegisterCreditCard />
+              </motion.div>
+            ) : null}
+          </AnimatePresence>
+        ) : (
+          <FullScreenLoading />
+        )}
       </div>
     </>
   );

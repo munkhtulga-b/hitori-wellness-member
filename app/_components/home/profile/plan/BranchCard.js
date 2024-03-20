@@ -10,7 +10,7 @@ const PurchaseBranchCard = ({ branch }) => {
 
   const onSelect = () => {
     setBranch({ branch: branch });
-    router.push("/home/profile/plan/purchase");
+    router.push("/home/profile/purchase/plan");
   };
 
   return (

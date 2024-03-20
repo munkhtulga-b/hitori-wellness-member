@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
     <html lang="en" suppressHydrationWarning>
       <body className={fontFamily.className}>
         <AntdRegistry>
-          <ToastContainer />
+          <ToastContainer pauseOnFocusLoss={false} />
           <AppProvider fontFamily={fontFamily}>{children}</AppProvider>
         </AntdRegistry>
       </body>

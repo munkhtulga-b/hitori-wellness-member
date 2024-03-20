@@ -11,6 +11,8 @@ import * as branch from "./member/BranchController";
 import * as program from "./member/ProgramController";
 import * as card from "./member/CreditCardController";
 import * as plan from "./member/PlanController";
+import * as memberPlan from "./member/MemberPlanController";
+import * as purchase from "./member/PurchaseController";
 
 const $api = {
   auth: {
@@ -26,6 +28,8 @@ const $api = {
     program,
     card,
     plan,
+    memberPlan,
+    purchase,
   },
 };
 

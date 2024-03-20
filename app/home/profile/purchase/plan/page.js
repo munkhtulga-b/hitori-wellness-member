@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 const PurchaseSubscription = () => {
   const router = useRouter();
   const getPurchaseBody = usePurchaseStore((state) => state.getBody());
+  const setPurchaseBody = usePurchaseStore((state) => state.setBody);
   const [isLoading, setIsLoading] = useState(true);
   const [plans, setPlans] = useState(null);
 
@@ -30,6 +31,13 @@ const PurchaseSubscription = () => {
       setPlans(data);
     }
     setIsLoading(false);
+  };
+
+  const onSelect = (plan) => {
+    setPurchaseBody({
+      plan: plan,
+    });
+    router.push(`/home/profile/purchase/${plan.id}`);
   };
 
   return (
@@ -56,12 +64,14 @@ const PurchaseSubscription = () => {
                           {nullSafety(plan.description)}
                         </p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
-                          plan.total_price
+                          plan.monthly_price
                         )}（税込）／月～`}</span>
                         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
                           <Button
                             onClick={() =>
-                              router.push(`/home/profile/plan/${plan.id}`)
+                              router.push(
+                                `/home/profile/purchase/plan/${plan.id}`
+                              )
                             }
                             size="small"
                             className="tw-w-full"
@@ -77,7 +87,11 @@ const PurchaseSubscription = () => {
                               />
                             </div>
                           </Button>
-                          <Button size="small" className="tw-w-full">
+                          <Button
+                            onClick={() => onSelect(plan)}
+                            size="small"
+                            className="tw-w-full"
+                          >
                             選ぶ
                           </Button>
                         </div>
