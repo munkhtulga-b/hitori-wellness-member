@@ -7,7 +7,7 @@ import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
 
-const BranchDetailCard = ({ branch }) => {
+const BranchDetailCard = ({ branch, memberPlan }) => {
   const router = useRouter();
   const setBranch = useReservationStore((state) => state.setBody);
   const [isHomeBranch, setIsHomeBranch] = useState(false);
@@ -88,19 +88,26 @@ const BranchDetailCard = ({ branch }) => {
             ※閉店30分前の最終受付時間はトレーニングのみとなります。
           </p>
         </section>
-        <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4 tw-flex tw-justify-between tw-items-center">
-          <Image
-            src="/assets/branch/warning-icon.svg"
-            alt="warning"
-            width={0}
-            height={0}
-            style={{ width: "auto", height: "auto" }}
-          />
-          <span className="tw-text-sm tw-tracking-[0.12px]">
-            予約するにはチケットが必要です。
-          </span>
-          <Button size="small">買う</Button>
-        </section>
+        {!memberPlan?.length ? (
+          <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4 tw-flex tw-justify-between tw-items-center">
+            <Image
+              src="/assets/branch/warning-icon.svg"
+              alt="warning"
+              width={0}
+              height={0}
+              style={{ width: "auto", height: "auto" }}
+            />
+            <span className="tw-text-sm tw-tracking-[0.12px]">
+              予約するにはチケットが必要です。
+            </span>
+            <Button
+              size="small"
+              onClick={() => router.push("/home/profile/purchase")}
+            >
+              買う
+            </Button>
+          </section>
+        ) : null}
         <section className="tw-py-6">
           <Checkbox
             checked={isHomeBranch}
@@ -111,6 +118,7 @@ const BranchDetailCard = ({ branch }) => {
         </section>
         <section className="tw-mt-1">
           <Button
+            disabled={!memberPlan?.length}
             onClick={handleMakeReservation}
             size="large"
             type="primary"
