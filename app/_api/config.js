@@ -1,13 +1,13 @@
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
-const fetchData = async (endpoint, method, body) => {
+const fetchData = async (endpoint, method, body, serverToken) => {
   const baseURL =
     process.env.NODE_ENV === "development"
       ? process.env.NEXT_PUBLIC_DEV_BASE_URL
       : process.env.NEXT_PUBLIC_PROD_BASE_URL;
 
-  const token = Cookies.get("token");
+  const token = Cookies.get("token") ? Cookies.get("token") : serverToken;
 
   try {
     const headers = {

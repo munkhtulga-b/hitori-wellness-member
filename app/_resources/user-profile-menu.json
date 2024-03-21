@@ -7,7 +7,7 @@
             "route": "/home/profile/plan"
         },
         {
-            "text": "チケット購入",
+            "text": "プラン・チケット購入",
             "icon": "/assets/profile/purchase-ticket.svg",
             "alt": "purchase",
             "route": "/home/profile/purchase"

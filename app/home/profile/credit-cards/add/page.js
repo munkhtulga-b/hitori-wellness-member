@@ -33,7 +33,7 @@ const AddCreditCard = () => {
     setIsLoading(true);
     const { isOk } = await $api.member.card.create(body);
     if (isOk) {
-      messageApi.success("Card added successfully.");
+      messageApi.success("カードが追加されました。");
       router.push("/home/profile/credit-cards");
     }
     setIsLoading(false);

@@ -1,7 +1,7 @@
 import fetchData from "../config";
 
-export const getMany = () => {
-  return fetchData("purchases", "GET");
+export const getMany = (token) => {
+  return fetchData("purchases", "GET", undefined, token);
 };
 
 export const getOne = (id) => {
