@@ -10,6 +10,7 @@ const TimeSlotSelect = () => {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const slotInterval = 30;
+  const reservationDateLimit = dayjs().add(1, "month").endOf("month");
   const getReservation = useReservationStore((state) => state.getBody());
   const setReservation = useReservationStore((state) => state.setBody);
   const [selectedWeek, setSelectedWeek] = useState({
@@ -48,25 +49,30 @@ const TimeSlotSelect = () => {
     for (let i = 0; i < 7; i++) {
       daysOfWeek.push({
         day: currentDate,
-        timeSlots: getAllAvailableTimes("07:00", "20:00"),
+        timeSlots: getAllAvailableTimes("07:00"),
       });
       currentDate = currentDate.add(1, "day");
     }
     return daysOfWeek;
   };
 
-  const getAllAvailableTimes = (startTime, endTime) => {
+  const getAllAvailableTimes = (startTime) => {
     const start = new Date(`01/01/2024 ${startTime}`);
-    const end = new Date(`01/01/2024 ${endTime}`);
+    const end = new Date(start);
+    end.setHours(start.getHours() + 24);
+    end.setMinutes(start.getMinutes());
+
     const times = [];
 
-    let currentTime = start;
+    let currentTime = new Date(start);
 
-    while (currentTime <= end) {
+    while (currentTime < end) {
       const hours = currentTime.getHours().toString().padStart(2, "0");
       const minutes = currentTime.getMinutes().toString().padStart(2, "0");
       times.push(`${hours}:${minutes}`);
-      currentTime = new Date(currentTime.getTime() + 30 * 60000); // Add 30 minutes
+
+      // Add 30 minutes
+      currentTime.setMinutes(currentTime.getMinutes() + 30);
     }
 
     return times;
@@ -101,21 +107,25 @@ const TimeSlotSelect = () => {
             <span className="tw-text-lg">{`${selectedWeek.start.format(
               "MM/DD"
             )} - ${selectedWeek.end.format("MM/DD")}`}</span>
-            <Image
-              src="/assets/time-slot/proceed-icon.svg"
-              alt="proceed"
-              width={0}
-              height={0}
-              style={{
-                width: "auto",
-                height: "auto",
-                position: "absolute",
-                right: "16px",
-                top: "50%",
-                transform: "translateY(-50%)",
-              }}
-              onClick={() => onWeekChange("add")}
-            />
+            {dayjs(selectedWeek.start)
+              .add(1, "week")
+              .isBefore(reservationDateLimit) && (
+              <Image
+                src="/assets/time-slot/proceed-icon.svg"
+                alt="proceed"
+                width={0}
+                height={0}
+                style={{
+                  width: "auto",
+                  height: "auto",
+                  position: "absolute",
+                  right: "16px",
+                  top: "50%",
+                  transform: "translateY(-50%)",
+                }}
+                onClick={() => onWeekChange("add")}
+              />
+            )}
           </div>
           <Button
             size="large"

@@ -13,6 +13,7 @@ import * as card from "./member/CreditCardController";
 import * as plan from "./member/PlanController";
 import * as memberPlan from "./member/MemberPlanController";
 import * as purchase from "./member/PurchaseController";
+import * as reservation from "./member/ReservationController";
 
 const $api = {
   auth: {
@@ -30,6 +31,7 @@ const $api = {
     plan,
     memberPlan,
     purchase,
+    reservation,
   },
 };
 
