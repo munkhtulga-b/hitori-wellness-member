@@ -126,7 +126,7 @@ const SubscriptionDetail = () => {
                 <div className="tw-flex tw-justify-between">
                   <span className="tw-text-lg">合計額</span>
                   <span className="tw-text-lg">{`${thousandSeparator(
-                    getPuchaseBody.plan.monthly_price
+                    getPuchaseBody.plan?.total_price
                   )}円 （税込）／月～`}</span>
                 </div>
                 <Form.Item>
