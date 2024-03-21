@@ -15,14 +15,14 @@
     {
       "text": "予約履歴",
       "icon": "/assets/sidebar/time-icon.svg",
-      "alt": "time",
-      "route": "/"
+      "alt": "reservations",
+      "route": "/home/profile/reservations"
     },
     {
       "text": "会員ID",
       "icon": "/assets/sidebar/member-id-icon.svg",
       "alt": "member-id",
-      "route": "/"
+      "route": "/home/profile/member-id"
     }
   ]
 }
