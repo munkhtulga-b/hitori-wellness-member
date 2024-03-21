@@ -9,6 +9,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 import { nullSafety } from "@/app/_utils/helpers";
 import { motion, AnimatePresence } from "framer-motion";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
+import _ from "lodash";
 
 const CreditCards = () => {
   const router = useRouter();
@@ -29,7 +30,8 @@ const CreditCards = () => {
     setIsLoading((prev) => ({ ...prev, isFetching: true }));
     const { isOk, data } = await $api.member.card.getMany();
     if (isOk) {
-      setCards(data);
+      const sorted = _.sortBy(data, "is_default").reverse();
+      setCards(sorted);
     }
     setIsLoading((prev) => ({ ...prev, isFetching: false }));
   };
@@ -42,7 +44,7 @@ const CreditCards = () => {
     if (isOk) {
       await fetchCards();
       setSelectedCard(null);
-      messageApi.success("Card updated");
+      messageApi.success("主要カードが変更されました。");
     }
     setIsLoading({ isUpdating: false });
   };
@@ -53,7 +55,7 @@ const CreditCards = () => {
     if (isOk) {
       await fetchCards();
       setSelectedCard(null);
-      messageApi.success("Card deleted");
+      messageApi.success("カードが削除されました。");
     }
     setIsLoading((prev) => ({ ...prev, isDeleting: false }));
   };
@@ -105,7 +107,14 @@ const CreditCards = () => {
 
     return (
       <>
-        <section className="tw-relative" onClick={() => onSelect()}>
+        <section
+          className={`tw-relative ${
+            !selectedCard && !card.is_default
+              ? "tw-scale-75 tw-origin-top-left"
+              : ""
+          }`}
+          onClick={() => onSelect()}
+        >
           <Image
             priority
             src={`/assets/profile/credit-cards/card-template-${

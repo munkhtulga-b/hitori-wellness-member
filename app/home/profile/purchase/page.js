@@ -32,6 +32,11 @@ const HomePage = () => {
 
   return (
     <div className="tw-flex tw-flex-col tw-gap-y-4">
+      <section>
+        <span className="tw-text-xxl tw-font-medium">
+          対象の店舗をお選びください
+        </span>
+      </section>
       {!isLoading ? (
         <>
           {branchList?.length ? (

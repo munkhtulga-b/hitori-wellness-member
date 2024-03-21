@@ -1,9 +1,12 @@
 "use client";
 
 import { Button } from "antd";
+import { useRouter } from "next/navigation";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
 
 const ReservationSuccess = () => {
+  const router = useRouter();
+
   return (
     <>
       <div className="tw-flex tw-flex-col tw-items-center tw-gap-6">
@@ -16,7 +19,12 @@ const ReservationSuccess = () => {
           </span>
         </section>
         <section className="tw-w-full">
-          <Button size="large" type="primary" className="tw-w-full">
+          <Button
+            onClick={() => router.push("/home")}
+            size="large"
+            type="primary"
+            className="tw-w-full"
+          >
             ホームページへ戻る
           </Button>
         </section>

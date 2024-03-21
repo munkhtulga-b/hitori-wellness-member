@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
 import { Form, Button, Input, Radio, Checkbox, Modal } from "antd";
 import Image from "next/image";
@@ -12,6 +13,7 @@ import dayjs from "dayjs";
 import { usePurchaseStore } from "@/app/_store/purchase";
 
 const SubscriptionDetail = () => {
+  const router = useRouter();
   const [form] = Form.useForm();
   const getPuchaseBody = usePurchaseStore((state) => state.getBody());
   const [step, setStep] = useState(1);
@@ -72,8 +74,8 @@ const SubscriptionDetail = () => {
 
   const pageHeader = () => {
     let result = "見積書";
-    if (step === 2 || step === 3) {
-      result = "支払い";
+    if (step === 2) {
+      result = "支払い方法をお選びください";
     }
     if (step === "add") {
       result = "カードの追加";
@@ -408,7 +410,12 @@ const SubscriptionDetail = () => {
           </span>
         </section>
         <section className="tw-w-full">
-          <Button size="large" type="primary" className="tw-w-full">
+          <Button
+            onClick={() => router.push("/home")}
+            size="large"
+            type="primary"
+            className="tw-w-full"
+          >
             予約履歴を見る
           </Button>
         </section>
@@ -438,9 +445,11 @@ const SubscriptionDetail = () => {
   return (
     <>
       <div className="tw-flex tw-flex-col tw-gap-4 tw-h-full">
-        <section>
-          <span className="tw-text-xxl tw-font-medium">{pageHeader()}</span>
-        </section>
+        {step !== 3 && (
+          <section>
+            <span className="tw-text-xxl tw-font-medium">{pageHeader()}</span>
+          </section>
+        )}
         {!isLoading.isFetching ? (
           <AnimatePresence mode="wait">
             {step === 1 ? (

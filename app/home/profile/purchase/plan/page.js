@@ -44,7 +44,9 @@ const PurchaseSubscription = () => {
     <>
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section>
-          <span className="tw-text-xxl tw-font-medium">チケット購入</span>
+          <span className="tw-text-xxl tw-font-medium">
+            プラン・チケットをお選びください
+          </span>
         </section>
         {!isLoading ? (
           <>
