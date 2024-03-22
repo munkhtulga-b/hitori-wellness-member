@@ -13,6 +13,8 @@ import ReservationEnum from "@/app/_enums/EEnumReservation";
 import TimeSlotSelect from "@/app/_components/home/time-slot/TimeSlotSelect";
 import CoachSelect from "@/app/_components/coach/CoachSelect";
 import NoData from "@/app/_components/custom/NoData";
+import { useReservationStore } from "@/app/_store/reservation";
+import { toast } from "react-toastify";
 
 const sliderOptions = [
   {
@@ -39,6 +41,7 @@ const ProgramsPage = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const reservationBody = useReservationStore((state) => state.getBody());
   const [isLoading, setIsLoading] = useState({
     isFetching: false,
     isRequesting: false,
@@ -50,6 +53,12 @@ const ProgramsPage = () => {
   const [activeStepId, setActiveStepId] = useState(null);
 
   useLayoutEffect(() => {
+    if (!reservationBody.branch) {
+      toast.info("Please select a branch", {
+        position: "bottom-center",
+      });
+      return router.push("/home/");
+    }
     const query = searchParams.get("select");
     if (query === ReservationEnum.COACH.queryString) {
       return setActiveStepId(ReservationEnum.COACH.value);
@@ -103,13 +112,13 @@ const ProgramsPage = () => {
   };
 
   const fetchTimeslots = async () => {
-    setTimeslotList([""]);
-    // setIsLoading((prev) => ({ ...prev, isFetching: true }));
-    // const { isOk, data } = await $api.member.coach.getMany();
-    // if (isOk) {
-    //   setCoachList(data);
-    // }
-    // setIsLoading((prev) => ({ ...prev, isFetching: false }));
+    setIsLoading((prev) => ({ ...prev, isFetching: true }));
+    const branchId = reservationBody.branch?.id;
+    const { isOk, data } = await $api.member.reservation.getTimeSlot(branchId);
+    if (isOk) {
+      setTimeslotList(data);
+    }
+    setIsLoading((prev) => ({ ...prev, isFetching: false }));
   };
 
   const createQueryString = useCallback(
@@ -178,7 +187,7 @@ const ProgramsPage = () => {
               <>
                 {timeslotList?.length ? (
                   <>
-                    <TimeSlotSelect />
+                    <TimeSlotSelect timeSlotList={timeslotList} />
                   </>
                 ) : (
                   <NoData message={"No Data"} />
