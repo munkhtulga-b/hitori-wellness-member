@@ -1,7 +1,7 @@
 const ReservationStatusEnum = {
-  ACTIVE: 1,
-  INACTIVE: 2,
-  CANCELLED: 3,
+  INACTIVE: 1,
+  ACTIVE: 2,
+  CANCELLED: 4,
 };
 
 export default ReservationStatusEnum;

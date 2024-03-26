@@ -10,6 +10,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
   const router = useRouter();
   const [messageApi, contextHolder] = message.useMessage();
   const slotInterval = 30;
+  const slotCapacityPercentage = 60;
   const reservationDateLimit = dayjs().add(1, "month").endOf("month");
   const getReservation = useReservationStore((state) => state.getBody());
   const setReservation = useReservationStore((state) => state.setBody);
@@ -56,6 +57,36 @@ const TimeSlotSelect = ({ timeSlotList }) => {
       });
       currentDate = currentDate.add(1, "day");
     }
+
+    if (timeSlotList) {
+      timeSlotList.forEach((item) => {
+        if (
+          item.reserved?.length &&
+          dayjs(item.reserved[0].start_at).format("YYYY-MM-DD") ===
+            dayjs(daysOfWeek[item.week_day].day).format("YYYY-MM-DD")
+        ) {
+          item.reserved.forEach((slot) => {
+            const duration = dayjs(slot.end_at).diff(slot.start_at, "minute");
+            const interval = duration / slotInterval;
+            const startIndex = daysOfWeek[item.week_day].timeSlots.findIndex(
+              (time) => time.time === dayjs.utc(slot.start_at).format("HH:mm")
+            );
+            if (startIndex !== -1) {
+              for (let i = 0; i < interval; i++) {
+                daysOfWeek[item.week_day].timeSlots[
+                  startIndex + i
+                ].currentCapacity = slot.current_capacity;
+                if (slot.current_capacity >= item.max_capacity) {
+                  daysOfWeek[item.week_day].timeSlots[
+                    startIndex + i
+                  ].isAvailable = false;
+                }
+              }
+            }
+          });
+        }
+      });
+    }
     return daysOfWeek;
   };
 
@@ -70,13 +101,28 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     while (currentTime.isBefore(end)) {
       const hours = currentTime.format("HH");
       const minutes = currentTime.format("mm");
-      times.push(`${hours}:${minutes}`);
+      times.push({
+        isAvailable: true,
+        time: `${hours}:${minutes}`,
+        currentCapacity: 0,
+      });
 
       // Add 30 minutes
       currentTime = currentTime.add(30, "minute");
     }
 
     return times;
+  };
+
+  const isReachingMaxCapacity = ({ currentCapcity }) => {
+    let result = false;
+    if (timeSlotList?.length && timeSlotList[0].max_capacity) {
+      const percentage = Math.round(
+        (timeSlotList[0].max_capacity * slotCapacityPercentage) / 100
+      );
+      result = currentCapcity >= percentage;
+    }
+    return result;
   };
 
   return (
@@ -167,19 +213,38 @@ const TimeSlotSelect = ({ timeSlotList }) => {
                         {dayjs(date.day).format("ddd")}
                       </span>
                     </section>
-                    {date.timeSlots.map((time, timeIdx) => {
+                    {date.timeSlots.map((slot, timeIdx) => {
                       return (
                         <button
-                          key={time}
+                          key={slot.time}
+                          disabled={!slot.isAvailable}
                           className={`${
                             dayjs(selectedSlots?.day).isSame(date.day) &&
-                            selectedSlots?.slots.includes(time)
+                            selectedSlots?.slots.includes(slot.time)
                               ? "tw-bg-aquaLight tw-ring-[2px] tw-ring-available"
                               : "tw-bg-white tw-ring-[1px] tw-ring-available"
-                          } tw-w-full tw-h-[38px] tw-px-1 tw-py-2 tw-rounded-lg tw-text-center tw-transition-all tw-duration-300`}
+                          } tw-w-full tw-h-[38px] tw-px-1 tw-py-2 tw-rounded-lg tw-text-center disabled:tw-bg-dividerMedium disabled:tw-text-disabled disabled:tw-ring-transparent tw-relative tw-transition-all tw-duration-300`}
                           onClick={() => onSlotSelect(date, dateIdx, timeIdx)}
                         >
-                          <span className="tw-tracking-[0.14px]">{time}</span>
+                          {isReachingMaxCapacity(slot) && (
+                            <Image
+                              src="/assets/time-slot/is-reaching-max-capacity.svg"
+                              alt="capacity"
+                              width={0}
+                              height={0}
+                              style={{
+                                width: "auto",
+                                height: "auto",
+                                position: "absolute",
+                                top: 0,
+                                right: "50%",
+                                transform: "translateX(50%)",
+                              }}
+                            />
+                          )}
+                          <span className="tw-tracking-[0.14px]">
+                            {slot.time}
+                          </span>
                         </button>
                       );
                     })}

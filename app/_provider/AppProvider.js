@@ -6,9 +6,14 @@ import "dayjs/locale/ja";
 import locale from "antd/locale/ja_JP";
 import dayjs from "dayjs";
 import updateLocale from "dayjs/plugin/updateLocale";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
 
 dayjs.locale("ja");
 dayjs.extend(updateLocale);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Tokyo");
 dayjs.updateLocale("ja", {
   weekStart: 0,
 });
