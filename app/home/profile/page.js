@@ -17,7 +17,10 @@ const UserProfile = () => {
           <span className="tw-text-xxl tw-font-medium">プロフィール</span>
         </section>
         {user ? (
-          <section className="tw-p-4 tw-rounded-xl tw-bg-white tw-shadow">
+          <section
+            onClick={() => router.push("/home/profile/user")}
+            className="tw-p-4 tw-rounded-xl tw-bg-white tw-shadow"
+          >
             <div className="tw-flex tw-justify-start tw-items-center tw-gap-3">
               <section className="tw-bg-gray-200 tw-rounded-full tw-min-w-[60px] tw-max-w-[60px] tw-max-h-[60px] tw-min-h-[60px]"></section>
               <section className="tw-grow tw-flex tw-flex-col tw-gap-1">
