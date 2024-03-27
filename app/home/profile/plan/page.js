@@ -48,12 +48,20 @@ const ActiveSubscription = async () => {
         {memberTickets?.length ? (
           <>
             {/* TODO: Integrate tickets */}
-            <section className="tw-flex tw-flex-col tw-gap-1 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow">
-              <span className="tw-text-lg">ストレッチチケット (1回券)</span>
-              <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-                パーソナルストレッチメニュー予約専用チケットです。こちらのチケットは都度利用専用となります。
-              </p>
-            </section>
+            {memberTickets?.map((ticket) => (
+              <section
+                key={ticket.id}
+                className="tw-flex tw-flex-col tw-gap-1 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow"
+              >
+                <span className="tw-text-lg">
+                  {nullSafety(ticket.ticket?.name)}
+                  {`(${nullSafety(ticket.num)}回券)`}
+                </span>
+                <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-wrap">
+                  {nullSafety(ticket.description)}
+                </p>
+              </section>
+            ))}
           </>
         ) : null}
       </div>

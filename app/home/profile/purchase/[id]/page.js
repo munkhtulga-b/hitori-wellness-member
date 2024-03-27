@@ -62,7 +62,9 @@ const SubscriptionDetail = () => {
   const onPurchase = async () => {
     const body = {
       studioId: getPuchaseBody.branch?.id,
-      planId: getPuchaseBody.plan?.id,
+      [getPuchaseBody.item ? "itemId" : "planId"]: getPuchaseBody.item
+        ? getPuchaseBody.item.id
+        : getPuchaseBody.plan.id,
       cardId: selectedCard?.id,
     };
     createPurchase(body);
@@ -84,18 +86,20 @@ const SubscriptionDetail = () => {
   };
 
   const SelectedPlan = () => {
-    return getPuchaseBody?.plan ? (
+    const itemType = getPuchaseBody.plan ? "plan" : "item";
+    return getPuchaseBody[itemType] ? (
       <>
         <section className="tw-p-3 tw-rounded-xl tw-bg-white tw-shadow">
           <div className="tw-flex tw-flex-col tw-gap-2">
             <span className="tw-text-lg">
-              {nullSafety(getPuchaseBody.plan.name)}
+              {nullSafety(getPuchaseBody[itemType].name)}
             </span>
             <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-              {nullSafety(getPuchaseBody.plan.description)}
+              {nullSafety(getPuchaseBody[itemType].description)}
             </p>
             <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
-              getPuchaseBody.plan.monthly_price
+              getPuchaseBody[itemType].monthly_price ??
+                getPuchaseBody[itemType].prices[0].price
             )}（税込）／月～`}</span>
           </div>
         </section>
@@ -126,7 +130,8 @@ const SubscriptionDetail = () => {
                 <div className="tw-flex tw-justify-between">
                   <span className="tw-text-lg">合計額</span>
                   <span className="tw-text-lg">{`${thousandSeparator(
-                    getPuchaseBody.plan?.total_price
+                    getPuchaseBody[itemType]?.total_price ??
+                      getPuchaseBody[itemType]?.prices[0].price
                   )}円 （税込）／月～`}</span>
                 </div>
                 <Form.Item>

@@ -46,11 +46,12 @@ const PurchaseSubscription = () => {
     setIsLoading(false);
   };
 
-  const onSelect = (plan) => {
+  const onSelect = (item, type) => {
     setPurchaseBody({
-      plan: plan,
+      [type]: item,
+      [type === "plan" ? "item" : "plan"]: null,
     });
-    router.push(`/home/profile/purchase/${plan.id}`);
+    router.push(`/home/profile/purchase/${item.id}`);
   };
 
   return (
@@ -103,7 +104,7 @@ const PurchaseSubscription = () => {
                             </div>
                           </Button>
                           <Button
-                            onClick={() => onSelect(plan)}
+                            onClick={() => onSelect(plan, "plan")}
                             size="small"
                             className="tw-w-full"
                           >
@@ -137,7 +138,15 @@ const PurchaseSubscription = () => {
                           ticket.prices[0]?.price
                         )}（税込）／月～`}</span>
                         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
-                          <Button size="small" className="tw-w-full">
+                          <Button
+                            size="small"
+                            className="tw-w-full"
+                            onClick={() =>
+                              router.push(
+                                `/home/profile/purchase/ticket/${ticket.id}`
+                              )
+                            }
+                          >
                             <div className="tw-flex tw-justify-center tw-items-center tw-gap-2">
                               <span>詳細</span>
                               <Image
@@ -149,7 +158,11 @@ const PurchaseSubscription = () => {
                               />
                             </div>
                           </Button>
-                          <Button size="small" className="tw-w-full">
+                          <Button
+                            size="small"
+                            className="tw-w-full"
+                            onClick={() => onSelect(ticket, "item")}
+                          >
                             選ぶ
                           </Button>
                         </div>
