@@ -67,9 +67,13 @@ const ReservationHistory = () => {
             <span className="tw-grow tw-text-lg">日付時刻</span>
           </div>
           <span className="tw-text-secondary tw-leading-[22px] tw-tracking-[0.14px]">
-            {`${dayjs(reservation.start_at).format("YYYY/MM/DD")}(土) ${dayjs(
+            {`${dayjs.utc(reservation.start_at).format("YYYY/MM/DD")}(${dayjs(
               reservation.start_at
-            ).format("HH:mm")}-${dayjs(reservation.end_at).format("HH:mm")}`}
+            ).format("ddd")}) ${dayjs
+              .utc(reservation.start_at)
+              .format("HH:mm")}-${dayjs
+              .utc(reservation.end_at)
+              .format("HH:mm")}`}
           </span>
         </section>
         <section className="tw-flex tw-flex-col tw-gap-2">
