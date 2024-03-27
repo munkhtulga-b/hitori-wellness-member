@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Checkbox } from "antd";
+import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
@@ -10,7 +10,7 @@ import { useReservationStore } from "@/app/_store/reservation";
 const BranchDetailCard = ({ branch, memberPlan }) => {
   const router = useRouter();
   const setBranch = useReservationStore((state) => state.setBody);
-  const [isHomeBranch, setIsHomeBranch] = useState(false);
+  // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
   const handleMakeReservation = () => {
     setBranch({ branch: branch });
@@ -108,14 +108,14 @@ const BranchDetailCard = ({ branch, memberPlan }) => {
             </Button>
           </section>
         ) : null}
-        <section className="tw-py-6">
+        {/* <section className="tw-py-6">
           <Checkbox
             checked={isHomeBranch}
             onChange={(e) => setIsHomeBranch(e.target.checked)}
           >
             所属店舗にする。
           </Checkbox>
-        </section>
+        </section> */}
         <section className="tw-mt-1">
           <Button
             disabled={!memberPlan?.length}
