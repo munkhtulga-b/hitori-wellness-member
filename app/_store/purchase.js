@@ -3,7 +3,7 @@ import { persist, createJSONStorage } from "zustand/middleware";
 
 const initialState = {
   branch: null,
-  plan: null,
+  item: null,
   card: null,
 };
 
