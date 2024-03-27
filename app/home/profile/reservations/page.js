@@ -1,8 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "antd";
 import Image from "next/image";
+import $api from "@/app/_api";
+import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
+import NoData from "@/app/_components/custom/NoData";
+import { nullSafety } from "@/app/_utils/helpers";
+import dayjs from "dayjs";
 
 const filters = [
   {
@@ -23,9 +28,24 @@ const filters = [
 ];
 
 const ReservationHistory = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  const [reservations, setReservations] = useState(null);
   const [activeFilterId, setActiveFilterId] = useState(null);
 
-  const ReservationCard = () => {
+  useEffect(() => {
+    fetchReservations();
+  }, []);
+
+  const fetchReservations = async () => {
+    setIsLoading(true);
+    const { isOk, data } = await $api.member.reservation.getMany();
+    if (isOk) {
+      setReservations(data);
+    }
+    setIsLoading(false);
+  };
+
+  const ReservationCard = ({ reservation }) => {
     return (
       <>
         {activeFilterId === 3 ? (
@@ -47,7 +67,9 @@ const ReservationHistory = () => {
             <span className="tw-grow tw-text-lg">日付時刻</span>
           </div>
           <span className="tw-text-secondary tw-leading-[22px] tw-tracking-[0.14px]">
-            2024/01/03(土) 07:00-07:30
+            {`${dayjs(reservation.start_at).format("YYYY/MM/DD")}(土) ${dayjs(
+              reservation.start_at
+            ).format("HH:mm")}-${dayjs(reservation.end_at).format("HH:mm")}`}
           </span>
         </section>
         <section className="tw-flex tw-flex-col tw-gap-2">
@@ -59,13 +81,15 @@ const ReservationHistory = () => {
               height={0}
               style={{ width: "auto", height: "auto" }}
             />
-            <span className="tw-grow tw-text-lg">日付時刻</span>
+            <span className="tw-grow tw-text-lg">店舗</span>
           </div>
           <span className="tw-leading-[22px] tw-tracking-[0.14px]">
-            KARADA BESTA Ginza store
+            {nullSafety(reservation.m_studio?.name)}
           </span>
           <span className="tw-text-secondary tw-text-sm tw-tracking-[0.12px]">
-            104-0061 東京都中央区築地1-10-11 RATIO広路701
+            {`${nullSafety(reservation.m_studio?.address1)} ${nullSafety(
+              reservation.m_studio?.address2
+            )} ${nullSafety(reservation.m_studio?.address3)}`}
           </span>
         </section>
         <section className="tw-flex tw-flex-col tw-gap-2">
@@ -80,11 +104,10 @@ const ReservationHistory = () => {
             <span className="tw-grow tw-text-lg">プログラム</span>
           </div>
           <span className="tw-leading-[22px] tw-tracking-[0.14px]">
-            30分【会員様向け】パーソナルトレーニング予約メニュー
+            {nullSafety(reservation.m_program?.name)}
           </span>
           <span className="tw-text-secondary tw-text-sm tw-tracking-[0.12px]">
-            パーソナルトレーニング(30分)＋セルフエステor有酸素マシン(30分）
-            合計60分間
+            {nullSafety(reservation.m_program?.description)}
           </span>
         </section>
         {/* <section className="tw-flex tw-flex-col tw-gap-2">
@@ -107,6 +130,25 @@ const ReservationHistory = () => {
             </section>
           </div>
         </section> */}
+        {activeFilterId === null &&
+        reservation.m_program?.cancellation_policy ? (
+          <>
+            <section className="tw-p-2 tw-rounded-xl tw-border-2 tw-border-info">
+              <p className="tw-leading-[22px] tw-tracking-[0.14px]">
+                {nullSafety(reservation.m_program?.cancellation_policy)}
+              </p>
+            </section>
+
+            <section className="tw-flex tw-justify-end tw-gap-2">
+              <Button size="large" className="tw-w-[128px]">
+                キャンセル
+              </Button>
+              <Button type="primary" size="large" className="tw-w-[128px]">
+                編集
+              </Button>
+            </section>
+          </>
+        ) : null}
       </>
     );
   };
@@ -150,31 +192,30 @@ const ReservationHistory = () => {
           })}
         </section>
 
-        <section className="tw-p-4 tw-rounded-xl tw-bg-white tw-shadow">
-          <div className="tw-flex tw-flex-col tw-gap-4 tw-relative">
-            <ReservationCard />
-
-            {activeFilterId === null ? (
+        {!isLoading ? (
+          <>
+            {reservations?.length ? (
               <>
-                <section className="tw-p-2 tw-rounded-xl tw-border-2 tw-border-info">
-                  <p className="tw-leading-[22px] tw-tracking-[0.14px]">
-                    2024 年 1 月 7 日 00:00
-                    以降にキャンセルまたはスケジュールを変更した場合、払い戻しは行われません。
-                  </p>
-                </section>
-
-                <section className="tw-flex tw-justify-end tw-gap-2">
-                  <Button size="large" className="tw-w-[128px]">
-                    キャンセル
-                  </Button>
-                  <Button type="primary" size="large" className="tw-w-[128px]">
-                    編集
-                  </Button>
-                </section>
+                {reservations.map((reservation) => {
+                  return (
+                    <section
+                      key={reservation.id}
+                      className="tw-p-4 tw-rounded-xl tw-bg-white tw-shadow"
+                    >
+                      <div className="tw-flex tw-flex-col tw-gap-4 tw-relative">
+                        <ReservationCard reservation={reservation} />
+                      </div>
+                    </section>
+                  );
+                })}
               </>
-            ) : null}
-          </div>
-        </section>
+            ) : (
+              <NoData message={"No reservation found"} />
+            )}
+          </>
+        ) : (
+          <FullScreenLoading />
+        )}
       </div>
     </>
   );

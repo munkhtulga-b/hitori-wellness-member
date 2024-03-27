@@ -23,6 +23,7 @@ module.exports = {
         secondary: "#525560",
         support: "#1890FF",
         required: "#D51E27",
+        disabled: "#1C20243D",
         grayLight: "#505050",
       },
       borderColor: {

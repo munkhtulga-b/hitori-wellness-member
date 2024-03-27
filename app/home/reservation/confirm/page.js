@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
 import _ from "lodash";
+import $api from "@/app/_api";
 
 const ReservationConfirm = () => {
   const router = useRouter();
@@ -16,6 +17,7 @@ const ReservationConfirm = () => {
   const editReservationBody = useReservationStore((state) => state.editBody);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [bodyType, setBodyType] = useState(null);
 
   useLayoutEffect(() => {
@@ -24,6 +26,22 @@ const ReservationConfirm = () => {
       return router.push("/home/");
     }
   }, []);
+
+  const createReservation = async () => {
+    setIsLoading(true);
+    const body = {
+      studioId: reservationBody.branch?.id,
+      programId: reservationBody.program?.id,
+      startAt: reservationBody.time[0],
+      endAt: reservationBody.time[reservationBody.time?.length - 1],
+    };
+    const { isOk } = await $api.member.reservation.create(body);
+    if (isOk) {
+      resetReservationBody();
+      router.push("/home/reservation/success");
+    }
+    setIsLoading(false);
+  };
 
   const handleEdit = (type) => {
     setBodyType(type);
@@ -140,7 +158,7 @@ const ReservationConfirm = () => {
               </div>
             </section>
           ) : null}
-          {reservationBody?.time ? (
+          {reservationBody?.time?.length ? (
             <section className="tw-bg-white tw-rounded-xl tw-p-4 tw-shadow tw-flex tw-flex-col tw-gap-2">
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
                 <Image
@@ -157,13 +175,13 @@ const ReservationConfirm = () => {
               </div>
               <div>
                 <span className="tw-text-secondary">
-                  {`${dayjs(reservationBody?.time?.day).format(
+                  {`${dayjs(reservationBody?.time[0]).format(
                     "YYYY/MM/DD"
-                  )}(土) ${reservationBody?.time?.slots[0]}-${
-                    reservationBody?.time?.slots[
-                      reservationBody?.time?.slots.length - 1
-                    ]
-                  }`}
+                  )}(${dayjs(reservationBody?.time[0]).format("ddd")}) ${dayjs(
+                    reservationBody?.time[0]
+                  ).format("HH:mm")}-${dayjs(
+                    reservationBody?.time[reservationBody?.time?.length - 1]
+                  ).format("HH:mm")}`}
                 </span>
               </div>
             </section>
@@ -171,10 +189,8 @@ const ReservationConfirm = () => {
         </div>
         <div>
           <Button
-            onClick={() => {
-              resetReservationBody();
-              router.push("/home/reservation/success");
-            }}
+            loading={isLoading}
+            onClick={() => createReservation()}
             type="primary"
             size="large"
             className="tw-w-full"

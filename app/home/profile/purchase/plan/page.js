@@ -16,9 +16,11 @@ const PurchaseSubscription = () => {
   const setPurchaseBody = usePurchaseStore((state) => state.setBody);
   const [isLoading, setIsLoading] = useState(true);
   const [plans, setPlans] = useState(null);
+  const [tickets, setTickets] = useState(null);
 
   useEffect(() => {
     fetchPlans();
+    fetchTickets();
   }, []);
 
   const fetchPlans = async () => {
@@ -29,6 +31,17 @@ const PurchaseSubscription = () => {
     const { isOk, data } = await $api.member.plan.getMany(filters);
     if (isOk) {
       setPlans(data);
+    }
+    setIsLoading(false);
+  };
+
+  const fetchTickets = async () => {
+    setIsLoading(true);
+    const { isOk, data } = await $api.member.item.getMany({
+      itemType: "ticket",
+    });
+    if (isOk) {
+      setTickets(data);
     }
     setIsLoading(false);
   };
@@ -105,6 +118,47 @@ const PurchaseSubscription = () => {
             ) : (
               <NoData message={"No data"} />
             )}
+            {tickets?.length ? (
+              <>
+                {tickets.map((ticket) => {
+                  return (
+                    <section
+                      key={ticket.id}
+                      className="tw-p-3 tw-rounded-xl tw-bg-white tw-shadow"
+                    >
+                      <div className="tw-flex tw-flex-col tw-gap-2">
+                        <span className="tw-text-lg">
+                          {nullSafety(ticket.name)}
+                        </span>
+                        <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-wrap tw-line-clamp-3">
+                          {nullSafety(ticket.description)}
+                        </p>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
+                          ticket.prices[0]?.price
+                        )}（税込）／月～`}</span>
+                        <div className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
+                          <Button size="small" className="tw-w-full">
+                            <div className="tw-flex tw-justify-center tw-items-center tw-gap-2">
+                              <span>詳細</span>
+                              <Image
+                                src="/assets/program/arrow-right.svg"
+                                alt="next"
+                                width={0}
+                                height={0}
+                                style={{ width: "auto", height: "auto" }}
+                              />
+                            </div>
+                          </Button>
+                          <Button size="small" className="tw-w-full">
+                            選ぶ
+                          </Button>
+                        </div>
+                      </div>
+                    </section>
+                  );
+                })}
+              </>
+            ) : null}
           </>
         ) : (
           <FullScreenLoading isLoading={isLoading} />
