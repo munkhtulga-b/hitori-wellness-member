@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, message } from "antd";
 import Image from "next/image";
 import { useReservationStore } from "@/app/_store/reservation";
@@ -20,6 +20,13 @@ const TimeSlotSelect = ({ timeSlotList }) => {
   });
   const [selectedSlots, setSelectedSlots] = useState(null);
 
+  useEffect(() => {
+    console.log(dayjs().add(1, "month").endOf("month").format("YYYY-MM-DD"));
+    if (getReservation.time) {
+      setSelectedSlots(getReservation.time);
+    }
+  }, []);
+
   const onSlotSelect = ({ day, timeSlots }, dateIdx, timeIdx) => {
     if (!getReservation.program) {
       return messageApi.open({
@@ -30,12 +37,35 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     const slotsToCheck = getReservation.program.service_minutes / slotInterval;
     const shallowSlots = [];
     for (let i = 0; i <= slotsToCheck; i++) {
-      shallowSlots.push(timeSlots[timeIdx + i]);
       if (timeIdx + i > timeSlots.length - 1) {
-        console.log(timeIdx + i);
+        const slotsLength = timeSlots.length;
+        const currentIdx = timeIdx + i;
+        const nextDayIndex = currentIdx - slotsLength;
+        if (!getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].isAvailable) {
+          return messageApi.open({
+            type: "warning",
+            content: "Selected time is not available",
+          });
+        }
+        shallowSlots.push(
+          `${dayjs(day).add(1, "day").format("YYYY-MM-DD")} ${
+            getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].time
+          }`
+        );
+      } else {
+        if (!timeSlots[timeIdx + i].isAvailable) {
+          return messageApi.open({
+            type: "warning",
+            content: "Selected time is not available",
+          });
+        }
+        shallowSlots.push(
+          `${day.format("YYYY-MM-DD")} ${timeSlots[timeIdx + i].time}`
+        );
       }
     }
-    setSelectedSlots({ day: day, slots: shallowSlots });
+
+    setSelectedSlots(shallowSlots);
   };
 
   const onWeekChange = (type) => {
@@ -53,7 +83,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     for (let i = 0; i < 7; i++) {
       daysOfWeek.push({
         day: currentDate,
-        timeSlots: getAllAvailableTimes("07:00"),
+        timeSlots: getAllAvailableTimes("07:00", currentDate),
       });
       currentDate = currentDate.add(1, "day");
     }
@@ -90,7 +120,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     return daysOfWeek;
   };
 
-  const getAllAvailableTimes = (startTime) => {
+  const getAllAvailableTimes = (startTime, currentDate) => {
     const start = dayjs(`01/01/2024 ${startTime}`);
     const end = start.add(1, "day");
 
@@ -102,7 +132,15 @@ const TimeSlotSelect = ({ timeSlotList }) => {
       const hours = currentTime.format("HH");
       const minutes = currentTime.format("mm");
       times.push({
-        isAvailable: true,
+        isAvailable:
+          dayjs(dayjs(currentDate).format("YYYY-MM-DD")).isBefore(
+            dayjs().format("YYYY-MM-DD")
+          ) ||
+          dayjs(currentDate.format("YYYY-MM-DD")).isAfter(
+            dayjs().add(1, "month").endOf("month").format("YYYY-MM-DD")
+          )
+            ? false
+            : true,
         time: `${hours}:${minutes}`,
         currentCapacity: 0,
       });
@@ -114,13 +152,23 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     return times;
   };
 
-  const isReachingMaxCapacity = ({ currentCapcity }) => {
+  const isSlotSelected = (day, time) => {
+    let result = false;
+    if (selectedSlots) {
+      result = selectedSlots.includes(`${day.format("YYYY-MM-DD")} ${time}`);
+    }
+    return result;
+  };
+
+  const isReachingMaxCapacity = ({ currentCapacity }) => {
     let result = false;
     if (timeSlotList?.length && timeSlotList[0].max_capacity) {
       const percentage = Math.round(
         (timeSlotList[0].max_capacity * slotCapacityPercentage) / 100
       );
-      result = currentCapcity >= percentage;
+      result =
+        currentCapacity >= percentage &&
+        currentCapacity < timeSlotList[0].max_capacity;
     }
     return result;
   };
@@ -219,8 +267,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
                           key={slot.time}
                           disabled={!slot.isAvailable}
                           className={`${
-                            dayjs(selectedSlots?.day).isSame(date.day) &&
-                            selectedSlots?.slots.includes(slot.time)
+                            isSlotSelected(date.day, slot.time)
                               ? "tw-bg-aquaLight tw-ring-[2px] tw-ring-available"
                               : "tw-bg-white tw-ring-[1px] tw-ring-available"
                           } tw-w-full tw-h-[38px] tw-px-1 tw-py-2 tw-rounded-lg tw-text-center disabled:tw-bg-dividerMedium disabled:tw-text-disabled disabled:tw-ring-transparent tw-relative tw-transition-all tw-duration-300`}
@@ -280,9 +327,13 @@ const TimeSlotSelect = ({ timeSlotList }) => {
               </section>
               <section>
                 <p className="tw-tracking-[0.14px]">
-                  {`${dayjs(selectedSlots?.day).format("YYYY/MM/DD")}(土) ${
-                    selectedSlots?.slots[0]
-                  }-${selectedSlots?.slots[selectedSlots?.slots.length - 1]}`}
+                  {`${dayjs(selectedSlots[0]).format("YYYY/MM/DD")}(${dayjs(
+                    selectedSlots[0]
+                  ).format("ddd")}) ${dayjs(selectedSlots[0]).format(
+                    "HH:mm"
+                  )}-${dayjs(selectedSlots[selectedSlots?.length - 1]).format(
+                    "HH:mm"
+                  )}`}
                 </p>
               </section>
               <section>

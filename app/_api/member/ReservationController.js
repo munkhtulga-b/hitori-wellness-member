@@ -9,6 +9,10 @@ export const getOne = (id) => {
   return fetchData(`reservations/${id}`, "GET");
 };
 
+export const create = (body) => {
+  return fetchData(`reservations`, "POST", body);
+};
+
 export const getAllTimeSlots = (queries) => {
   const queryString = createQueryString(queries);
   return fetchData(`timeslots${queryString}`, "GET");
