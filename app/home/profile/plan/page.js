@@ -13,7 +13,7 @@ const ActiveSubscription = async () => {
     cookieStore.get("token").value
   );
 
-  console.log(memberTickets);
+  console.log(memberPlan);
 
   return (
     <>

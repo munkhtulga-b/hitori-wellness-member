@@ -30,6 +30,7 @@ const AuthSignup = () => {
 
   const handleStepOne = (params) => {
     updateRequestBody(params);
+    setRegisteredEmail(params.mailAddress);
     router.push(pathName + "?" + createQueryString("step", 2));
     setCurrentForm((prev) => prev + 1);
   };
@@ -49,7 +50,6 @@ const AuthSignup = () => {
     setIsLoading(true);
     const { isOk } = await $api.auth.register(params);
     if (isOk) {
-      setRegisteredEmail(params.email);
       router.push(pathName + "?" + createQueryString("step", "complete"));
       resetRequestBody();
     }

@@ -1,35 +1,19 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
 
+const initialState = {
+  status: 1,
+};
+
 export const useSignupStore = create(
   persist(
     (set, get) => ({
-      body: {
-        status: 1,
-        mailAddress: null,
-        password: null,
-        birthday: null,
-        firstName: null,
-        lastName: null,
-        firstKana: null,
-        lastKana: null,
-        tel: null,
-        gender: null,
-        zipCode1: null,
-        zipCode2: null,
-        prefecture: null,
-        address1: null,
-        address2: null,
-        address3: null,
-        isAcceptMail: null,
-      },
+      body: initialState,
       setBody: (payload) => set({ body: { ...get().body, ...payload } }),
       getBody: () => get().body,
       resetBody: () =>
         set({
-          body: {
-            status: 1,
-          },
+          body: initialState,
         }),
     }),
     {
