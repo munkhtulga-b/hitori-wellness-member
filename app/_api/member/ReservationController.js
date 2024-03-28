@@ -1,8 +1,9 @@
 import fetchData from "../config";
 import { createQueryString } from "@/app/_utils/helpers";
 
-export const getMany = (token) => {
-  return fetchData("reservations", "GET", undefined, token);
+export const getMany = (queries, token) => {
+  const queryString = createQueryString(queries);
+  return fetchData(`reservations${queryString}`, "GET", undefined, token);
 };
 
 export const getOne = (id) => {

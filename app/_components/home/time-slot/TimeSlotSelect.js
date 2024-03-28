@@ -21,7 +21,6 @@ const TimeSlotSelect = ({ timeSlotList }) => {
   const [selectedSlots, setSelectedSlots] = useState(null);
 
   useEffect(() => {
-    console.log(dayjs().add(1, "month").endOf("month").format("YYYY-MM-DD"));
     if (getReservation.time) {
       setSelectedSlots(getReservation.time);
     }
@@ -31,7 +30,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     if (!getReservation.program) {
       return messageApi.open({
         type: "warning",
-        content: "Please select a program",
+        content: "プログラムをご選択ください。",
       });
     }
     const slotsToCheck = getReservation.program.service_minutes / slotInterval;
@@ -44,7 +43,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
         if (!getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].isAvailable) {
           return messageApi.open({
             type: "warning",
-            content: "Selected time is not available",
+            content: "選択不可能な時間です。別の開始時間をご選択ください。",
           });
         }
         shallowSlots.push(
@@ -56,7 +55,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
         if (!timeSlots[timeIdx + i].isAvailable) {
           return messageApi.open({
             type: "warning",
-            content: "Selected time is not available",
+            content: "選択不可能な時間です。別の開始時間をご選択ください。",
           });
         }
         shallowSlots.push(

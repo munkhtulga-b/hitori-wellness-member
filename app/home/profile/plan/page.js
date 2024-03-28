@@ -13,8 +13,6 @@ const ActiveSubscription = async () => {
     cookieStore.get("token").value
   );
 
-  console.log(memberPlan);
-
   return (
     <>
       <div className="tw-flex tw-flex-col tw-gap-4">
@@ -43,7 +41,9 @@ const ActiveSubscription = async () => {
             </section>
           </>
         ) : (
-          <NoData message={"No plan found"} />
+          <NoData
+            message={" 現在、ご購入されたプラン・チケットはございません。"}
+          />
         )}
         {memberTickets?.length ? (
           <>
