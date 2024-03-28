@@ -82,12 +82,12 @@ const BranchDetailCard = ({ branch, memberPlan }) => {
             </p>
           </div>
         </section>
-        <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
+        {/* <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
           <p className="tw-leading-[22px] tw-tracking-[0.14px]">
             年中無休（年末年始を除く）
             ※閉店30分前の最終受付時間はトレーニングのみとなります。
           </p>
-        </section>
+        </section> */}
         {!memberPlan?.length ? (
           <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4 tw-flex tw-justify-between tw-items-center">
             <Image
@@ -98,7 +98,7 @@ const BranchDetailCard = ({ branch, memberPlan }) => {
               style={{ width: "auto", height: "auto" }}
             />
             <span className="tw-text-sm tw-tracking-[0.12px]">
-              予約するにはチケットが必要です。
+              予約するにはプランへの加入・チケットが必要です。
             </span>
             <Button
               size="small"

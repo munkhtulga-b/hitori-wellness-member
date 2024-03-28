@@ -101,7 +101,7 @@ const PaymentHistory = async () => {
             </section>
           ))
         ) : (
-          <NoData message={"No payment made"} />
+          <NoData message={"履歴が存在しません。"} />
         )}
       </div>
     </>

@@ -106,7 +106,7 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "Please input your post code!",
+                message: "郵便番号１を入力してください。",
                 whitespace: false,
               },
             ]}
@@ -118,7 +118,7 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "Please input your post code!",
+                message: "郵便番号２を入力してください。",
                 whitespace: false,
               },
             ]}
@@ -155,7 +155,7 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "Please input your prefecture!",
+                message: "都道府県を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -167,7 +167,7 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "Please input your city!",
+                message: "市区町村を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -179,7 +179,7 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "Please input your town!",
+                message: "町名・番地を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -191,7 +191,7 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "Please input your town!",
+                message: "ビル・マンション名を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -207,7 +207,7 @@ const SignupStepTwo = ({ onComplete }) => {
         rules={[
           {
             required: true,
-            message: "Emergency contact required!",
+            message: "緊急連絡先電話番号を入力してください。",
             whitespace: false,
           },
         ]}

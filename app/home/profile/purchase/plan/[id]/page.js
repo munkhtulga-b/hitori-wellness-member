@@ -23,7 +23,9 @@ const PlanDetail = async ({ params }) => {
         </>
       ) : (
         <>
-          <NoData message={"No plan found"} />
+          <NoData
+            message={" 現在、ご購入されたプラン・チケットはございません。"}
+          />
         </>
       )}
     </>

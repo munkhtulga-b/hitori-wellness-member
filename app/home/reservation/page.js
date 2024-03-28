@@ -185,7 +185,7 @@ const ProgramsPage = () => {
             )}
             {activeStepId === 3 && (
               <>
-                {timeslotList?.length ? (
+                {timeslotList ? (
                   <>
                     <TimeSlotSelect timeSlotList={timeslotList} />
                   </>

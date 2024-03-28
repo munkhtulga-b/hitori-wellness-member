@@ -60,7 +60,7 @@ const AddCreditCard = () => {
               rules={[
                 {
                   required: true,
-                  message: "姓（氏名）を入力してください。",
+                  message: "カード番号を入力してください。",
                 },
                 // () => ({
                 //   validator(_, value) {
@@ -92,7 +92,7 @@ const AddCreditCard = () => {
               rules={[
                 {
                   required: true,
-                  message: "名（氏名）を入力してください。",
+                  message: "カード名義人氏名を入力してください。",
                   whitespace: true,
                 },
               ]}
@@ -107,7 +107,7 @@ const AddCreditCard = () => {
                 rules={[
                   {
                     required: true,
-                    message: "姓（氏名）を入力してください。",
+                    message: "カードの有効期限を入力してください。",
                   },
                 ]}
                 getValueFromEvent={(e) => {
@@ -131,7 +131,7 @@ const AddCreditCard = () => {
                 rules={[
                   {
                     required: true,
-                    message: "姓（氏名）を入力してください。",
+                    message: "カードのCVVコードを入力してください。",
                   },
                 ]}
                 getValueFromEvent={(e) => {
