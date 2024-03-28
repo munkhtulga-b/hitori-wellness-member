@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { redirectUnauthorizedRequest } from "../auth/actions";
 
 const fetchData = async (endpoint, method, body, serverToken) => {
   const baseURL =
@@ -38,8 +39,7 @@ const fetchData = async (endpoint, method, body, serverToken) => {
 
       // Redirects the user back to login page if their token has expired
       if (status === 401) {
-        Cookies.remove("token");
-        window.location.href = "/auth/login";
+        redirectUnauthorizedRequest();
       }
     }
 
