@@ -7,6 +7,7 @@ import { usePathname, redirect } from "next/navigation";
 import { Suspense, useLayoutEffect, useState } from "react";
 
 export default function AuthLayout({ children }) {
+  const pathName = usePathname();
   const [isMounted, setIsMounted] = useState(false);
 
   useLayoutEffect(() => {
@@ -16,8 +17,6 @@ export default function AuthLayout({ children }) {
     }
     setIsMounted(true);
   }, []);
-
-  const pathName = usePathname();
 
   return (
     <div className="tw-flex tw-flex-col">

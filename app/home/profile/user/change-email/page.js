@@ -5,6 +5,7 @@ import { Button, Form, Input } from "antd";
 import { useRouter } from "next/navigation";
 import $api from "@/app/_api";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
+import Cookies from "js-cookie";
 
 const UserChangeEmail = () => {
   const router = useRouter();
@@ -19,6 +20,7 @@ const UserChangeEmail = () => {
     if (isOk) {
       setSentEmail(params.mailAddress);
       setIsEmailSent(true);
+      Cookies.remove("token");
     }
     setIsLoading(false);
   };
