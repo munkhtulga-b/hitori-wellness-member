@@ -15,6 +15,7 @@ export const useReservationStore = create(
       setBody: (payload) => set({ body: { ...get().body, ...payload } }),
       getBody: () => get().body,
       editBody: (payload) => {
+        console.log(payload);
         const keys = Object.keys(get().body);
         const idx = keys.indexOf(payload);
         for (let i = idx; i < Object.keys(get().body).length; i++) {

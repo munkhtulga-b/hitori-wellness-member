@@ -6,7 +6,7 @@ const CheckInHistory = () => {
     <>
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section>
-          <span className="tw-text-xxl tw-font-medium">Check-in history</span>
+          <span className="tw-text-xxl tw-font-medium">入退館記録</span>
         </section>
 
         <section className="tw-flex tw-flex-wrap tw-justify-start tw-items-center tw-gap-2">

@@ -13,12 +13,14 @@ import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 const HomeBranchDetailCard = ({ branch, reservation }) => {
   const router = useRouter();
   const setBranch = useReservationStore((state) => state.setBody);
+  const editReservationBody = useReservationStore((state) => state.editBody);
   const [isCancelled, setIsCancelled] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
   const handleMakeReservation = () => {
     setBranch({ branch: branch });
+    editReservationBody("program");
     router.push("/home/reservation");
   };
 

@@ -95,7 +95,7 @@ const UserChangeEmail = () => {
               <Form.Item>
                 <div className="tw-flex tw-justify-end tw-items-center tw-gap-2">
                   <Button size="large" onClick={() => router.back()}>
-                    Back
+                    戻る
                   </Button>
                   <Button
                     loading={isLoading}
@@ -103,7 +103,7 @@ const UserChangeEmail = () => {
                     type="primary"
                     htmlType="submit"
                   >
-                    Confirm
+                    送信
                   </Button>
                 </div>
               </Form.Item>
