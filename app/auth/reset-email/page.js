@@ -41,12 +41,12 @@ const ChangeEmailSuccess = () => {
         </section>
         <section className="tw-w-full">
           <Button
-            onClick={() => router.push("/home/profile/user")}
+            onClick={() => router.push("/auth/login")}
             type="primary"
             htmlType="submit"
             className="tw-w-full"
           >
-            Back to profile
+            Back to login
           </Button>
         </section>
       </>

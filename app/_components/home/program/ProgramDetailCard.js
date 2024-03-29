@@ -40,7 +40,7 @@ const ProgramDetailCard = ({ program }) => {
         <div className="tw-flex tw-flex-col tw-gap-4">
           <section className="tw-flex tw-flex-col tw-gap-1">
             <div
-              className={`tw-w-full tw-h-[150px] tw-bg-gray-200 tw-rounded-xl tw-overflow-hidden`}
+              className={`tw-w-full tw-h-[230px] tw-bg-gray-200 tw-rounded-xl tw-overflow-hidden`}
             >
               {program.thumbnail_code ? (
                 <Image
