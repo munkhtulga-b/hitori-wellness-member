@@ -29,7 +29,7 @@ const ChangePassword = () => {
     });
     if (isOk) {
       form.resetFields();
-      messageApi.success("Password changed successfully");
+      messageApi.success("パスワードの変更が完了しました。");
     }
     setIsLoading(false);
   };

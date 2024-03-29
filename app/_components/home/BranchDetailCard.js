@@ -10,10 +10,12 @@ import { useReservationStore } from "@/app/_store/reservation";
 const BranchDetailCard = ({ branch, memberPlan }) => {
   const router = useRouter();
   const setBranch = useReservationStore((state) => state.setBody);
+  const editReservationBody = useReservationStore((state) => state.editBody);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
   const handleMakeReservation = () => {
     setBranch({ branch: branch });
+    editReservationBody("program");
     router.push("/home/reservation");
   };
 

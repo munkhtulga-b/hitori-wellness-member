@@ -5,9 +5,11 @@ import Image from "next/image";
 import { useReservationStore } from "@/app/_store/reservation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+// import { useUserStore } from "@/app/_store/user";
 
 const TimeSlotSelect = ({ timeSlotList }) => {
   const router = useRouter();
+  // const getUser = useUserStore((state) => state.getUser());
   const [messageApi, contextHolder] = message.useMessage();
   const slotInterval = 30;
   const slotCapacityPercentage = 60;
@@ -82,7 +84,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     for (let i = 0; i < 7; i++) {
       daysOfWeek.push({
         day: currentDate,
-        timeSlots: getAllAvailableTimes("07:00", currentDate),
+        timeSlots: getAllAvailableTimes("00:00", currentDate),
       });
       currentDate = currentDate.add(1, "day");
     }
@@ -137,7 +139,10 @@ const TimeSlotSelect = ({ timeSlotList }) => {
           ) ||
           dayjs(currentDate.format("YYYY-MM-DD")).isAfter(
             dayjs().add(1, "month").endOf("month").format("YYYY-MM-DD")
-          )
+          ) ||
+          dayjs(
+            `${currentDate.format("YYYY-MM-DD")} ${hours}:${minutes}`
+          ).isBefore(dayjs().format("YYYY-MM-DD HH:mm"))
             ? false
             : true,
         time: `${hours}:${minutes}`,
@@ -171,6 +176,27 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     }
     return result;
   };
+
+  // const doesUserHasReservationInTheDay = (currentDate) => {
+  //   let result = false;
+  //   if (timeSlotList?.length) {
+  //     timeSlotList.forEach((item) => {
+  //       item.reserved.forEach((slot) => {
+  //         if (slot.details?.length) {
+  //           if (
+  //             slot.details[0].member_id === getUser.id &&
+  //             dayjs(dayjs(currentDate).format("YYYY-MM-DD")).isSame(
+  //               dayjs.utc(slot.details[0].start_at).format("YYYY-MM-DD")
+  //             )
+  //           ) {
+  //             result = true;
+  //           }
+  //         }
+  //       });
+  //     });
+  //   }
+  //   return result;
+  // };
 
   return (
     <>

@@ -102,7 +102,7 @@ const EditUserInfo = () => {
     setIsRequesting(true);
     const { isOk } = await $api.member.user.update(getUser.id, body);
     if (isOk) {
-      messageApi.success("Information updated successfully");
+      messageApi.success("更新されました。");
     }
     setIsRequesting(false);
   };
@@ -139,7 +139,7 @@ const EditUserInfo = () => {
                   size="small"
                   onClick={() => router.push("/home/profile/user/change-email")}
                 >
-                  Change
+                  変更
                 </Button>
               </div>
             </section>

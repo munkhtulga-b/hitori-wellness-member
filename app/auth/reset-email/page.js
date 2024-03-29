@@ -46,7 +46,7 @@ const ChangeEmailSuccess = () => {
             htmlType="submit"
             className="tw-w-full"
           >
-            Back to login
+            ログインページに戻る
           </Button>
         </section>
       </>
@@ -59,7 +59,7 @@ const ChangeEmailSuccess = () => {
         <StatusAnimation type={"error"} />
         <section className="tw-self-stretch tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info tw-w-full">
           <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px] tw-text-center">
-            Oops, something went wrong!
+            失敗しました
           </p>
         </section>
         <section className="tw-w-full">
@@ -69,7 +69,7 @@ const ChangeEmailSuccess = () => {
             htmlType="submit"
             className="tw-w-full"
           >
-            Back to login
+            ログインページに戻る
           </Button>
         </section>
       </>
