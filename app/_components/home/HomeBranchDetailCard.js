@@ -1,21 +1,34 @@
 "use client";
 
-// import { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
+import $api from "@/app/_api";
 import ReservationCard from "./profile/reservation/ReservationCard";
+import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 
 const HomeBranchDetailCard = ({ branch, reservation }) => {
   const router = useRouter();
   const setBranch = useReservationStore((state) => state.setBody);
+  const [isCancelled, setIsCancelled] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
   const handleMakeReservation = () => {
     setBranch({ branch: branch });
     router.push("/home/reservation");
+  };
+
+  const cancelReservation = async ({ id }) => {
+    setIsRequesting(true);
+    const { isOk } = await $api.member.reservation.cancel(id);
+    if (isOk) {
+      setIsCancelled(true);
+    }
+    setIsRequesting(false);
   };
 
   return (
@@ -86,7 +99,16 @@ const HomeBranchDetailCard = ({ branch, reservation }) => {
           </section>
         ) : (
           <>
-            <ReservationCard reservation={reservation} activeFilterId={null} />
+            <ReservationCard
+              reservation={reservation}
+              activeFilterId={
+                isCancelled
+                  ? ReservationStatusEnum.CANCELLED
+                  : ReservationStatusEnum.ACTIVE
+              }
+              cancelReservation={cancelReservation}
+              isRequesting={isRequesting}
+            />
           </>
         )}
         <section className="tw-mt-1">
