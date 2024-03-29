@@ -41,7 +41,7 @@ const NewPassword = () => {
   const resetPassword = async (password) => {
     setIsLoading(true);
     const token = searchParams.get("token");
-    const { isOk } = await $api.auth.resetPassword(token, {
+    const { isOk } = await $api.auth.resetPassword.resetPassword(token, {
       password,
     });
     if (isOk) {

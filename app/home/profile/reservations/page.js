@@ -7,20 +7,21 @@ import $api from "@/app/_api";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 import NoData from "@/app/_components/custom/NoData";
 import ReservationCard from "@/app/_components/home/profile/reservation/ReservationCard";
+import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 
 const filters = [
   {
-    id: null,
+    id: ReservationStatusEnum.ACTIVE,
     text: "予約中",
     dataIndex: "",
   },
   {
-    id: 2,
+    id: ReservationStatusEnum.CHECK_OUT,
     text: "過去",
     dataIndex: "",
   },
   {
-    id: 3,
+    id: ReservationStatusEnum.CANCELLED,
     text: "キャンセル",
     dataIndex: "",
   },
@@ -28,25 +29,44 @@ const filters = [
 
 const ReservationHistory = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [isRequesting, setIsRequesting] = useState(false);
   const [reservations, setReservations] = useState(null);
-  const [activeFilterId, setActiveFilterId] = useState(null);
+  const [activeFilterId, setActiveFilterId] = useState(
+    ReservationStatusEnum.ACTIVE
+  );
 
   useEffect(() => {
     fetchReservations();
-  }, []);
+  }, [activeFilterId]);
 
   const fetchReservations = async () => {
     setIsLoading(true);
-    const { isOk, data } = await $api.member.reservation.getMany();
+    const { isOk, data } = await $api.member.reservation.getMany({
+      status: activeFilterId,
+    });
     if (isOk) {
       setReservations(data);
     }
     setIsLoading(false);
   };
 
-  const onFilterChange = (id) => {
-    if (id === activeFilterId) return setActiveFilterId(null);
+  const cancelReservation = async ({ id }) => {
+    setIsRequesting(true);
+    const { isOk } = await $api.member.reservation.cancel(id);
+    if (isOk) {
+      await fetchReservations();
+    }
+    setIsRequesting(false);
+  };
+
+  const onFilterChange = ({ id }) => {
+    if (id === activeFilterId)
+      return setActiveFilterId(ReservationStatusEnum.ACTIVE);
     setActiveFilterId(id);
+  };
+
+  const isFilterActive = ({ id }) => {
+    return activeFilterId === id;
   };
 
   return (
@@ -60,15 +80,16 @@ const ReservationHistory = () => {
             return (
               <Button
                 key={filter.text}
-                onClick={() => onFilterChange(filter.id)}
+                onClick={() => onFilterChange(filter)}
                 style={{
-                  borderColor: activeFilterId === filter.id && "#B7DDFF",
-                  color: activeFilterId === filter.id && "#1890FF",
+                  borderColor: isFilterActive(filter) && "#B7DDFF",
+                  color: isFilterActive(filter) && "#1890FF",
                 }}
               >
                 <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
                   <span>{filter.text}</span>
-                  {activeFilterId && activeFilterId === filter.id ? (
+                  {activeFilterId !== ReservationStatusEnum.ACTIVE &&
+                  isFilterActive(filter) ? (
                     <Image
                       src="/assets/branch/close-icon-blue.svg"
                       alt="remove"
@@ -97,6 +118,8 @@ const ReservationHistory = () => {
                         <ReservationCard
                           reservation={reservation}
                           activeFilterId={activeFilterId}
+                          isRequesting={isRequesting}
+                          cancelReservation={cancelReservation}
                         />
                       </div>
                     </section>

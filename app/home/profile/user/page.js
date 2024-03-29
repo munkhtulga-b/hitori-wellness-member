@@ -1,20 +1,28 @@
 "use client";
 
 import dayjs from "dayjs";
-import { Button, Form, Input, DatePicker, Spin } from "antd";
+import { useRouter } from "next/navigation";
+import { Button, Form, Input, DatePicker, Checkbox, Spin, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { getAddressFromPostalCode } from "@/app/_utils/helpers";
+import { getAddressFromPostalCode, nullSafety } from "@/app/_utils/helpers";
 import { useEffect, useState } from "react";
+import { useUserStore } from "@/app/_store/user";
+import $api from "@/app/_api";
 
 const EditUserInfo = () => {
+  const router = useRouter();
   const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
+  const getUser = useUserStore((state) => state.getUser());
   const zipCode2 = Form.useWatch("zipCode2", form);
   const zipCode1 = Form.useWatch("zipCode1", form);
   const [isFetching, setIsFetching] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
+  const [user, setUser] = useState(null);
   const [address, setAddress] = useState(null);
 
   useEffect(() => {
-    console.log("edit");
+    fetchUserDetails();
   }, []);
 
   useEffect(() => {
@@ -51,6 +59,54 @@ const EditUserInfo = () => {
     }
   }, [address]);
 
+  useEffect(() => {
+    const fields = [
+      { camel: "status", snake: "status" },
+      { camel: "firstName", snake: "first_name" },
+      { camel: "lastName", snake: "last_name" },
+      { camel: "firstKana", snake: "first_kana" },
+      { camel: "lastKana", snake: "last_kana" },
+      { camel: "gender", snake: "gender" },
+      { camel: "birthday", snake: "birthday" },
+      { camel: "zipCode1", snake: "zip_code1" },
+      { camel: "zipCode2", snake: "zip_code2" },
+      { camel: "prefecture", snake: "prefecture" },
+      { camel: "address1", snake: "address1" },
+      { camel: "address2", snake: "address2" },
+      { camel: "address3", snake: "address3" },
+      { camel: "tel", snake: "tel" },
+      { camel: "emergencyTel", snake: "emergency_tel" },
+      { camel: "isAcceptMail", snake: "is_accept_mail" },
+    ];
+    if (user) {
+      for (const { camel, snake } of fields) {
+        form.setFieldsValue({
+          [camel]: snake === "birthday" ? dayjs(user[snake]) : user[snake],
+        });
+      }
+    }
+  }, [user]);
+
+  const fetchUserDetails = async () => {
+    if (!getUser) return;
+    setIsFetching(true);
+    const { isOk, data } = await $api.member.user.getOne(getUser.id);
+    if (isOk) {
+      setUser(data);
+    }
+    setIsFetching(false);
+  };
+
+  const updateUserDetails = async (body) => {
+    delete body.birthday;
+    setIsRequesting(true);
+    const { isOk } = await $api.member.user.update(getUser.id, body);
+    if (isOk) {
+      messageApi.success("Information updated successfully");
+    }
+    setIsRequesting(false);
+  };
+
   const customizeRequiredMark = (label, { required }) => (
     <>
       {label}
@@ -60,6 +116,7 @@ const EditUserInfo = () => {
 
   return (
     <>
+      {contextHolder}
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section>
           <span className="tw-text-xxl tw-font-medium">ユーザー情報</span>
@@ -69,15 +126,19 @@ const EditUserInfo = () => {
           requiredMark={customizeRequiredMark}
           form={form}
           name="UserInfo"
-          onFinish={(params) => console.log(params)}
+          onFinish={(params) => updateUserDetails(params)}
         >
           <Form.Item>
             <section className="tw-p-3 tw-rounded-lg tw-bg-bgForm tw-border tw-border-form">
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
                 <span className="tw-grow tw-leading-[26px] tw-tracking-[0.14px]">
-                  Email
+                  {nullSafety(user?.mail_address)}
                 </span>
-                <Button className="tw-w-[127px]" size="small">
+                <Button
+                  className="tw-w-[127px]"
+                  size="small"
+                  onClick={() => router.push("/home/profile/user/change-email")}
+                >
                   Change
                 </Button>
               </div>
@@ -167,6 +228,7 @@ const EditUserInfo = () => {
               disabledDate={(current) =>
                 current && current > dayjs().endOf("day")
               }
+              disabled
               format={"YYYY/MM/DD"}
             />
           </Form.Item>
@@ -186,14 +248,16 @@ const EditUserInfo = () => {
           </Form.Item>
 
           <section className="tw-flex tw-flex-col tw-gap-2">
-            <label>郵便番号</label>
+            <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
+              郵便番号
+            </label>
             <div className="tw-grid tw-grid-cols-2 tw-auto-rows-min tw-gap-2">
               <Form.Item
                 name="zipCode1"
                 rules={[
                   {
-                    required: false,
-                    // message: "Please input your post code!",
+                    required: true,
+                    message: "郵便番号１を入力してください。",
                     whitespace: false,
                   },
                 ]}
@@ -204,8 +268,8 @@ const EditUserInfo = () => {
                 name="zipCode2"
                 rules={[
                   {
-                    required: false,
-                    // message: "Please input your post code!",
+                    required: true,
+                    message: "Please i郵便番号２を入力してください。",
                     whitespace: false,
                   },
                 ]}
@@ -236,8 +300,8 @@ const EditUserInfo = () => {
             name="prefecture"
             rules={[
               {
-                required: false,
-                message: "Please input your prefecture!",
+                required: true,
+                message: "都道府県を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -249,8 +313,8 @@ const EditUserInfo = () => {
             name="address1"
             rules={[
               {
-                required: false,
-                message: "Please input your city!",
+                required: true,
+                message: "市区町村を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -262,8 +326,8 @@ const EditUserInfo = () => {
             name="address2"
             rules={[
               {
-                required: false,
-                message: "Please input your town!",
+                required: true,
+                message: "町名・番地を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -275,8 +339,8 @@ const EditUserInfo = () => {
             name="address3"
             rules={[
               {
-                required: false,
-                message: "Please input your town!",
+                required: true,
+                message: "ビル・マンション名を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -285,11 +349,12 @@ const EditUserInfo = () => {
           </Form.Item>
 
           <Form.Item
+            name="emergencyTel"
             label="緊急連絡先"
             rules={[
               {
-                required: false,
-                message: "Emergency contact required!",
+                required: true,
+                message: "緊急連絡先電話番号を入力してください。",
                 whitespace: false,
               },
             ]}
@@ -297,15 +362,30 @@ const EditUserInfo = () => {
             <Input placeholder="電話番号" type="number" />
           </Form.Item>
 
+          <Form.Item
+            name="isAcceptMail"
+            valuePropName="checked"
+            style={{ marginBottom: 16 }}
+          >
+            <Checkbox className="tw-text-xl">
+              <span className="tw-text-lg">プロモーションメールを受け取る</span>
+            </Checkbox>
+          </Form.Item>
+
           <Form.Item>
-            <Button
-              size="large"
-              type="primary"
-              htmlType="submit"
-              className="tw-w-full"
-            >
-              次へ
-            </Button>
+            <section className="tw-flex tw-justify-end tw-gap-2">
+              <Button size="large" onClick={() => router.back()}>
+                戻る
+              </Button>
+              <Button
+                loading={isRequesting}
+                size="large"
+                type="primary"
+                htmlType="submit"
+              >
+                保存
+              </Button>
+            </section>
           </Form.Item>
         </Form>
       </div>
