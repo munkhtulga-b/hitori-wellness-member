@@ -2,12 +2,16 @@ import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useRouter } from "next/navigation";
 
-const BranchCard = ({ branch }) => {
+const BranchCard = ({ branch, isHomeBranch }) => {
   const router = useRouter();
 
   return (
     <div
-      onClick={() => router.push(`/home/branch/${branch.id}`)}
+      onClick={() =>
+        router.push(
+          `/home/${isHomeBranch ? "active-branch" : `/branch/${branch.id}`}`
+        )
+      }
       className="tw-p-2 tw-rounded-[16px] tw-shadow tw-w-fit tw-bg-white"
     >
       <div className="tw-flex tw-flex-col tw-gap-2">

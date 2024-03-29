@@ -14,6 +14,10 @@ export const create = (body) => {
   return fetchData(`reservations`, "POST", body);
 };
 
+export const cancel = (id) => {
+  return fetchData(`reservations/cancel/${id}`, "POST");
+};
+
 export const getAllTimeSlots = (queries) => {
   const queryString = createQueryString(queries);
   return fetchData(`timeslots${queryString}`, "GET");

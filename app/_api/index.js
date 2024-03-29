@@ -4,7 +4,8 @@ import register from "./auth/RegisterController";
 import sendVerification from "./auth/SendVerificationController";
 import verify from "@/app/_api/auth/VerifyEmailController";
 import forgotPassword from "./auth/ForgotPasswordController";
-import resetPassword from "./auth/ResetPasswordController";
+import * as resetPassword from "./auth/ResetPasswordController";
+import changeEmail from "./auth/ChangeEmailController";
 
 // Member API
 import * as branch from "./member/BranchController";
@@ -16,6 +17,7 @@ import * as purchase from "./member/PurchaseController";
 import * as reservation from "./member/ReservationController";
 import * as memberTicket from "./member/MemberTicketController";
 import * as item from "./member/ItemController";
+import * as user from "./member/UserController";
 
 const $api = {
   auth: {
@@ -25,6 +27,7 @@ const $api = {
     verify,
     forgotPassword,
     resetPassword,
+    changeEmail,
   },
   member: {
     branch,
@@ -36,6 +39,7 @@ const $api = {
     reservation,
     memberTicket,
     item,
+    user,
   },
 };
 

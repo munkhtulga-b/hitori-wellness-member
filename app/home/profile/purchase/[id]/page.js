@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
-import { Form, Button, Input, Radio, Checkbox, Modal } from "antd";
+import { Form, Button, Input, Radio, Modal } from "antd";
 import Image from "next/image";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
@@ -127,13 +127,59 @@ const SubscriptionDetail = () => {
                 </Form.Item> */}
               </section>
               <section className="tw-flex tw-flex-col tw-gap-4 tw-pt-4 tw-border-t tw-border-dividerLight">
-                <div className="tw-flex tw-justify-between">
-                  <span className="tw-text-lg">合計額</span>
-                  <span className="tw-text-lg">{`${thousandSeparator(
-                    getPuchaseBody[itemType]?.total_price ??
-                      getPuchaseBody[itemType]?.prices[0].price
-                  )}円 （税込）／月～`}</span>
-                </div>
+                <ul>
+                  {itemType === "plan" ? (
+                    <>
+                      <li className="tw-flex tw-justify-between">
+                        <span className="tw-text-lg tw-text-secondary">
+                          項目
+                        </span>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
+                          金額（税込）
+                        </span>
+                      </li>
+                      <li className="tw-flex tw-justify-between">
+                        <span className="tw-text-lg tw-font-light">{`初月（日割り ${nullSafety(
+                          getPuchaseBody[itemType].remaininng_days
+                        )} 日分）`}</span>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
+                          ￥
+                          {thousandSeparator(
+                            getPuchaseBody[itemType].first_month_price
+                          )}
+                        </span>
+                      </li>
+                      <li className="tw-flex tw-justify-between">
+                        <span className="tw-text-lg tw-font-light">入会金</span>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
+                          ￥
+                          {thousandSeparator(
+                            getPuchaseBody[itemType].admission_fee
+                          )}
+                        </span>
+                      </li>
+                      <li className="tw-flex tw-justify-between">
+                        <span className="tw-text-lg tw-font-light">翌月</span>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
+                          ￥
+                          {thousandSeparator(
+                            getPuchaseBody[itemType].monthly_price
+                          )}
+                        </span>
+                      </li>
+                    </>
+                  ) : null}
+                  <li className="tw-flex tw-justify-between">
+                    <span className="tw-text-lg">合計額</span>
+                    <span className="tw-text-lg">
+                      ￥
+                      {thousandSeparator(
+                        getPuchaseBody[itemType].total_price ??
+                          getPuchaseBody[itemType].prices[0].price
+                      )}
+                    </span>
+                  </li>
+                </ul>
                 <Form.Item>
                   <Button
                     size="large"
@@ -371,9 +417,9 @@ const SubscriptionDetail = () => {
             </Form.Item>
           </section>
 
-          <Form.Item name="isCardSaved" valuePropName="checked">
+          {/* <Form.Item name="isCardSaved" valuePropName="checked">
             <Checkbox>カードを保存する</Checkbox>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item>
             <div className="tw-flex tw-justify-end tw-gap-2">

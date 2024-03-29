@@ -1,13 +1,31 @@
-import { Button } from "antd";
+import { useState } from "react";
+import { Button, Modal } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
+import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 
-const ReservationCard = ({ reservation, activeFilterId }) => {
+const ReservationCard = ({
+  reservation,
+  activeFilterId,
+  isRequesting,
+  cancelReservation,
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const isReservationCancellable = ({ start_at }) => {
+    let result = false;
+    if (start_at) {
+      const cancellableDate = dayjs.utc(start_at).subtract(24, "hour");
+      result = dayjs().isAfter(cancellableDate);
+    }
+    return result;
+  };
+
   return (
     <>
       <>
-        {activeFilterId === 3 ? (
+        {activeFilterId === ReservationStatusEnum.CANCELLED ? (
           <section className="tw-absolute tw-top-4 tw--right-4 tw-rotate-[38deg]">
             <span className="tw-text-sm tw-leading-6 tw-tracking-[0.12px] tw-py-[2px] tw-px-2 tw-rounded-full tw-shadow">
               キャンセル済み
@@ -93,7 +111,7 @@ const ReservationCard = ({ reservation, activeFilterId }) => {
             </section>
           </div>
         </section> */}
-        {activeFilterId === null &&
+        {activeFilterId === ReservationStatusEnum.ACTIVE &&
         reservation.m_program?.cancellation_policy ? (
           <>
             <section className="tw-p-2 tw-rounded-xl tw-border-2 tw-border-info">
@@ -103,7 +121,12 @@ const ReservationCard = ({ reservation, activeFilterId }) => {
             </section>
 
             <section className="tw-flex tw-justify-end tw-gap-2">
-              <Button size="large" className="tw-w-[128px]">
+              <Button
+                disabled={isReservationCancellable(reservation)}
+                size="large"
+                className="tw-w-[128px]"
+                onClick={() => setIsModalOpen(true)}
+              >
                 キャンセル
               </Button>
               <Button type="primary" size="large" className="tw-w-[128px]">
@@ -113,6 +136,33 @@ const ReservationCard = ({ reservation, activeFilterId }) => {
           </>
         ) : null}
       </>
+
+      <Modal
+        title="カード決済に失敗しました。"
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+        centered
+      >
+        <div className="tw-flex tw-flex-col tw-gap-6 tw-mt-6">
+          <section className="tw-rounded-xl tw-border-2 tw-border-warning tw-p-4">
+            <p className="tw-leading-[26px] tw-tracking-[0.14px]">
+              カードの内容を確認の上再度お試しください。
+            </p>
+          </section>
+          <section className="tw-flex tw-justify-center">
+            <Button
+              onClick={() => cancelReservation(reservation)}
+              loading={isRequesting}
+              type="primary"
+              size="large"
+              className="tw-w-auto"
+            >
+              キャンセル
+            </Button>
+          </section>
+        </div>
+      </Modal>
     </>
   );
 };

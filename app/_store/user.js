@@ -4,9 +4,10 @@ import Cookies from "js-cookie";
 
 export const useUserStore = create(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
       setUser: (payload) => set({ user: payload }),
+      getUser: () => get().user,
       logOut: () => {
         set({ user: null });
         Cookies.remove("token");
