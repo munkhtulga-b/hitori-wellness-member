@@ -88,7 +88,7 @@ const SignupStepTwo = ({ onComplete }) => {
         rules={[
           {
             required: true,
-            message: "電話番号をご記入ください。",
+            message: "電話番号を入力してください。",
             whitespace: false,
           },
         ]}

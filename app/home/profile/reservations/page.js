@@ -8,6 +8,8 @@ import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 import NoData from "@/app/_components/custom/NoData";
 import ReservationCard from "@/app/_components/home/profile/reservation/ReservationCard";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
+import { useReservationStore } from "@/app/_store/reservation";
+import { useRouter } from "next/navigation";
 
 const filters = [
   {
@@ -28,12 +30,15 @@ const filters = [
 ];
 
 const ReservationHistory = () => {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isRequesting, setIsRequesting] = useState(false);
   const [reservations, setReservations] = useState(null);
   const [activeFilterId, setActiveFilterId] = useState(
     ReservationStatusEnum.ACTIVE
   );
+  const resetReservationBody = useReservationStore((state) => state.resetBody);
+  const setReservationBody = useReservationStore((state) => state.setBody);
 
   useEffect(() => {
     fetchReservations();
@@ -57,6 +62,17 @@ const ReservationHistory = () => {
       await fetchReservations();
     }
     setIsRequesting(false);
+  };
+
+  const editReservation = (reservation) => {
+    resetReservationBody();
+    setReservationBody({
+      id: reservation.id,
+      branch: reservation.m_studio,
+      program: reservation.m_program,
+      time: [reservation.start_at, reservation.end_at],
+    });
+    router.push(`/home/reservation/confirm`);
   };
 
   const onFilterChange = ({ id }) => {
@@ -120,6 +136,7 @@ const ReservationHistory = () => {
                           activeFilterId={activeFilterId}
                           isRequesting={isRequesting}
                           cancelReservation={cancelReservation}
+                          editReservation={editReservation}
                         />
                       </div>
                     </section>

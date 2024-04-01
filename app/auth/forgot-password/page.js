@@ -27,7 +27,7 @@ const AuthPasswordReset = () => {
       </section>
       <section className="tw-mt-[28px] tw-w-[290px]">
         <p className="tw-text-secondary tw-leading-[26px] tw-tracking-[0.14px] tw-text-center">
-          パスワードをお忘れの場合でも、登録したメールアドレスの確認を以下から行うことで、再設定ができます。
+          登録中のメールアドレスを入力してください。パスワードを再設定するためのメールが送信されます。
         </p>
       </section>
       <section className="tw-mt-[30px] tw-w-full">
@@ -40,11 +40,11 @@ const AuthPasswordReset = () => {
             rules={[
               {
                 type: "email",
-                message: "正しいメールアドレスをご記入ください。",
+                message: "正しいメールアドレスを入力してください。",
               },
               {
                 required: true,
-                message: "メールアドレスをご記入ください。",
+                message: "メールアドレスを入力してください。",
               },
             ]}
           >

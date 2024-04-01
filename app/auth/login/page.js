@@ -55,11 +55,11 @@ const AuthLogin = () => {
             rules={[
               {
                 type: "email",
-                message: "正しいメールアドレスをご記入ください。",
+                message: "正しいメールアドレスを入力してください。",
               },
               {
                 required: true,
-                message: "メールアドレスをご記入ください。",
+                message: "メールアドレスを入力してください。",
               },
             ]}
           >
@@ -73,7 +73,7 @@ const AuthLogin = () => {
             rules={[
               {
                 required: true,
-                message: "パスワードをご記入ください。",
+                message: "パスワードを入力してください。",
               },
             ]}
           >

@@ -10,17 +10,22 @@ import $api from "@/app/_api";
 import ReservationCard from "./profile/reservation/ReservationCard";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 
-const HomeBranchDetailCard = ({ branch, reservation }) => {
+const HomeBranchDetailCard = ({
+  branch,
+  nearestReservation,
+  reservations,
+  maxReservation,
+}) => {
   const router = useRouter();
-  const setBranch = useReservationStore((state) => state.setBody);
-  const editReservationBody = useReservationStore((state) => state.editBody);
+  const setReservationBody = useReservationStore((state) => state.setBody);
+  const resetReservationBody = useReservationStore((state) => state.resetBody);
   const [isCancelled, setIsCancelled] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
   const handleMakeReservation = () => {
-    setBranch({ branch: branch });
-    editReservationBody("program");
+    resetReservationBody();
+    setReservationBody({ branch: branch });
     router.push("/home/reservation");
   };
 
@@ -31,6 +36,25 @@ const HomeBranchDetailCard = ({ branch, reservation }) => {
       setIsCancelled(true);
     }
     setIsRequesting(false);
+  };
+
+  const editReservation = (reservation) => {
+    resetReservationBody();
+    setReservationBody({
+      id: reservation.id,
+      branch: reservation.m_studio,
+      program: reservation.m_program,
+      time: [reservation.start_at, reservation.end_at],
+    });
+    router.push(`/home/reservation/confirm`);
+  };
+
+  const isReachedMaxReservation = () => {
+    let result = false;
+    if (reservations?.length >= maxReservation) {
+      result = true;
+    }
+    return result;
   };
 
   return (
@@ -58,7 +82,7 @@ const HomeBranchDetailCard = ({ branch, reservation }) => {
             {nullSafety(branch.name)}
           </span>
         </section>
-        {!reservation ? (
+        {!nearestReservation ? (
           <section className="tw-flex tw-flex-col tw-gap-4">
             <div className="tw-flex tw-flex-col tw-gap-1">
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
@@ -102,19 +126,21 @@ const HomeBranchDetailCard = ({ branch, reservation }) => {
         ) : (
           <>
             <ReservationCard
-              reservation={reservation}
+              reservation={nearestReservation}
               activeFilterId={
                 isCancelled
                   ? ReservationStatusEnum.CANCELLED
                   : ReservationStatusEnum.ACTIVE
               }
               cancelReservation={cancelReservation}
+              editReservation={editReservation}
               isRequesting={isRequesting}
             />
           </>
         )}
         <section className="tw-mt-1">
           <Button
+            disabled={isReachedMaxReservation()}
             onClick={handleMakeReservation}
             size="large"
             type="primary"

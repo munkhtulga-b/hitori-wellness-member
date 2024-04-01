@@ -81,7 +81,7 @@ const PurchaseSubscription = () => {
                         </p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
                           plan.monthly_price
-                        )}（税込）／月～`}</span>
+                        )}（税込）／月`}</span>
                         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
                           <Button
                             onClick={() =>
@@ -136,7 +136,7 @@ const PurchaseSubscription = () => {
                         </p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
                           ticket.prices[0]?.price
-                        )}（税込）／月～`}</span>
+                        )}（税込）／月`}</span>
                         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
                           <Button
                             size="small"

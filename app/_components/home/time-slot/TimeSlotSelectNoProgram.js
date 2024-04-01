@@ -1,16 +1,15 @@
 import dayjs from "dayjs";
-import { useEffect, useState } from "react";
-import { Button, message } from "antd";
+import { useEffect, useState, useCallback } from "react";
+import { Button } from "antd";
 import Image from "next/image";
 import { useReservationStore } from "@/app/_store/reservation";
 import { motion, AnimatePresence } from "framer-motion";
-import { useRouter } from "next/navigation";
-// import { useUserStore } from "@/app/_store/user";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-const TimeSlotSelect = ({ timeSlotList }) => {
+const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
   const router = useRouter();
-  // const getUser = useUserStore((state) => state.getUser());
-  const [messageApi, contextHolder] = message.useMessage();
+  const searchParams = useSearchParams();
+  const pathName = usePathname();
   const slotInterval = 30;
   const slotCapacityPercentage = 60;
   const reservationDateLimit = dayjs().add(1, "month").endOf("month");
@@ -20,57 +19,25 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     start: dayjs().startOf("week"),
     end: dayjs().endOf("week"),
   });
-  const [selectedSlots, setSelectedSlots] = useState(null);
+  const [selectedSlot, setSelectedSlot] = useState(null);
 
   useEffect(() => {
     if (getReservation.time) {
-      setSelectedSlots(getReservation.time);
+      setSelectedSlot(getReservation.time);
     }
   }, []);
 
-  const onSlotSelect = ({ day, timeSlots }, dateIdx, timeIdx) => {
-    if (!getReservation.program) {
-      return messageApi.open({
-        type: "warning",
-        content: "プログラムをご選択ください。",
-      });
-    }
-    const slotsToCheck = getReservation.program.service_minutes / slotInterval;
-    const shallowSlots = [];
-    for (let i = 0; i <= slotsToCheck; i++) {
-      if (timeIdx + i > timeSlots.length - 1) {
-        const slotsLength = timeSlots.length;
-        const currentIdx = timeIdx + i;
-        const nextDayIndex = currentIdx - slotsLength;
-        if (!getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].isAvailable) {
-          return messageApi.open({
-            type: "warning",
-            content: "選択不可能な時間です。別の開始時間をご選択ください。",
-          });
-        }
-        shallowSlots.push(
-          `${dayjs(day).add(1, "day").format("YYYY-MM-DD")} ${
-            getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].time
-          }`
-        );
-      } else {
-        if (!timeSlots[timeIdx + i].isAvailable) {
-          return messageApi.open({
-            type: "warning",
-            content: "選択不可能な時間です。別の開始時間をご選択ください。",
-          });
-        }
-        shallowSlots.push(
-          `${day.format("YYYY-MM-DD")} ${timeSlots[timeIdx + i].time}`
-        );
-      }
-    }
+  const onSlotSelect = (date, time) => {
+    setSelectedSlot(`${dayjs(date.day).format("YYYY-MM-DD")} ${time}`);
+  };
 
-    setSelectedSlots(shallowSlots);
+  const onSlotConfirm = () => {
+    setReservation({ time: selectedSlot });
+    router.push(pathName + "?" + createQueryString("select", "program"));
   };
 
   const onWeekChange = (type) => {
-    setSelectedSlots(null);
+    setSelectedSlot(null);
     setSelectedWeek({
       start: selectedWeek.start[type](1, "week"),
       end: selectedWeek.end[type](1, "week"),
@@ -142,7 +109,8 @@ const TimeSlotSelect = ({ timeSlotList }) => {
           ) ||
           dayjs(
             `${currentDate.format("YYYY-MM-DD")} ${hours}:${minutes}`
-          ).isBefore(dayjs().format("YYYY-MM-DD HH:mm"))
+          ).isBefore(dayjs().format("YYYY-MM-DD HH:mm")) ||
+          isUserReservedForTheDay(currentDate)
             ? false
             : true,
         time: `${hours}:${minutes}`,
@@ -158,8 +126,8 @@ const TimeSlotSelect = ({ timeSlotList }) => {
 
   const isSlotSelected = (day, time) => {
     let result = false;
-    if (selectedSlots) {
-      result = selectedSlots.includes(`${day.format("YYYY-MM-DD")} ${time}`);
+    if (selectedSlot) {
+      result = selectedSlot === `${day.format("YYYY-MM-DD")} ${time}`;
     }
     return result;
   };
@@ -177,30 +145,31 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     return result;
   };
 
-  // const doesUserHasReservationInTheDay = (currentDate) => {
-  //   let result = false;
-  //   if (timeSlotList?.length) {
-  //     timeSlotList.forEach((item) => {
-  //       item.reserved.forEach((slot) => {
-  //         if (slot.details?.length) {
-  //           if (
-  //             slot.details[0].member_id === getUser.id &&
-  //             dayjs(dayjs(currentDate).format("YYYY-MM-DD")).isSame(
-  //               dayjs.utc(slot.details[0].start_at).format("YYYY-MM-DD")
-  //             )
-  //           ) {
-  //             result = true;
-  //           }
-  //         }
-  //       });
-  //     });
-  //   }
-  //   return result;
-  // };
+  const isUserReservedForTheDay = (currentDate) => {
+    let result = false;
+    if (timeSlotList?.length) {
+      const matched = timeSlotList.find((item) => {
+        return item.week_day === currentDate.day();
+      });
+      if (matched) {
+        result = matched.user_reserved;
+      }
+    }
+    return result;
+  };
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   return (
     <>
-      {contextHolder}
       <div className="tw-flex tw-flex-col tw-gap-4 tw-mb-[150px]">
         <section>
           <span className="tw-text-xxl tw-font-medium">日時</span>
@@ -252,7 +221,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
               <Button
                 size="large"
                 onClick={() => {
-                  setSelectedSlots(null);
+                  setSelectedSlot(null);
                   setSelectedWeek({
                     start: dayjs().startOf("week"),
                     end: dayjs().endOf("week"),
@@ -272,7 +241,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
               </Button>
             </section>
             <section className="tw-grid tw-grid-cols-7 tw-auto-rows-auto tw-gap-[6px]">
-              {getDaysOfWeek().map((date, dateIdx) => {
+              {getDaysOfWeek().map((date) => {
                 return (
                   <div
                     key={dayjs(date.day).format("YYYY-MM-DD")}
@@ -286,7 +255,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
                         {dayjs(date.day).format("ddd")}
                       </span>
                     </section>
-                    {date.timeSlots.map((slot, timeIdx) => {
+                    {date.timeSlots.map((slot) => {
                       return (
                         <button
                           key={slot.time}
@@ -296,7 +265,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
                               ? "tw-bg-aquaLight tw-ring-[2px] tw-ring-available"
                               : "tw-bg-white tw-ring-[1px] tw-ring-available"
                           } tw-w-full tw-h-[38px] tw-px-1 tw-py-2 tw-rounded-lg tw-text-center disabled:tw-bg-dividerMedium disabled:tw-text-disabled disabled:tw-ring-transparent tw-relative tw-transition-all tw-duration-300`}
-                          onClick={() => onSlotSelect(date, dateIdx, timeIdx)}
+                          onClick={() => onSlotSelect(date, slot.time)}
                         >
                           {isReachingMaxCapacity(slot) && (
                             <Image
@@ -329,7 +298,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
       </div>
 
       <AnimatePresence>
-        {selectedSlots !== null && (
+        {selectedSlot !== null && (
           <motion.div
             initial={{ opacity: 0, y: "100%" }}
             animate={{ opacity: 1, y: 0 }}
@@ -346,20 +315,11 @@ const TimeSlotSelect = ({ timeSlotList }) => {
                   height={0}
                   style={{ width: "auto", height: "auto" }}
                 />
-                <span className="tw-text-lg">{`${
-                  getReservation?.program?.service_minutes ?? 0
-                }分`}</span>
-              </section>
-              <section>
-                <p className="tw-tracking-[0.14px]">
-                  {`${dayjs(selectedSlots[0]).format("YYYY/MM/DD")}(${dayjs(
-                    selectedSlots[0]
-                  ).format("ddd")}) ${dayjs(selectedSlots[0]).format(
-                    "HH:mm"
-                  )} ~ ${dayjs(selectedSlots[selectedSlots?.length - 1]).format(
-                    "HH:mm"
-                  )}`}
-                </p>
+                <span className="tw-text-lg">{`${dayjs(selectedSlot).format(
+                  "YYYY/MM/DD"
+                )}(${dayjs(selectedSlot).format("ddd")}) ${dayjs(
+                  selectedSlot
+                ).format("HH:mm")}`}</span>
               </section>
               <section>
                 <Button
@@ -367,10 +327,7 @@ const TimeSlotSelect = ({ timeSlotList }) => {
                   type="primary"
                   className="tw-w-full"
                   onClick={() => {
-                    setReservation({
-                      time: selectedSlots,
-                    });
-                    router.push("/home/reservation/confirm");
+                    onSlotConfirm();
                   }}
                 >
                   確認
@@ -384,4 +341,4 @@ const TimeSlotSelect = ({ timeSlotList }) => {
   );
 };
 
-export default TimeSlotSelect;
+export default TimeSlotSelectNoProgram;

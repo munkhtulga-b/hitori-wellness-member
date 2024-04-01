@@ -15,6 +15,8 @@ const PlanDetail = async ({ params }) => {
   const { id } = params;
   const { data: plan } = await $api.member.plan.getOne(id); // Fetching plan detail on the server side
 
+  console.log(plan, "asdasd");
+
   return (
     <>
       {plan ? (

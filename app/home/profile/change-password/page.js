@@ -62,7 +62,7 @@ const ChangePassword = () => {
             rules={[
               {
                 required: true,
-                message: "パスワードをご記入ください。",
+                message: "パスワードを入力してください。",
               },
             ]}
           >
@@ -74,7 +74,7 @@ const ChangePassword = () => {
             rules={[
               {
                 required: true,
-                message: "パスワードをご記入ください。",
+                message: "パスワードを入力してください。",
               },
             ]}
             style={{ marginTop: 24 }}
@@ -89,7 +89,7 @@ const ChangePassword = () => {
             rules={[
               {
                 required: true,
-                message: "パスワード（確認用）をご記入ください。",
+                message: "パスワード（確認用）を入力してください。",
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {

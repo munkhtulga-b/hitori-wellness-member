@@ -36,7 +36,7 @@ const ChangeEmailSuccess = () => {
         <StatusAnimation />
         <section className="tw-self-stretch tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info tw-w-full">
           <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px] tw-text-center">
-            メールアドレスの確認ができました。
+            メールアドレスを確認しました。
           </p>
         </section>
         <section className="tw-w-full">
