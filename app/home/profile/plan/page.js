@@ -53,12 +53,12 @@ const ActiveSubscription = () => {
                   </div>
                 </section>
                 {/* TODO: Integrate tickets */}
-                {/* <section className="tw-flex tw-flex-col tw-gap-1 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow">
-              <span className="tw-text-lg">ストレッチチケット (1回券)</span>
-              <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-                パーソナルストレッチメニュー予約専用チケットです。こちらのチケットは都度利用専用となります。
-              </p>
-            </section> */}
+                <section className="tw-flex tw-flex-col tw-gap-1 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow">
+                  <span className="tw-text-lg">ストレッチチケット (1回券)</span>
+                  <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
+                    パーソナルストレッチメニュー予約専用チケットです。こちらのチケットは都度利用専用となります。
+                  </p>
+                </section>
               </>
             ) : (
               <NoData message={"No plan found"} />
