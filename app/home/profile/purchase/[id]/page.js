@@ -75,7 +75,7 @@ const SubscriptionDetail = () => {
   };
 
   const pageHeader = () => {
-    let result = "見積書";
+    let result = "プラン購入";
     if (step === 2) {
       result = "支払い方法をお選びください";
     }
@@ -98,9 +98,10 @@ const SubscriptionDetail = () => {
               {nullSafety(getPuchaseBody[itemType].description)}
             </p>
             <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
-              getPuchaseBody[itemType].monthly_price ??
-                getPuchaseBody[itemType].prices[0].price
-            )}（税込）／月～`}</span>
+              itemType === "plan"
+                ? getPuchaseBody[itemType].monthly_price
+                : getPuchaseBody[itemType].prices[0].price
+            )}（税込）／月`}</span>
           </div>
         </section>
         <section className="tw-grow">
@@ -118,7 +119,7 @@ const SubscriptionDetail = () => {
                   rules={[
                     {
                       required: false,
-                      message: "電話番号をご記入ください。",
+                      message: "電話番号を入力してください。",
                       whitespace: false,
                     },
                   ]}
@@ -359,7 +360,7 @@ const SubscriptionDetail = () => {
 
           <Form.Item
             name="cardName"
-            label="クレジットカード名義人氏名"
+            label="カード名義"
             rules={[
               {
                 required: true,
@@ -397,11 +398,11 @@ const SubscriptionDetail = () => {
             </Form.Item>
             <Form.Item
               name="cvc"
-              label="CVVコード"
+              label="セキュリティコード"
               rules={[
                 {
                   required: true,
-                  message: "カードのCVVコードを入力してください。",
+                  message: "カードのセキュリティコードを入力してください。",
                 },
               ]}
               getValueFromEvent={(e) => {
@@ -423,7 +424,11 @@ const SubscriptionDetail = () => {
 
           <Form.Item>
             <div className="tw-flex tw-justify-end tw-gap-2">
-              <Button size="large" className="tw-w-[80px]">
+              <Button
+                size="large"
+                className="tw-w-[80px]"
+                onClick={() => setStep(2)}
+              >
                 戻る
               </Button>
               <Button
@@ -442,7 +447,7 @@ const SubscriptionDetail = () => {
         <section className="tw-bg-white tw-rounded-xl tw-border tw-border-info tw-p-4">
           <p className="tw-leading-[22px] tw-tracking-[0.14px]">
             ※
-            月会費プランのご購入の場合は主要カードから毎月のｘ日に決済が発生します。
+            月会費プランのご購入の場合は主要カードから毎月の20日に決済が発生します。
           </p>
         </section>
       </>

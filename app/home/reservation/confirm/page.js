@@ -43,6 +43,25 @@ const ReservationConfirm = () => {
     setIsLoading(false);
   };
 
+  const updateReservation = async () => {
+    setIsLoading(true);
+    const body = {
+      studioId: reservationBody.branch?.id,
+      programId: reservationBody.program?.id,
+      startAt: reservationBody.time[0],
+      endAt: reservationBody.time[reservationBody.time?.length - 1],
+    };
+    const { isOk } = await $api.member.reservation.update(
+      reservationBody.id,
+      body
+    );
+    if (isOk) {
+      resetReservationBody();
+      router.push("/home/reservation/success");
+    }
+    setIsLoading(false);
+  };
+
   const handleEdit = (type) => {
     setBodyType(type);
     setIsModalOpen(true);
@@ -87,7 +106,7 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">店舗</span>
                 <Button onClick={() => handleEdit("branch")} size="small">
-                  編集
+                  変更
                 </Button>
               </div>
               <div>
@@ -118,7 +137,7 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">プログラム</span>
                 <Button onClick={() => handleEdit("program")} size="small">
-                  編集
+                  変更
                 </Button>
               </div>
               <div>
@@ -145,7 +164,7 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">プログラム</span>
                 <Button onClick={() => handleEdit("coach")} size="small">
-                  編集
+                  変更
                 </Button>
               </div>
               <div className="tw-flex tw-justify-start tw-items-start tw-gap-3">
@@ -170,7 +189,7 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">日時</span>
                 <Button onClick={() => handleEdit("time")} size="small">
-                  編集
+                  変更
                 </Button>
               </div>
               <div>
@@ -179,7 +198,7 @@ const ReservationConfirm = () => {
                     "YYYY/MM/DD"
                   )}(${dayjs(reservationBody?.time[0]).format("ddd")}) ${dayjs(
                     reservationBody?.time[0]
-                  ).format("HH:mm")}-${dayjs(
+                  ).format("HH:mm")} ~ ${dayjs(
                     reservationBody?.time[reservationBody?.time?.length - 1]
                   ).format("HH:mm")}`}
                 </span>
@@ -190,7 +209,9 @@ const ReservationConfirm = () => {
         <div>
           <Button
             loading={isLoading}
-            onClick={() => createReservation()}
+            onClick={() =>
+              reservationBody.id ? updateReservation() : createReservation()
+            }
             type="primary"
             size="large"
             className="tw-w-full"
@@ -210,7 +231,7 @@ const ReservationConfirm = () => {
         <div className="tw-flex tw-flex-col tw-gap-6 tw-mt-6">
           <section className="tw-rounded-xl tw-border-2 tw-border-warning tw-p-4">
             <p className="tw-leading-[26px] tw-tracking-[0.14px]">
-              ※編集の場合、選択の順番に応じて選択内容が削除されます。
+              ※変更の場合、選択の順番に応じて選択内容が削除されます。
             </p>
           </section>
           <section className="tw-flex tw-justify-center">
@@ -219,7 +240,7 @@ const ReservationConfirm = () => {
               type="primary"
               size="large"
             >
-              編集する
+              変更する
             </Button>
           </section>
         </div>

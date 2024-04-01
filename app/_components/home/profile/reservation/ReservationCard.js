@@ -10,6 +10,7 @@ const ReservationCard = ({
   activeFilterId,
   isRequesting,
   cancelReservation,
+  editReservation,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -41,14 +42,14 @@ const ReservationCard = ({
               height={0}
               style={{ width: "auto", height: "auto" }}
             />
-            <span className="tw-grow tw-text-lg">日付時刻</span>
+            <span className="tw-grow tw-text-lg">予約日時</span>
           </div>
           <span className="tw-text-secondary tw-leading-[22px] tw-tracking-[0.14px]">
             {`${dayjs.utc(reservation.start_at).format("YYYY/MM/DD")}(${dayjs(
               reservation.start_at
             ).format("ddd")}) ${dayjs
               .utc(reservation.start_at)
-              .format("HH:mm")}-${dayjs
+              .format("HH:mm")} ~ ${dayjs
               .utc(reservation.end_at)
               .format("HH:mm")}`}
           </span>
@@ -129,8 +130,14 @@ const ReservationCard = ({
               >
                 キャンセル
               </Button>
-              <Button type="primary" size="large" className="tw-w-[128px]">
-                編集
+              <Button
+                disabled={isReservationCancellable(reservation)}
+                type="primary"
+                size="large"
+                className="tw-w-[128px]"
+                onClick={() => editReservation(reservation)}
+              >
+                変更
               </Button>
             </section>
           </>

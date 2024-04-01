@@ -7,11 +7,11 @@ import { usePurchaseStore } from "@/app/_store/purchase";
 
 const PlanDetailCard = ({ plan }) => {
   const router = useRouter();
-  const setPlan = usePurchaseStore((state) => state.setBody);
+  const setPurchaseBody = usePurchaseStore((state) => state.setBody);
 
   const onselect = () => {
-    setPlan({ plan: plan });
-    router.push(`/home/profile/plan/purchase/${plan.id}`);
+    setPurchaseBody({ plan: plan, item: null });
+    router.push(`/home/profile/purchase/${plan.id}`);
   };
 
   return (

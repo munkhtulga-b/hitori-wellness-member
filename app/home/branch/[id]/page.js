@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import NoData from "@/app/_components/custom/NoData";
 import BranchDetailCard from "@/app/_components/home/BranchDetailCard";
+import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 
 export const generateMetadata = async ({ params }) => {
   const { id } = params;
@@ -20,6 +21,10 @@ const BranchDetail = async ({ params }) => {
   const { status, data: memberPlan } = await $api.member.memberPlan.getMany(
     cookieStore.get("token").value
   );
+  const { data: reservations } = await $api.member.reservation.getMany(
+    { status: ReservationStatusEnum.ACTIVE },
+    cookieStore.get("token").value
+  );
 
   if (status === 401) {
     redirect("/auth/login");
@@ -29,7 +34,11 @@ const BranchDetail = async ({ params }) => {
     <>
       {branch ? (
         <>
-          <BranchDetailCard branch={branch} memberPlan={memberPlan} />
+          <BranchDetailCard
+            branch={branch}
+            memberPlan={memberPlan}
+            reservations={reservations}
+          />
         </>
       ) : (
         <>

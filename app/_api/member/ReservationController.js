@@ -14,6 +14,10 @@ export const create = (body) => {
   return fetchData(`reservations`, "POST", body);
 };
 
+export const update = (id, body) => {
+  return fetchData(`reservations/${id}`, "PATCH", body);
+};
+
 export const cancel = (id) => {
   return fetchData(`reservations/cancel/${id}`, "POST");
 };

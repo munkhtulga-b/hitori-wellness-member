@@ -61,7 +61,7 @@ const HomePage = () => {
                     <>
                       <div className="tw-flex tw-flex-col tw-gap-3">
                         <span className="tw-text-xxl tw-font-medium">
-                          所属店舗
+                          登録店舗
                         </span>
                         <BranchCard branch={homeBranch} isHomeBranch={true} />
                       </div>

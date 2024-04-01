@@ -13,6 +13,8 @@ const ActiveSubscription = async () => {
     cookieStore.get("token").value
   );
 
+  console.log(memberPlan);
+
   return (
     <>
       <div className="tw-flex tw-flex-col tw-gap-4">
@@ -34,7 +36,7 @@ const ActiveSubscription = async () => {
                 <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
                   {`料金: ${thousandSeparator(
                     memberPlan[0]?.plan?.monthly_item?.prices[0]?.price
-                  )}円 （税込）／月～`}
+                  )}円 （税込）／月`}
                 </span>
                 <Button className="tw-w-[100px]">解約</Button>
               </div>

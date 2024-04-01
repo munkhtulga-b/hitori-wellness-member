@@ -7,5 +7,5 @@ export const getMany = (queries) => {
 };
 
 export const getOne = (id) => {
-  return fetchData(`plans/${id}`, "GET");
+  return fetchData(`plans/price/${id}`, "GET");
 };

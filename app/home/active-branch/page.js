@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import NoData from "@/app/_components/custom/NoData";
 import HomeBranchDetailCard from "@/app/_components/home/HomeBranchDetailCard";
+import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 
 const HomeBranchDetailPage = async () => {
   const cookieStore = cookies();
@@ -10,7 +11,11 @@ const HomeBranchDetailPage = async () => {
     cookieStore.get("token").value
   );
   const { data: reservations } = await $api.member.reservation.getMany(
-    { sortBy: "start_at", sortType: "asc", limit: 1 },
+    {
+      sortBy: "start_at",
+      sortType: "asc",
+      status: ReservationStatusEnum.ACTIVE,
+    },
     cookieStore.get("token").value
   );
 
@@ -24,7 +29,9 @@ const HomeBranchDetailPage = async () => {
         <>
           <HomeBranchDetailCard
             branch={memberPlan[0].studio}
-            reservation={reservations?.length ? reservations[0] : null}
+            nearestReservation={reservations?.length ? reservations[0] : null}
+            reservations={reservations}
+            maxReservation={memberPlan[0]?.plan?.max_cc_reservable_num_by_plan}
           />
         </>
       ) : (
