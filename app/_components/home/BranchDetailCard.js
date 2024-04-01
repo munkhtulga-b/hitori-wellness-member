@@ -1,24 +1,37 @@
 "use client";
 
-import { useState } from "react";
+// import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Checkbox } from "antd";
+import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
 
-const BranchDetailCard = ({ branch, memberPlan }) => {
+const BranchDetailCard = ({ branch, memberPlan, reservations }) => {
   const router = useRouter();
   const setBranch = useReservationStore((state) => state.setBody);
-  const [isHomeBranch, setIsHomeBranch] = useState(false);
+  const resetReservationBody = useReservationStore((state) => state.resetBody);
+  // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
   const handleMakeReservation = () => {
+    resetReservationBody();
     setBranch({ branch: branch });
     router.push("/home/reservation");
   };
 
+  const isReachedMaxReservation = () => {
+    let result = false;
+    if (
+      reservations?.length >= memberPlan[0]?.plan?.max_cc_reservable_num_by_plan
+    ) {
+      result = true;
+    }
+    return result;
+  };
+
   return (
     <>
+      {isReachedMaxReservation()}
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section className="tw-flex tw-flex-col tw-gap-1">
           <div
@@ -82,12 +95,13 @@ const BranchDetailCard = ({ branch, memberPlan }) => {
             </p>
           </div>
         </section>
-        <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
-          <p className="tw-leading-[22px] tw-tracking-[0.14px]">
-            年中無休（年末年始を除く）
-            ※閉店30分前の最終受付時間はトレーニングのみとなります。
-          </p>
-        </section>
+        {isReachedMaxReservation() && (
+          <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
+            <p className="tw-leading-[22px] tw-tracking-[0.14px]">
+              Sorry, you have reached your maxiumum reservations by plan.
+            </p>
+          </section>
+        )}
         {!memberPlan?.length ? (
           <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4 tw-flex tw-justify-between tw-items-center">
             <Image
@@ -98,7 +112,7 @@ const BranchDetailCard = ({ branch, memberPlan }) => {
               style={{ width: "auto", height: "auto" }}
             />
             <span className="tw-text-sm tw-tracking-[0.12px]">
-              予約するにはチケットが必要です。
+              予約するにはプランへの加入・チケットが必要です。
             </span>
             <Button
               size="small"
@@ -108,17 +122,17 @@ const BranchDetailCard = ({ branch, memberPlan }) => {
             </Button>
           </section>
         ) : null}
-        <section className="tw-py-6">
+        {/* <section className="tw-py-6">
           <Checkbox
             checked={isHomeBranch}
             onChange={(e) => setIsHomeBranch(e.target.checked)}
           >
             所属店舗にする。
           </Checkbox>
-        </section>
+        </section> */}
         <section className="tw-mt-1">
           <Button
-            disabled={!memberPlan?.length}
+            disabled={!memberPlan?.length || isReachedMaxReservation()}
             onClick={handleMakeReservation}
             size="large"
             type="primary"

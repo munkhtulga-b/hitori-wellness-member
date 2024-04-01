@@ -61,7 +61,7 @@ const PaymentHistory = async () => {
                   </section>
                   <section className="tw-grow">
                     <span className="tw-text-sm tw-tracking-[0.12px] tw-text-grayLight">
-                      {dayjs(payment.created_at).format("YYYY-MM-DD HH:mm")}
+                      {dayjs.utc(payment.created_at).format("YYYY-MM-DD HH:mm")}
                     </span>
                   </section>
                 </li>
@@ -101,7 +101,7 @@ const PaymentHistory = async () => {
             </section>
           ))
         ) : (
-          <NoData message={"No payment made"} />
+          <NoData message={"履歴が存在しません。"} />
         )}
       </div>
     </>

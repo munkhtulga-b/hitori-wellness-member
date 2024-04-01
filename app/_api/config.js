@@ -1,5 +1,6 @@
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { authRedirect } from "./actions";
 
 const fetchData = async (endpoint, method, body, serverToken) => {
   const baseURL =
@@ -34,12 +35,12 @@ const fetchData = async (endpoint, method, body, serverToken) => {
     const data = await response.json();
 
     if (!isOk) {
-      toast.error(data.error.message ?? "An error occurred");
+      toast.error(data?.error?.message || "An error occurred");
 
       // Redirects the user back to login page if their token has expired
       if (status === 401) {
         Cookies.remove("token");
-        window.location.href = "/auth/login";
+        authRedirect();
       }
     }
 

@@ -59,6 +59,7 @@ const SignupStepTwo = ({ onComplete }) => {
       "address2",
       "address3",
       "prefecture",
+      "emergencyTel",
     ];
     for (const [key, value] of Object.entries(signupStore)) {
       if (formFields.includes(key)) {
@@ -87,7 +88,7 @@ const SignupStepTwo = ({ onComplete }) => {
         rules={[
           {
             required: true,
-            message: "電話番号をご記入ください。",
+            message: "電話番号を入力してください。",
             whitespace: false,
           },
         ]}
@@ -96,14 +97,16 @@ const SignupStepTwo = ({ onComplete }) => {
       </Form.Item>
 
       <section className="tw-flex tw-flex-col tw-gap-2">
-        <label>郵便番号</label>
+        <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
+          郵便番号
+        </label>
         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-min tw-gap-2">
           <Form.Item
             name="zipCode1"
             rules={[
               {
-                required: false,
-                // message: "Please input your post code!",
+                required: true,
+                message: "郵便番号１を入力してください。",
                 whitespace: false,
               },
             ]}
@@ -114,8 +117,8 @@ const SignupStepTwo = ({ onComplete }) => {
             name="zipCode2"
             rules={[
               {
-                required: false,
-                // message: "Please input your post code!",
+                required: true,
+                message: "郵便番号２を入力してください。",
                 whitespace: false,
               },
             ]}
@@ -142,64 +145,69 @@ const SignupStepTwo = ({ onComplete }) => {
         </div>
       </section>
 
-      <Form.Item
-        name="prefecture"
-        rules={[
-          {
-            required: false,
-            message: "Please input your prefecture!",
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input placeholder="市区町村" />
-      </Form.Item>
+      <section className="tw-flex tw-flex-col tw-gap-2">
+        <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
+          住所
+        </label>
+        <div>
+          <Form.Item
+            name="prefecture"
+            rules={[
+              {
+                required: true,
+                message: "都道府県を入力してください。",
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input placeholder="市区町村" />
+          </Form.Item>
+          <Form.Item
+            name="address1"
+            rules={[
+              {
+                required: true,
+                message: "市区町村を入力してください。",
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input placeholder="都道府県" />
+          </Form.Item>
+          <Form.Item
+            name="address2"
+            rules={[
+              {
+                required: true,
+                message: "町名・番地を入力してください。",
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input placeholder="町名・番地" />
+          </Form.Item>
+          <Form.Item
+            name="address3"
+            rules={[
+              {
+                required: true,
+                message: "ビル・マンション名を入力してください。",
+                whitespace: true,
+              },
+            ]}
+          >
+            <Input placeholder="番号" />
+          </Form.Item>
+        </div>
+      </section>
 
       <Form.Item
-        name="address1"
-        rules={[
-          {
-            required: false,
-            message: "Please input your city!",
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input placeholder="都道府県" />
-      </Form.Item>
-
-      <Form.Item
-        name="address2"
-        rules={[
-          {
-            required: false,
-            message: "Please input your town!",
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input placeholder="町名・番地" />
-      </Form.Item>
-
-      <Form.Item
-        name="address3"
-        rules={[
-          {
-            required: false,
-            message: "Please input your town!",
-            whitespace: true,
-          },
-        ]}
-      >
-        <Input placeholder="番号" />
-      </Form.Item>
-
-      <Form.Item
+        name="emergencyTel"
         label="緊急連絡先"
         rules={[
           {
-            required: false,
-            message: "Emergency contact required!",
+            required: true,
+            message: "緊急連絡先電話番号を入力してください。",
             whitespace: false,
           },
         ]}

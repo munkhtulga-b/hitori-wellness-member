@@ -1,7 +1,9 @@
 import fetchData from "../config";
 
-const resetPassword = (token, body) => {
+export const resetPassword = (token, body) => {
   return fetchData(`auth/reset-password?token=${token}`, "POST", body);
 };
 
-export default resetPassword;
+export const resetCurrentPassword = (body) => {
+  return fetchData("auth/reset-password-verify", "POST", body);
+};

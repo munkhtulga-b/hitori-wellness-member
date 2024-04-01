@@ -8,14 +8,17 @@ import FilterButtonGroup from "../_components/custom/FilterButtonGroup";
 import { useState, useEffect } from "react";
 import $api from "../_api";
 import _ from "lodash";
+import BranchCard from "../_components/home/BranchCard";
 
 const HomePage = () => {
   const [branchList, setBranchList] = useState(null);
+  const [homeBranch, setHomeBranch] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeFilterId, setActiveFilterId] = useState(null);
 
   useEffect(() => {
     fetchBranches();
+    fetchHomeBranch();
   }, []);
 
   const fetchBranches = async () => {
@@ -28,6 +31,13 @@ const HomePage = () => {
       }
     }
     setIsLoading(false);
+  };
+
+  const fetchHomeBranch = async () => {
+    const { isOk, data } = await $api.member.memberPlan.getMany();
+    if (isOk && data?.length) {
+      setHomeBranch(data[0].studio);
+    }
   };
 
   return (
@@ -47,6 +57,16 @@ const HomePage = () => {
             <>
               {activeFilterId === null ? (
                 <>
+                  {homeBranch ? (
+                    <>
+                      <div className="tw-flex tw-flex-col tw-gap-3">
+                        <span className="tw-text-xxl tw-font-medium">
+                          登録店舗
+                        </span>
+                        <BranchCard branch={homeBranch} isHomeBranch={true} />
+                      </div>
+                    </>
+                  ) : null}
                   {branchList.map((branches, idx) => {
                     return (
                       <BranchScrollView

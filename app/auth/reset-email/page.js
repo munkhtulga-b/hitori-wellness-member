@@ -7,7 +7,7 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const VerifyEmail = () => {
+const ChangeEmailSuccess = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(true);
@@ -41,12 +41,12 @@ const VerifyEmail = () => {
         </section>
         <section className="tw-w-full">
           <Button
-            onClick={() => router.push("/")}
+            onClick={() => router.push("/auth/login")}
             type="primary"
             htmlType="submit"
             className="tw-w-full"
           >
-            ログインページへ戻る
+            ログインページに戻る
           </Button>
         </section>
       </>
@@ -59,7 +59,7 @@ const VerifyEmail = () => {
         <StatusAnimation type={"error"} />
         <section className="tw-self-stretch tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info tw-w-full">
           <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px] tw-text-center">
-            Oops, something went wrong!
+            失敗しました
           </p>
         </section>
         <section className="tw-w-full">
@@ -69,7 +69,7 @@ const VerifyEmail = () => {
             htmlType="submit"
             className="tw-w-full"
           >
-            Back to login
+            ログインページに戻る
           </Button>
         </section>
       </>
@@ -103,4 +103,4 @@ const VerifyEmail = () => {
   );
 };
 
-export default VerifyEmail;
+export default ChangeEmailSuccess;

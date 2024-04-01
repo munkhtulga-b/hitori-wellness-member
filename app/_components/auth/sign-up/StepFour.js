@@ -6,14 +6,14 @@ const SignupStepFour = ({ registeredEmail }) => {
       <StatusAnimation />
       <section className="tw-self-stretch tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info">
         <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px] tw-text-center">
-          会員登録が成功しました。
+          ご登録ありがとうございました。
         </p>
       </section>
       <section>
         <p className="tw-leading-[26px] tw-tracking-[0.14px] tw-text-center">
           {`登録されたメールアドレス（${
             registeredEmail ?? "mailaddress"
-          }）に確認メールを送信しました。メールを確認して本文内のリンクから確認ページにアクセスしてください。`}
+          }）に確認メールを送信しました。メールの本文内のリンクから確認ページにアクセスして登録を完了してください。`}
         </p>
       </section>
     </div>

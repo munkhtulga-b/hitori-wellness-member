@@ -1,11 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Form, Input } from "antd";
+import { useRouter } from "next/navigation";
+import { Button, Form, Input, message } from "antd";
 import { isValidPassword } from "@/app/_utils/helpers";
+import $api from "@/app/_api";
 
 const ChangePassword = () => {
+  const router = useRouter();
   const [form] = Form.useForm();
+  const [messageApi, contextHolder] = message.useMessage();
   const [isLoading, setIsLoading] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
 
@@ -17,9 +21,16 @@ const ChangePassword = () => {
     changePassword(params);
   };
 
-  const changePassword = (params) => {
+  const changePassword = async ({ currentPassword, newConfirm }) => {
     setIsLoading(true);
-    console.log(params);
+    const { isOk } = await $api.auth.resetPassword.resetCurrentPassword({
+      oldPassword: currentPassword,
+      newPassword: newConfirm,
+    });
+    if (isOk) {
+      form.resetFields();
+      messageApi.success("パスワードの変更が完了しました。");
+    }
     setIsLoading(false);
   };
 
@@ -32,6 +43,7 @@ const ChangePassword = () => {
 
   return (
     <>
+      {contextHolder}
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section>
           <span className="tw-text-xxl tw-font-medium">
@@ -50,7 +62,7 @@ const ChangePassword = () => {
             rules={[
               {
                 required: true,
-                message: "パスワードをご記入ください。",
+                message: "パスワードを入力してください。",
               },
             ]}
           >
@@ -62,7 +74,7 @@ const ChangePassword = () => {
             rules={[
               {
                 required: true,
-                message: "パスワードをご記入ください。",
+                message: "パスワードを入力してください。",
               },
             ]}
             style={{ marginTop: 24 }}
@@ -77,7 +89,7 @@ const ChangePassword = () => {
             rules={[
               {
                 required: true,
-                message: "パスワード（確認用）をご記入ください。",
+                message: "パスワード（確認用）を入力してください。",
               },
               ({ getFieldValue }) => ({
                 validator(_, value) {
@@ -103,7 +115,11 @@ const ChangePassword = () => {
             </section>
           )}
           <div className="tw-flex tw-justify-end tw-gap-2">
-            <Button size="large" className="tw-w-[80px]">
+            <Button
+              size="large"
+              className="tw-w-[80px]"
+              onClick={() => router.back()}
+            >
               戻る
             </Button>
             <Form.Item>

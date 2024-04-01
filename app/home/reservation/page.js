@@ -15,6 +15,7 @@ import CoachSelect from "@/app/_components/coach/CoachSelect";
 import NoData from "@/app/_components/custom/NoData";
 import { useReservationStore } from "@/app/_store/reservation";
 import { toast } from "react-toastify";
+import TimeSlotSelectNoProgram from "@/app/_components/home/time-slot/TimeSlotSelectNoProgram";
 
 const sliderOptions = [
   {
@@ -185,9 +186,13 @@ const ProgramsPage = () => {
             )}
             {activeStepId === 3 && (
               <>
-                {timeslotList?.length ? (
+                {timeslotList ? (
                   <>
-                    <TimeSlotSelect timeSlotList={timeslotList} />
+                    {reservationBody.program ? (
+                      <TimeSlotSelect timeSlotList={timeslotList} />
+                    ) : (
+                      <TimeSlotSelectNoProgram timeSlotList={timeslotList} />
+                    )}
                   </>
                 ) : (
                   <NoData message={"No Data"} />

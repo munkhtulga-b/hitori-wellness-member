@@ -1,6 +1,6 @@
 import $api from "@/app/_api";
 import NoData from "@/app/_components/custom/NoData";
-import PlanDetailCard from "@/app/_components/home/profile/plan/PlanDetailCard";
+import TicketDetailCard from "@/app/_components/home/profile/plan/TicketDetailCard";
 
 export const generateMetadata = async ({ params }) => {
   const { id } = params;
@@ -13,21 +13,17 @@ export const generateMetadata = async ({ params }) => {
 
 const PlanDetail = async ({ params }) => {
   const { id } = params;
-  const { data: plan } = await $api.member.plan.getOne(id); // Fetching plan detail on the server side
-
-  console.log(plan, "asdasd");
+  const { data: ticket } = await $api.member.item.getOne(id); // Fetching ticket detail on the server side
 
   return (
     <>
-      {plan ? (
+      {ticket ? (
         <>
-          <PlanDetailCard plan={plan} />
+          <TicketDetailCard ticket={ticket} />
         </>
       ) : (
         <>
-          <NoData
-            message={" 現在、ご購入されたプラン・チケットはございません。"}
-          />
+          <NoData message={"No ticket found"} />
         </>
       )}
     </>

@@ -61,11 +61,11 @@ const SignupStepOne = ({ onComplete }) => {
         rules={[
           {
             type: "email",
-            message: "正しいメールアドレスをご記入ください。",
+            message: "正しいメールアドレスを入力してください。",
           },
           {
             required: true,
-            message: "メールアドレスをご記入ください。",
+            message: "メールアドレスを入力してください。",
           },
         ]}
       >
@@ -114,7 +114,7 @@ const SignupStepOne = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "姓（フリガナ）を入力してください。",
+                message: "姓（カナ）を入力してください。",
                 pattern: /^[\u30A1-\u30F6\s]+$/, // Katakana characters and spaces
                 whitespace: true,
               },
@@ -127,7 +127,7 @@ const SignupStepOne = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "名（フリガナ）を入力してください。",
+                message: "名（カナ）を入力してください。",
                 pattern: /^[\u30A1-\u30F6\s]+$/, // Katakana characters and spaces
                 whitespace: true,
               },

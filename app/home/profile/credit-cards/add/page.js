@@ -60,7 +60,7 @@ const AddCreditCard = () => {
               rules={[
                 {
                   required: true,
-                  message: "姓（氏名）を入力してください。",
+                  message: "カード番号を入力してください。",
                 },
                 // () => ({
                 //   validator(_, value) {
@@ -88,11 +88,11 @@ const AddCreditCard = () => {
 
             <Form.Item
               name="cardName"
-              label="クレジットカード名義人氏名"
+              label="カード名義"
               rules={[
                 {
                   required: true,
-                  message: "名（氏名）を入力してください。",
+                  message: "カード名義人氏名を入力してください。",
                   whitespace: true,
                 },
               ]}
@@ -107,7 +107,7 @@ const AddCreditCard = () => {
                 rules={[
                   {
                     required: true,
-                    message: "姓（氏名）を入力してください。",
+                    message: "カードの有効期限を入力してください。",
                   },
                 ]}
                 getValueFromEvent={(e) => {
@@ -127,11 +127,11 @@ const AddCreditCard = () => {
               </Form.Item>
               <Form.Item
                 name="cvc"
-                label="CVVコード"
+                label="セキュリティコード"
                 rules={[
                   {
                     required: true,
-                    message: "姓（氏名）を入力してください。",
+                    message: "カードのセキュリティコードを入力してください。",
                   },
                 ]}
                 getValueFromEvent={(e) => {
@@ -148,7 +148,11 @@ const AddCreditCard = () => {
             </section>
 
             <section className="tw-flex tw-justify-end tw-gap-2">
-              <Button size="large" className="tw-w-[80px]">
+              <Button
+                size="large"
+                className="tw-w-[80px]"
+                onClick={() => router.back()}
+              >
                 戻る
               </Button>
               <Form.Item>
@@ -169,7 +173,7 @@ const AddCreditCard = () => {
         <section className="tw-bg-white tw-rounded-xl tw-border tw-border-info tw-p-4">
           <p className="tw-leading-[22px] tw-tracking-[0.14px]">
             ※
-            月会費プランのご購入の場合は主要カードから毎月のｘ日に決済が発生します。
+            月会費プランのご購入の場合は主要カードから毎月の20日に決済が発生します。
           </p>
         </section>
       </div>

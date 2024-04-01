@@ -41,7 +41,7 @@ const NewPassword = () => {
   const resetPassword = async (password) => {
     setIsLoading(true);
     const token = searchParams.get("token");
-    const { isOk } = await $api.auth.resetPassword(token, {
+    const { isOk } = await $api.auth.resetPassword.resetPassword(token, {
       password,
     });
     if (isOk) {
@@ -89,7 +89,7 @@ const NewPassword = () => {
               rules={[
                 {
                   required: true,
-                  message: "新しいパスワードをご記入ください。",
+                  message: "新しいパスワードを入力してください。",
                 },
               ]}
             >
@@ -105,7 +105,7 @@ const NewPassword = () => {
               rules={[
                 {
                   required: true,
-                  message: "新しいパスワード（確認用）をご記入ください。",
+                  message: "新しいパスワード（確認用）を入力してください。",
                 },
                 ({ getFieldValue }) => ({
                   validator(_, value) {

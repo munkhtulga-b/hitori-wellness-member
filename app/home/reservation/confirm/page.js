@@ -9,6 +9,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
 import _ from "lodash";
+import $api from "@/app/_api";
 
 const ReservationConfirm = () => {
   const router = useRouter();
@@ -16,6 +17,7 @@ const ReservationConfirm = () => {
   const editReservationBody = useReservationStore((state) => state.editBody);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [bodyType, setBodyType] = useState(null);
 
   useLayoutEffect(() => {
@@ -24,6 +26,41 @@ const ReservationConfirm = () => {
       return router.push("/home/");
     }
   }, []);
+
+  const createReservation = async () => {
+    setIsLoading(true);
+    const body = {
+      studioId: reservationBody.branch?.id,
+      programId: reservationBody.program?.id,
+      startAt: reservationBody.time[0],
+      endAt: reservationBody.time[reservationBody.time?.length - 1],
+    };
+    const { isOk } = await $api.member.reservation.create(body);
+    if (isOk) {
+      resetReservationBody();
+      router.push("/home/reservation/success");
+    }
+    setIsLoading(false);
+  };
+
+  const updateReservation = async () => {
+    setIsLoading(true);
+    const body = {
+      studioId: reservationBody.branch?.id,
+      programId: reservationBody.program?.id,
+      startAt: reservationBody.time[0],
+      endAt: reservationBody.time[reservationBody.time?.length - 1],
+    };
+    const { isOk } = await $api.member.reservation.update(
+      reservationBody.id,
+      body
+    );
+    if (isOk) {
+      resetReservationBody();
+      router.push("/home/reservation/success");
+    }
+    setIsLoading(false);
+  };
 
   const handleEdit = (type) => {
     setBodyType(type);
@@ -69,7 +106,7 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">店舗</span>
                 <Button onClick={() => handleEdit("branch")} size="small">
-                  編集
+                  変更
                 </Button>
               </div>
               <div>
@@ -100,7 +137,7 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">プログラム</span>
                 <Button onClick={() => handleEdit("program")} size="small">
-                  編集
+                  変更
                 </Button>
               </div>
               <div>
@@ -127,7 +164,7 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">プログラム</span>
                 <Button onClick={() => handleEdit("coach")} size="small">
-                  編集
+                  変更
                 </Button>
               </div>
               <div className="tw-flex tw-justify-start tw-items-start tw-gap-3">
@@ -140,7 +177,7 @@ const ReservationConfirm = () => {
               </div>
             </section>
           ) : null}
-          {reservationBody?.time ? (
+          {reservationBody?.time?.length ? (
             <section className="tw-bg-white tw-rounded-xl tw-p-4 tw-shadow tw-flex tw-flex-col tw-gap-2">
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
                 <Image
@@ -152,18 +189,18 @@ const ReservationConfirm = () => {
                 />
                 <span className="tw-grow tw-text-lg">日時</span>
                 <Button onClick={() => handleEdit("time")} size="small">
-                  編集
+                  変更
                 </Button>
               </div>
               <div>
                 <span className="tw-text-secondary">
-                  {`${dayjs(reservationBody?.time?.day).format(
+                  {`${dayjs(reservationBody?.time[0]).format(
                     "YYYY/MM/DD"
-                  )}(土) ${reservationBody?.time?.slots[0]}-${
-                    reservationBody?.time?.slots[
-                      reservationBody?.time?.slots.length - 1
-                    ]
-                  }`}
+                  )}(${dayjs(reservationBody?.time[0]).format("ddd")}) ${dayjs(
+                    reservationBody?.time[0]
+                  ).format("HH:mm")} ~ ${dayjs(
+                    reservationBody?.time[reservationBody?.time?.length - 1]
+                  ).format("HH:mm")}`}
                 </span>
               </div>
             </section>
@@ -171,10 +208,10 @@ const ReservationConfirm = () => {
         </div>
         <div>
           <Button
-            onClick={() => {
-              resetReservationBody();
-              router.push("/home/reservation/success");
-            }}
+            loading={isLoading}
+            onClick={() =>
+              reservationBody.id ? updateReservation() : createReservation()
+            }
             type="primary"
             size="large"
             className="tw-w-full"
@@ -194,7 +231,7 @@ const ReservationConfirm = () => {
         <div className="tw-flex tw-flex-col tw-gap-6 tw-mt-6">
           <section className="tw-rounded-xl tw-border-2 tw-border-warning tw-p-4">
             <p className="tw-leading-[26px] tw-tracking-[0.14px]">
-              ※編集の場合、選択の順番に応じて選択内容が削除されます。
+              ※変更の場合、選択の順番に応じて選択内容が削除されます。
             </p>
           </section>
           <section className="tw-flex tw-justify-center">
@@ -203,7 +240,7 @@ const ReservationConfirm = () => {
               type="primary"
               size="large"
             >
-              編集する
+              変更する
             </Button>
           </section>
         </div>

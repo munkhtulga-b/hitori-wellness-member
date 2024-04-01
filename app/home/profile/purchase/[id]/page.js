@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
-import { Form, Button, Input, Radio, Checkbox, Modal } from "antd";
+import { Form, Button, Input, Radio, Modal } from "antd";
 import Image from "next/image";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
@@ -62,7 +62,9 @@ const SubscriptionDetail = () => {
   const onPurchase = async () => {
     const body = {
       studioId: getPuchaseBody.branch?.id,
-      planId: getPuchaseBody.plan?.id,
+      [getPuchaseBody.item ? "itemId" : "planId"]: getPuchaseBody.item
+        ? getPuchaseBody.item.id
+        : getPuchaseBody.plan.id,
       cardId: selectedCard?.id,
     };
     createPurchase(body);
@@ -73,7 +75,7 @@ const SubscriptionDetail = () => {
   };
 
   const pageHeader = () => {
-    let result = "見積書";
+    let result = "プラン購入";
     if (step === 2) {
       result = "支払い方法をお選びください";
     }
@@ -84,19 +86,22 @@ const SubscriptionDetail = () => {
   };
 
   const SelectedPlan = () => {
-    return getPuchaseBody?.plan ? (
+    const itemType = getPuchaseBody.plan ? "plan" : "item";
+    return getPuchaseBody[itemType] ? (
       <>
         <section className="tw-p-3 tw-rounded-xl tw-bg-white tw-shadow">
           <div className="tw-flex tw-flex-col tw-gap-2">
             <span className="tw-text-lg">
-              {nullSafety(getPuchaseBody.plan.name)}
+              {nullSafety(getPuchaseBody[itemType].name)}
             </span>
             <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-              {nullSafety(getPuchaseBody.plan.description)}
+              {nullSafety(getPuchaseBody[itemType].description)}
             </p>
             <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
-              getPuchaseBody.plan.monthly_price
-            )}（税込）／月～`}</span>
+              itemType === "plan"
+                ? getPuchaseBody[itemType].monthly_price
+                : getPuchaseBody[itemType].prices[0].price
+            )}（税込）／月`}</span>
           </div>
         </section>
         <section className="tw-grow">
@@ -114,7 +119,7 @@ const SubscriptionDetail = () => {
                   rules={[
                     {
                       required: false,
-                      message: "電話番号をご記入ください。",
+                      message: "電話番号を入力してください。",
                       whitespace: false,
                     },
                   ]}
@@ -123,12 +128,59 @@ const SubscriptionDetail = () => {
                 </Form.Item> */}
               </section>
               <section className="tw-flex tw-flex-col tw-gap-4 tw-pt-4 tw-border-t tw-border-dividerLight">
-                <div className="tw-flex tw-justify-between">
-                  <span className="tw-text-lg">合計額</span>
-                  <span className="tw-text-lg">{`${thousandSeparator(
-                    getPuchaseBody.plan?.total_price
-                  )}円 （税込）／月～`}</span>
-                </div>
+                <ul>
+                  {itemType === "plan" ? (
+                    <>
+                      <li className="tw-flex tw-justify-between">
+                        <span className="tw-text-lg tw-text-secondary">
+                          項目
+                        </span>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
+                          金額（税込）
+                        </span>
+                      </li>
+                      <li className="tw-flex tw-justify-between">
+                        <span className="tw-text-lg tw-font-light">{`初月（日割り ${nullSafety(
+                          getPuchaseBody[itemType].remaininng_days
+                        )} 日分）`}</span>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
+                          ￥
+                          {thousandSeparator(
+                            getPuchaseBody[itemType].first_month_price
+                          )}
+                        </span>
+                      </li>
+                      <li className="tw-flex tw-justify-between">
+                        <span className="tw-text-lg tw-font-light">入会金</span>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
+                          ￥
+                          {thousandSeparator(
+                            getPuchaseBody[itemType].admission_fee
+                          )}
+                        </span>
+                      </li>
+                      <li className="tw-flex tw-justify-between">
+                        <span className="tw-text-lg tw-font-light">翌月</span>
+                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
+                          ￥
+                          {thousandSeparator(
+                            getPuchaseBody[itemType].monthly_price
+                          )}
+                        </span>
+                      </li>
+                    </>
+                  ) : null}
+                  <li className="tw-flex tw-justify-between">
+                    <span className="tw-text-lg">合計額</span>
+                    <span className="tw-text-lg">
+                      ￥
+                      {thousandSeparator(
+                        getPuchaseBody[itemType].total_price ??
+                          getPuchaseBody[itemType].prices[0].price
+                      )}
+                    </span>
+                  </li>
+                </ul>
                 <Form.Item>
                   <Button
                     size="large"
@@ -280,7 +332,7 @@ const SubscriptionDetail = () => {
             rules={[
               {
                 required: true,
-                message: "姓（氏名）を入力してください。",
+                message: "カード番号を入力してください。",
               },
               // () => ({
               //   validator(_, value) {
@@ -308,11 +360,11 @@ const SubscriptionDetail = () => {
 
           <Form.Item
             name="cardName"
-            label="クレジットカード名義人氏名"
+            label="カード名義"
             rules={[
               {
                 required: true,
-                message: "名（氏名）を入力してください。",
+                message: "カード名義人氏名を入力してください。",
                 whitespace: true,
               },
             ]}
@@ -327,7 +379,7 @@ const SubscriptionDetail = () => {
               rules={[
                 {
                   required: true,
-                  message: "姓（氏名）を入力してください。",
+                  message: "カードの有効期限を入力してください。",
                 },
               ]}
               getValueFromEvent={(e) => {
@@ -346,11 +398,11 @@ const SubscriptionDetail = () => {
             </Form.Item>
             <Form.Item
               name="cvc"
-              label="CVVコード"
+              label="セキュリティコード"
               rules={[
                 {
                   required: true,
-                  message: "姓（氏名）を入力してください。",
+                  message: "カードのセキュリティコードを入力してください。",
                 },
               ]}
               getValueFromEvent={(e) => {
@@ -366,13 +418,17 @@ const SubscriptionDetail = () => {
             </Form.Item>
           </section>
 
-          <Form.Item name="isCardSaved" valuePropName="checked">
+          {/* <Form.Item name="isCardSaved" valuePropName="checked">
             <Checkbox>カードを保存する</Checkbox>
-          </Form.Item>
+          </Form.Item> */}
 
           <Form.Item>
             <div className="tw-flex tw-justify-end tw-gap-2">
-              <Button size="large" className="tw-w-[80px]">
+              <Button
+                size="large"
+                className="tw-w-[80px]"
+                onClick={() => setStep(2)}
+              >
                 戻る
               </Button>
               <Button
@@ -391,7 +447,7 @@ const SubscriptionDetail = () => {
         <section className="tw-bg-white tw-rounded-xl tw-border tw-border-info tw-p-4">
           <p className="tw-leading-[22px] tw-tracking-[0.14px]">
             ※
-            月会費プランのご購入の場合は主要カードから毎月のｘ日に決済が発生します。
+            月会費プランのご購入の場合は主要カードから毎月の20日に決済が発生します。
           </p>
         </section>
       </>

@@ -2,27 +2,20 @@ import $api from "@/app/_api";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import NoData from "@/app/_components/custom/NoData";
-import BranchDetailCard from "@/app/_components/home/BranchDetailCard";
+import HomeBranchDetailCard from "@/app/_components/home/HomeBranchDetailCard";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 
-export const generateMetadata = async ({ params }) => {
-  const { id } = params;
-  const { data } = await $api.member.branch.getOne(id);
-
-  return {
-    title: data?.name ?? process.env.BASE_META_TITLE,
-  };
-};
-
-const BranchDetail = async ({ params }) => {
+const HomeBranchDetailPage = async () => {
   const cookieStore = cookies();
-  const { id } = params;
-  const { data: branch } = await $api.member.branch.getOne(id); // Fetching branch detail on the server side
   const { status, data: memberPlan } = await $api.member.memberPlan.getMany(
     cookieStore.get("token").value
   );
   const { data: reservations } = await $api.member.reservation.getMany(
-    { status: ReservationStatusEnum.ACTIVE },
+    {
+      sortBy: "start_at",
+      sortType: "asc",
+      status: ReservationStatusEnum.ACTIVE,
+    },
     cookieStore.get("token").value
   );
 
@@ -32,12 +25,13 @@ const BranchDetail = async ({ params }) => {
 
   return (
     <>
-      {branch ? (
+      {memberPlan?.length ? (
         <>
-          <BranchDetailCard
-            branch={branch}
-            memberPlan={memberPlan}
+          <HomeBranchDetailCard
+            branch={memberPlan[0].studio}
+            nearestReservation={reservations?.length ? reservations[0] : null}
             reservations={reservations}
+            maxReservation={memberPlan[0]?.plan?.max_cc_reservable_num_by_plan}
           />
         </>
       ) : (
@@ -49,4 +43,4 @@ const BranchDetail = async ({ params }) => {
   );
 };
 
-export default BranchDetail;
+export default HomeBranchDetailPage;
