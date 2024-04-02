@@ -16,18 +16,26 @@ export const generateMetadata = async ({ params }) => {
 
 const BranchDetail = async ({ params }) => {
   const cookieStore = cookies();
+  const serverToken = cookieStore.get("token").value;
   const { id } = params;
   const { data: branch } = await $api.member.branch.getOne(id); // Fetching branch detail on the server side
   const { status, data: memberPlan } = await $api.member.memberPlan.getMany(
-    cookieStore.get("token").value
+    serverToken
+  );
+  const { data: memberTickets } = await $api.member.memberTicket.getMany(
+    serverToken
   );
   const { data: reservations } = await $api.member.reservation.getMany(
     { status: ReservationStatusEnum.ACTIVE },
-    cookieStore.get("token").value
+    serverToken
   );
 
   if (status === 401) {
     redirect("/auth/login");
+  }
+
+  if (!memberPlan?.length && memberTickets?.length) {
+    redirect("/home/tickets");
   }
 
   return (
