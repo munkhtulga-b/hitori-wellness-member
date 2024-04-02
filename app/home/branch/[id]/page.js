@@ -34,10 +34,6 @@ const BranchDetail = async ({ params }) => {
     redirect("/auth/login");
   }
 
-  if (!memberPlan?.length && memberTickets?.length) {
-    redirect("/home/tickets");
-  }
-
   return (
     <>
       {branch ? (
@@ -46,6 +42,7 @@ const BranchDetail = async ({ params }) => {
             branch={branch}
             memberPlan={memberPlan}
             reservations={reservations}
+            memberTickets={memberTickets}
           />
         </>
       ) : (
