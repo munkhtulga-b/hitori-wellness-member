@@ -1,12 +1,14 @@
 import Image from "next/image";
 import $api from "@/app/_api";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { nullSafety } from "@/app/_utils/helpers";
 import NoData from "@/app/_components/custom/NoData";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 const PaymentHistory = async () => {
+  dayjs.extend(utc);
   const cookieStore = cookies();
   const { status, data: payments } = await $api.member.purchase.getMany(
     cookieStore.get("token").value

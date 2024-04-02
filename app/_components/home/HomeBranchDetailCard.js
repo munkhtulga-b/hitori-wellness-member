@@ -138,6 +138,13 @@ const HomeBranchDetailCard = ({
             />
           </>
         )}
+        {isReachedMaxReservation() && (
+          <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
+            <p className="tw-leading-[22px] tw-tracking-[0.14px]">
+              一日あたりの同時予約上限数に達しています。
+            </p>
+          </section>
+        )}
         <section className="tw-mt-1">
           <Button
             disabled={isReachedMaxReservation()}

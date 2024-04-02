@@ -98,7 +98,7 @@ const BranchDetailCard = ({ branch, memberPlan, reservations }) => {
         {isReachedMaxReservation() && (
           <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
             <p className="tw-leading-[22px] tw-tracking-[0.14px]">
-              Sorry, you have reached your maxiumum reservations by plan.
+              一日あたりの同時予約上限数に達しています。
             </p>
           </section>
         )}
