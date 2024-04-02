@@ -92,7 +92,11 @@ const ProgramsPage = () => {
 
   const fetchPrograms = async () => {
     setIsLoading((prev) => ({ ...prev, isFetching: true }));
-    const { isOk, data } = await $api.member.program.getMany();
+    const { isOk, data } = await $api.member.program.getMany(
+      reservationBody.ticket
+        ? { ticketId: reservationBody.ticket.ticket?.id }
+        : undefined
+    );
     if (isOk) {
       const grouped = _.groupBy(data, "service_minutes");
       if (Object.values(grouped).length) {
