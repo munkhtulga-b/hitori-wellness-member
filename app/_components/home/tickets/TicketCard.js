@@ -10,9 +10,9 @@ const TicketCard = ({ ticket, branch }) => {
   const setReservationBody = useReservationStore((state) => state.setBody);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
 
-  const onSelect = ({ id }) => {
+  const onSelect = (ticket) => {
     resetReservationBody();
-    setReservationBody({ memberTicketId: id, branch: branch });
+    setReservationBody({ ticket: ticket, branch: branch });
     router.push("/home/reservation");
   };
 
