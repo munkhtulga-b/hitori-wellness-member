@@ -6,7 +6,7 @@ import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 
 const BranchDetailCard = ({
   branch,
@@ -20,7 +20,7 @@ const BranchDetailCard = ({
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!memberPlan?.length && memberTickets?.length) {
       resetReservationBody();
       setReservationBody({ branch: branch });

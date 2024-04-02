@@ -91,31 +91,15 @@ const TimeSlotSelect = ({ timeSlotList }) => {
 
     if (timeSlotList) {
       timeSlotList.forEach((item) => {
-        if (
-          item.reserved?.length &&
-          dayjs(item.reserved[0].start_at).format("YYYY-MM-DD") ===
-            dayjs(daysOfWeek[item.week_day].day).format("YYYY-MM-DD")
-        ) {
-          item.reserved.forEach((slot) => {
-            const duration = dayjs(slot.end_at).diff(slot.start_at, "minute");
-            const interval = duration / slotInterval;
-            const startIndex = daysOfWeek[item.week_day].timeSlots.findIndex(
-              (time) => time.time === dayjs.utc(slot.start_at).format("HH:mm")
-            );
-            if (startIndex !== -1) {
-              for (let i = 0; i < interval; i++) {
-                daysOfWeek[item.week_day].timeSlots[
-                  startIndex + i
-                ].currentCapacity = slot.current_capacity;
-                if (slot.current_capacity >= item.max_capacity) {
-                  daysOfWeek[item.week_day].timeSlots[
-                    startIndex + i
-                  ].isAvailable = false;
-                }
-              }
-            }
-          });
-        }
+        item.reserved.forEach((slot) => {
+          const slotIndex = daysOfWeek[item.week_day].timeSlots.findIndex(
+            (time) => time.time === slot.key
+          );
+          if (slotIndex !== -1) {
+            daysOfWeek[item.week_day].timeSlots[slotIndex].currentCapacity =
+              slot.current_capacity;
+          }
+        });
       });
     }
     return daysOfWeek;
@@ -142,7 +126,8 @@ const TimeSlotSelect = ({ timeSlotList }) => {
           ) ||
           dayjs(
             `${currentDate.format("YYYY-MM-DD")} ${hours}:${minutes}`
-          ).isBefore(dayjs().format("YYYY-MM-DD HH:mm"))
+          ).isBefore(dayjs().format("YYYY-MM-DD HH:mm")) ||
+          isUserReservedForTheDay(currentDate)
             ? false
             : true,
         time: `${hours}:${minutes}`,
@@ -177,26 +162,18 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     return result;
   };
 
-  // const doesUserHasReservationInTheDay = (currentDate) => {
-  //   let result = false;
-  //   if (timeSlotList?.length) {
-  //     timeSlotList.forEach((item) => {
-  //       item.reserved.forEach((slot) => {
-  //         if (slot.details?.length) {
-  //           if (
-  //             slot.details[0].member_id === getUser.id &&
-  //             dayjs(dayjs(currentDate).format("YYYY-MM-DD")).isSame(
-  //               dayjs.utc(slot.details[0].start_at).format("YYYY-MM-DD")
-  //             )
-  //           ) {
-  //             result = true;
-  //           }
-  //         }
-  //       });
-  //     });
-  //   }
-  //   return result;
-  // };
+  const isUserReservedForTheDay = (currentDate) => {
+    let result = false;
+    if (timeSlotList?.length) {
+      const matched = timeSlotList.find((item) => {
+        return item.week_day === currentDate.day();
+      });
+      if (matched) {
+        result = matched.user_reserved;
+      }
+    }
+    return result;
+  };
 
   return (
     <>
