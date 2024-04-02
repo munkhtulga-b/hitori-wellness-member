@@ -18,13 +18,18 @@ const filters = [
     dataIndex: "",
   },
   {
-    id: ReservationStatusEnum.CHECK_OUT,
+    id: ReservationStatusEnum.CHECK_IN,
     text: "過去",
     dataIndex: "",
   },
   {
     id: ReservationStatusEnum.CANCELLED,
     text: "キャンセル",
+    dataIndex: "",
+  },
+  {
+    id: ReservationStatusEnum.AUTOMATIC_CANCELLATION,
+    text: "無断キャンセル",
     dataIndex: "",
   },
 ];

@@ -17,6 +17,7 @@ const HomeBranchDetailCard = ({
   maxReservation,
 }) => {
   const router = useRouter();
+  const getReservationBody = useReservationStore((state) => state.getBody());
   const setReservationBody = useReservationStore((state) => state.setBody);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   const [isCancelled, setIsCancelled] = useState(false);
@@ -51,7 +52,7 @@ const HomeBranchDetailCard = ({
 
   const isReachedMaxReservation = () => {
     let result = false;
-    if (reservations?.length >= maxReservation) {
+    if (reservations?.length >= maxReservation && !getReservationBody.id) {
       result = true;
     }
     return result;

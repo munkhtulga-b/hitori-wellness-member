@@ -35,6 +35,9 @@ const ReservationConfirm = () => {
       startAt: reservationBody.time[0],
       endAt: reservationBody.time[reservationBody.time?.length - 1],
     };
+    if (reservationBody.memberTicketId) {
+      body["memberTicketId"] = reservationBody.memberTicketId;
+    }
     const { isOk } = await $api.member.reservation.create(body);
     if (isOk) {
       resetReservationBody();

@@ -6,23 +6,40 @@ import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
+import { useLayoutEffect } from "react";
 
-const BranchDetailCard = ({ branch, memberPlan, reservations }) => {
+const BranchDetailCard = ({
+  branch,
+  memberPlan,
+  memberTickets,
+  reservations,
+}) => {
   const router = useRouter();
-  const setBranch = useReservationStore((state) => state.setBody);
+  const getReservationBody = useReservationStore((state) => state.getBody());
+  const setReservationBody = useReservationStore((state) => state.setBody);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
+  useLayoutEffect(() => {
+    if (!memberPlan?.length && memberTickets?.length) {
+      resetReservationBody();
+      setReservationBody({ branch: branch });
+      router.push(`/home/tickets/${branch.id}`);
+    }
+  }, []);
+
   const handleMakeReservation = () => {
     resetReservationBody();
-    setBranch({ branch: branch });
+    setReservationBody({ branch: branch });
     router.push("/home/reservation");
   };
 
   const isReachedMaxReservation = () => {
     let result = false;
     if (
-      reservations?.length >= memberPlan[0]?.plan?.max_cc_reservable_num_by_plan
+      reservations?.length >=
+        memberPlan[0]?.plan?.max_cc_reservable_num_by_plan &&
+      !getReservationBody.id
     ) {
       result = true;
     }
