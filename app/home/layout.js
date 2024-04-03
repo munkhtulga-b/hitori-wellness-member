@@ -38,7 +38,7 @@ const UserAuthenticatedLayout = ({ children }) => {
         <>
           <Layout
             style={{
-              minHeight: "100vh",
+              minHeight: "100svh",
             }}
           >
             <Sider
