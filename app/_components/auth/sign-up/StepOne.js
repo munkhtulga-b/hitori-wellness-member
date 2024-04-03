@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { Button, Form, Input, DatePicker } from "antd";
+import { Button, Form, Input, Select } from "antd";
 import { useSignupStore } from "@/app/_store/user-signup";
 import { useEffect, useState } from "react";
 
@@ -24,21 +24,75 @@ const SignupStepOne = ({ onComplete }) => {
     ];
     for (const [key, value] of Object.entries(signupStore)) {
       if (formFields.includes(key)) {
-        key === "birthday"
-          ? form.setFieldValue(key, value ? dayjs(value) : null)
-          : form.setFieldValue(key, value);
-
         if (key === "gender") {
           setGenderValue(value);
+        } else if (key === "birthday") {
+          const birthYear = dayjs(value).format("YYYY");
+          const birthMonth = dayjs(value).format("MM");
+          const birthDay = dayjs(value).format("DD");
+          form.setFieldValue("birthYear", birthYear);
+          form.setFieldValue("birthMonth", birthMonth);
+          form.setFieldValue("birthDay", birthDay);
+        } else {
+          form.setFieldValue(key, value);
         }
       }
     }
+  };
+
+  const onFinish = (params) => {
+    const birthday = dayjs(
+      `${params.birthYear}-${params.birthMonth}-${params.birthDay}`
+    ).format("YYYY-MM-DD");
+    delete params.birthYear;
+    delete params.birthMonth;
+    delete params.birthDay;
+    params["birthday"] = birthday;
+    onComplete(params);
   };
 
   const handleGenderSelect = (value) => {
     setGenderValue(value);
     form.setFieldValue("gender", value);
     form.validateFields(["gender"]);
+  };
+
+  const getYears = () => {
+    const years = [];
+    for (let i = 0; i < 100; i++) {
+      years.push({
+        value: dayjs().year() - i,
+        label: dayjs().year() - i,
+      });
+    }
+    return years;
+  };
+
+  const getMonths = () => {
+    const months = [];
+    for (let month = 1; month <= 12; month++) {
+      months.push({
+        value: dayjs()
+          .month(month - 1)
+          .format("MM"),
+        label: dayjs()
+          .month(month - 1)
+          .format("MM"),
+      });
+    }
+    return months;
+  };
+
+  const getDays = () => {
+    const days = [];
+    for (let day = 1; day <= 31; day++) {
+      days.push({
+        value: day.toString().padStart(2, "0"),
+        label: day.toString().padStart(2, "0"),
+        disabled: form.getFieldValue("birthMonth") === "02" && day > 28,
+      });
+    }
+    return days;
   };
 
   const customizeRequiredMark = (label, { required }) => (
@@ -53,7 +107,7 @@ const SignupStepOne = ({ onComplete }) => {
       requiredMark={customizeRequiredMark}
       form={form}
       name="signupStepOne"
-      onFinish={onComplete}
+      onFinish={onFinish}
     >
       <Form.Item
         name="mailAddress"
@@ -138,24 +192,67 @@ const SignupStepOne = ({ onComplete }) => {
         </div>
       </section>
 
-      <Form.Item
-        name="birthday"
-        label="生年月日"
-        rules={[
-          {
-            type: "object",
-            required: true,
-            message: "誕生日をご選択ください。",
-          },
-        ]}
-      >
-        <DatePicker
-          className="tw-w-full"
-          placeholder="yyyy/mm/dd"
-          disabledDate={(current) => current && current > dayjs().endOf("day")}
-          format={"YYYY/MM/DD"}
-        />
-      </Form.Item>
+      <section className="tw-flex tw-flex-col tw-gap-2">
+        <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
+          生年月日
+        </label>
+        <div className="tw-grid tw-grid-cols-3 tw-gap-2">
+          <Form.Item
+            name="birthYear"
+            rules={[
+              {
+                required: true,
+                message: "ご選択ください。",
+              },
+            ]}
+          >
+            <Select
+              style={{
+                width: "100%",
+              }}
+              size="large"
+              options={getYears()}
+              placeholder="1990"
+            />
+          </Form.Item>
+          <Form.Item
+            name="birthMonth"
+            rules={[
+              {
+                required: true,
+                message: "ご選択ください。",
+              },
+            ]}
+          >
+            <Select
+              style={{
+                width: "100%",
+              }}
+              size="large"
+              options={getMonths()}
+              placeholder="01"
+            />
+          </Form.Item>
+          <Form.Item
+            name="birthDay"
+            rules={[
+              {
+                required: true,
+                message: "ご選択ください。",
+              },
+            ]}
+          >
+            <Select
+              style={{
+                width: "100%",
+              }}
+              size="large"
+              options={getDays()}
+              placeholder="01"
+            />
+          </Form.Item>
+        </div>
+      </section>
 
       <section className="tw-flex tw-flex-col tw-gap-2">
         <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">

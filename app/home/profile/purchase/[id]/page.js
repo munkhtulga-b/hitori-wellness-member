@@ -472,7 +472,7 @@ const SubscriptionDetail = () => {
             type="primary"
             className="tw-w-full"
           >
-            予約履歴を見る
+            ホームページヘ戻る
           </Button>
         </section>
       </section>

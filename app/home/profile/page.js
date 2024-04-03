@@ -22,15 +22,15 @@ const UserProfile = () => {
             className="tw-p-4 tw-rounded-xl tw-bg-white tw-shadow"
           >
             <div className="tw-flex tw-justify-start tw-items-center tw-gap-3">
-              <section className="tw-bg-gray-200 tw-rounded-full tw-min-w-[60px] tw-max-w-[60px] tw-max-h-[60px] tw-min-h-[60px] tw-grid tw-place-items-center">
-                {/* <Image
+              {/* <section className="tw-bg-gray-200 tw-rounded-full tw-min-w-[60px] tw-max-w-[60px] tw-max-h-[60px] tw-min-h-[60px] tw-grid tw-place-items-center">
+                <Image
                   src="/assets/profile/user-icon.svg"
                   alt="user"
                   width={0}
                   height={0}
                   style={{ width: "auto", height: "auto" }}
-                /> */}
-              </section>
+                />
+              </section> */}
               <section className="tw-grow tw-flex tw-flex-col tw-gap-1">
                 <span className="tw-leading-[22px] tw-tracking-[0.14px]">
                   {getFullName(user.last_name, user.first_name)}

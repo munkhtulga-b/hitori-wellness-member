@@ -51,7 +51,9 @@ const PurchaseSubscription = () => {
       [type]: item,
       [type === "plan" ? "item" : "plan"]: null,
     });
-    router.push(`/home/profile/purchase/${item.id}`);
+    router.push(`/home/profile/purchase/${item.id}`, {
+      scroll: false,
+    });
   };
 
   return (

@@ -12,6 +12,7 @@ const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
   const pathName = usePathname();
   const slotCapacityPercentage = 60;
   const reservationDateLimit = dayjs().add(1, "month").endOf("month");
+  const getReservationEdit = useReservationStore((state) => state.getEdit());
   const getReservation = useReservationStore((state) => state.getBody());
   const setReservation = useReservationStore((state) => state.setBody);
   const [selectedWeek, setSelectedWeek] = useState({
@@ -142,6 +143,15 @@ const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
       });
       if (matched) {
         result = matched.user_reserved;
+        if (matched.user_reserved === true && getReservationEdit.date) {
+          if (
+            dayjs(dayjs(currentDate).format("YYYY-MM-DD")).isSame(
+              dayjs.utc(getReservationEdit.date).format("YYYY-MM-DD")
+            )
+          ) {
+            return false;
+          }
+        }
       }
     }
     return result;
