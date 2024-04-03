@@ -120,8 +120,9 @@ const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
     return result;
   };
 
-  const isReachingMaxCapacity = ({ currentCapacity }) => {
+  const isReachingMaxCapacity = ({ currentCapacity, isAvailable }) => {
     let result = false;
+    if (!isAvailable) return false;
     if (timeSlotList?.length && timeSlotList[0].max_capacity) {
       const percentage = Math.round(
         (timeSlotList[0].max_capacity * slotCapacityPercentage) / 100
