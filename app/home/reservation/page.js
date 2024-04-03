@@ -6,6 +6,7 @@ import SwitchSlider from "@/app/_components/custom/SwitchSlider";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 import _ from "lodash";
 import $api from "@/app/_api";
+import dayjs from "dayjs";
 import ProgramListView from "@/app/_components/home/program/ProgramListView";
 import ProgramScrollView from "@/app/_components/home/program/ProgramScrollView";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
@@ -116,10 +117,12 @@ const ProgramsPage = () => {
     // setIsLoading((prev) => ({ ...prev, isFetching: false }));
   };
 
-  const fetchTimeslots = async () => {
-    setIsLoading((prev) => ({ ...prev, isFetching: true }));
+  const fetchTimeslots = async (startDate) => {
     const branchId = reservationBody.branch?.id;
-    const { isOk, data } = await $api.member.reservation.getTimeSlot(branchId);
+    const { isOk, data } = await $api.member.reservation.getTimeSlot(
+      { startAt: startDate ?? dayjs().format("YYYY-MM-DD") },
+      branchId
+    );
     if (isOk) {
       setTimeslotList(data);
     }
@@ -190,16 +193,13 @@ const ProgramsPage = () => {
             )}
             {activeStepId === 3 && (
               <>
-                {timeslotList ? (
-                  <>
-                    {reservationBody.program ? (
-                      <TimeSlotSelect timeSlotList={timeslotList} />
-                    ) : (
-                      <TimeSlotSelectNoProgram timeSlotList={timeslotList} />
-                    )}
-                  </>
+                {reservationBody.program ? (
+                  <TimeSlotSelect
+                    timeSlotList={timeslotList}
+                    fetchTimeslots={fetchTimeslots}
+                  />
                 ) : (
-                  <NoData message={"No Data"} />
+                  <TimeSlotSelectNoProgram timeSlotList={timeslotList} />
                 )}
               </>
             )}

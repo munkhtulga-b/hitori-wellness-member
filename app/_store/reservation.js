@@ -12,8 +12,14 @@ export const useReservationStore = create(
   persist(
     (set, get) => ({
       body: initialState,
+      edit: {
+        isEditing: false,
+        date: null,
+      },
       setBody: (payload) => set({ body: { ...get().body, ...payload } }),
+      setEdit: (payload) => set({ edit: { ...get().edit, ...payload } }),
       getBody: () => get().body,
+      getEdit: () => get().edit,
       editBody: (payload) => {
         const keys = Object.keys(get().body);
         const idx = keys.indexOf(payload);
@@ -26,6 +32,10 @@ export const useReservationStore = create(
       resetBody: () =>
         set({
           body: initialState,
+          edit: {
+            isEditing: false,
+            date: null,
+          },
         }),
     }),
     {

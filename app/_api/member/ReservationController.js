@@ -27,6 +27,7 @@ export const getAllTimeSlots = (queries) => {
   return fetchData(`timeslots${queryString}`, "GET");
 };
 
-export const getTimeSlot = (id) => {
-  return fetchData(`timeslots/${id}`, "GET");
+export const getTimeSlot = (queries, branchId) => {
+  const queryString = createQueryString(queries);
+  return fetchData(`timeslots/${branchId}${queryString}`, "GET");
 };
