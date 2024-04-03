@@ -108,7 +108,11 @@ const ReservationConfirm = () => {
                   style={{ width: "auto", height: "auto" }}
                 />
                 <span className="tw-grow tw-text-lg">店舗</span>
-                <Button onClick={() => handleEdit("branch")} size="small">
+                <Button
+                  disabled={reservationBody.id}
+                  onClick={() => handleEdit("branch")}
+                  size="small"
+                >
                   変更
                 </Button>
               </div>

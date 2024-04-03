@@ -44,6 +44,7 @@ const ReservationHistory = () => {
   );
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   const setReservationBody = useReservationStore((state) => state.setBody);
+  const setReservationEdit = useReservationStore((state) => state.setEdit);
 
   useEffect(() => {
     fetchReservations();
@@ -76,6 +77,10 @@ const ReservationHistory = () => {
       branch: reservation.m_studio,
       program: reservation.m_program,
       time: [reservation.start_at, reservation.end_at],
+    });
+    setReservationEdit({
+      isEditing: true,
+      date: reservation.start_at,
     });
     router.push(`/home/reservation/confirm`);
   };
