@@ -34,8 +34,6 @@ const BranchDetail = async ({ params }) => {
     redirect("/auth/login");
   }
 
-  console.log(memberTickets);
-
   return (
     <>
       {branch ? (
