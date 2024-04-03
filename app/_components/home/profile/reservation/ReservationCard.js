@@ -154,7 +154,7 @@ const ReservationCard = ({
         <div className="tw-flex tw-flex-col tw-gap-6 tw-mt-6">
           <section className="tw-rounded-xl tw-border-2 tw-border-warning tw-p-4">
             <p className="tw-leading-[26px] tw-tracking-[0.14px]">
-              キャンセルは取り消すことはできません。本当にキャンセルしますか？
+              ※キャンセルは取り消すことはできません。本当にキャンセルしますか？
             </p>
           </section>
           <section className="tw-flex tw-justify-center">

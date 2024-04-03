@@ -75,7 +75,7 @@ const SubscriptionDetail = () => {
   };
 
   const pageHeader = () => {
-    let result = "プラン購入";
+    let result = "購入明細";
     if (step === 2) {
       result = "支払い方法をお選びください";
     }
