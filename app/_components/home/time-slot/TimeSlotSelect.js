@@ -93,11 +93,16 @@ const TimeSlotSelect = ({ timeSlotList }) => {
       timeSlotList.forEach((item) => {
         item.reserved.forEach((slot) => {
           const slotIndex = daysOfWeek[item.week_day].timeSlots.findIndex(
-            (time) => time.time === slot.key
+            (time) => time.time === slot.start
           );
           if (slotIndex !== -1) {
             daysOfWeek[item.week_day].timeSlots[slotIndex].currentCapacity =
               slot.current_capacity;
+            if (slot.current_capacity >= item.max_capacity) {
+              daysOfWeek[item.week_day].timeSlots[
+                slotIndex
+              ].isAvailable = false;
+            }
           }
         });
       });
@@ -149,8 +154,9 @@ const TimeSlotSelect = ({ timeSlotList }) => {
     return result;
   };
 
-  const isReachingMaxCapacity = ({ currentCapacity }) => {
+  const isReachingMaxCapacity = ({ currentCapacity, isAvailable }) => {
     let result = false;
+    if (!isAvailable) return false;
     if (timeSlotList?.length && timeSlotList[0].max_capacity) {
       const percentage = Math.round(
         (timeSlotList[0].max_capacity * slotCapacityPercentage) / 100
