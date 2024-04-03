@@ -120,7 +120,7 @@ const BranchDetailCard = ({
           </section>
         )}
         {!memberPlan?.length ? (
-          <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4 tw-flex tw-justify-between tw-items-center">
+          <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4 tw-flex tw-justify-between tw-items-center tw-gap-2">
             <Image
               src="/assets/branch/warning-icon.svg"
               alt="warning"
@@ -128,7 +128,7 @@ const BranchDetailCard = ({
               height={0}
               style={{ width: "auto", height: "auto" }}
             />
-            <span className="tw-text-sm tw-tracking-[0.12px]">
+            <span className="tw-grow tw-text-sm tw-tracking-[0.12px]">
               予約するにはプランへの加入・チケットが必要です。
             </span>
             <Button

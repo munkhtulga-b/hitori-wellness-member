@@ -78,6 +78,12 @@ const AppProvider = ({ children, fontFamily }) => {
               colorBgContainer: colors.formInputBackground,
               colorTextPlaceholder: colors.inputPlaceholder,
             },
+            Select: {
+              controlHeightLG: 46,
+              fontSize: 14,
+              colorBgContainer: colors.formInputBackground,
+              colorTextPlaceholder: colors.inputPlaceholder,
+            },
             DatePicker: {
               controlHeight: 46,
               colorBgContainer: colors.formInputBackground,
