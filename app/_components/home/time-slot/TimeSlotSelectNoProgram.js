@@ -10,7 +10,6 @@ const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
-  const slotInterval = 30;
   const slotCapacityPercentage = 60;
   const reservationDateLimit = dayjs().add(1, "month").endOf("month");
   const getReservation = useReservationStore((state) => state.getBody());
@@ -58,31 +57,20 @@ const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
 
     if (timeSlotList) {
       timeSlotList.forEach((item) => {
-        if (
-          item.reserved?.length &&
-          dayjs(item.reserved[0].start_at).format("YYYY-MM-DD") ===
-            dayjs(daysOfWeek[item.week_day].day).format("YYYY-MM-DD")
-        ) {
-          item.reserved.forEach((slot) => {
-            const duration = dayjs(slot.end_at).diff(slot.start_at, "minute");
-            const interval = duration / slotInterval;
-            const startIndex = daysOfWeek[item.week_day].timeSlots.findIndex(
-              (time) => time.time === dayjs.utc(slot.start_at).format("HH:mm")
-            );
-            if (startIndex !== -1) {
-              for (let i = 0; i < interval; i++) {
-                daysOfWeek[item.week_day].timeSlots[
-                  startIndex + i
-                ].currentCapacity = slot.current_capacity;
-                if (slot.current_capacity >= item.max_capacity) {
-                  daysOfWeek[item.week_day].timeSlots[
-                    startIndex + i
-                  ].isAvailable = false;
-                }
-              }
+        item.reserved.forEach((slot) => {
+          const slotIndex = daysOfWeek[item.week_day].timeSlots.findIndex(
+            (time) => time.time === slot.start
+          );
+          if (slotIndex !== -1) {
+            daysOfWeek[item.week_day].timeSlots[slotIndex].currentCapacity =
+              slot.current_capacity;
+            if (slot.current_capacity >= item.max_capacity) {
+              daysOfWeek[item.week_day].timeSlots[
+                slotIndex
+              ].isAvailable = false;
             }
-          });
-        }
+          }
+        });
       });
     }
     return daysOfWeek;
