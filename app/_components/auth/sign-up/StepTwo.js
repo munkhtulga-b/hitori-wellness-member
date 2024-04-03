@@ -160,7 +160,7 @@ const SignupStepTwo = ({ onComplete }) => {
               },
             ]}
           >
-            <Input placeholder="市区町村" />
+            <Input placeholder="都道府県" />
           </Form.Item>
           <Form.Item
             name="address1"
@@ -172,7 +172,7 @@ const SignupStepTwo = ({ onComplete }) => {
               },
             ]}
           >
-            <Input placeholder="都道府県" />
+            <Input placeholder="市区町村" />
           </Form.Item>
           <Form.Item
             name="address2"

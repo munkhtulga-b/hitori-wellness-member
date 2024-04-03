@@ -83,66 +83,50 @@ const HomeBranchDetailCard = ({
             {nullSafety(branch.name)}
           </span>
         </section>
-        {!nearestReservation ? (
-          <section className="tw-flex tw-flex-col tw-gap-4">
-            <div className="tw-flex tw-flex-col tw-gap-1">
-              <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
-                <Image
-                  src="/assets/branch/schedule-icon.svg"
-                  alt="schedule"
-                  width={0}
-                  height={0}
-                  style={{ width: "auto", height: "auto" }}
-                />
-                <span className="tw-text-lg">営業時間</span>
-              </div>
-              <p className="tw-whitespace-pre-line">
-                {nullSafety(branch.business_hours)}
-              </p>
+        <section className="tw-flex tw-flex-col tw-gap-4">
+          <div className="tw-flex tw-flex-col tw-gap-1">
+            <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
+              <Image
+                src="/assets/branch/schedule-icon.svg"
+                alt="schedule"
+                width={0}
+                height={0}
+                style={{ width: "auto", height: "auto" }}
+              />
+              <span className="tw-text-lg">営業時間</span>
             </div>
-            <div className="tw-flex tw-flex-col tw-gap-1">
-              <a
-                href={branch.gmap_url ? branch.gmap_url : "#"}
-                target="_blank"
-                rel="noreferrer"
-                className="tw-flex tw-justify-start tw-items-center tw-gap-2 tw-text-current"
-              >
-                <Image
-                  src="/assets/branch/location-icon.svg"
-                  alt="location"
-                  width={20}
-                  height={20}
-                />
-                <span className="tw-tracking-[0.14px]">
-                  {nullSafety(branch.prefecture)}
-                </span>
-              </a>
-              <p className="tw-whitespace-normal">
-                {`${nullSafety(branch.address1)} ${nullSafety(
-                  branch.address2
-                )} ${nullSafety(branch.address3)}`}
-              </p>
-            </div>
-          </section>
-        ) : (
-          <>
-            <ReservationCard
-              reservation={nearestReservation}
-              activeFilterId={
-                isCancelled
-                  ? ReservationStatusEnum.CANCELLED
-                  : ReservationStatusEnum.ACTIVE
-              }
-              cancelReservation={cancelReservation}
-              editReservation={editReservation}
-              isRequesting={isRequesting}
-            />
-          </>
-        )}
+            <p className="tw-whitespace-pre-line">
+              {nullSafety(branch.business_hours)}
+            </p>
+          </div>
+          <div className="tw-flex tw-flex-col tw-gap-1">
+            <a
+              href={branch.gmap_url ? branch.gmap_url : "#"}
+              target="_blank"
+              rel="noreferrer"
+              className="tw-flex tw-justify-start tw-items-center tw-gap-2 tw-text-current"
+            >
+              <Image
+                src="/assets/branch/location-icon.svg"
+                alt="location"
+                width={20}
+                height={20}
+              />
+              <span className="tw-tracking-[0.14px]">
+                {nullSafety(branch.prefecture)}
+              </span>
+            </a>
+            <p className="tw-whitespace-normal">
+              {`${nullSafety(branch.address1)} ${nullSafety(
+                branch.address2
+              )} ${nullSafety(branch.address3)}`}
+            </p>
+          </div>
+        </section>
         {isReachedMaxReservation() && (
           <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
             <p className="tw-leading-[22px] tw-tracking-[0.14px]">
-              一日あたりの同時予約上限数に達しています。
+              加入中プランの最大同時予約数が上限に達しています。
             </p>
           </section>
         )}
@@ -157,6 +141,19 @@ const HomeBranchDetailCard = ({
             予約する
           </Button>
         </section>
+        <>
+          <ReservationCard
+            reservation={nearestReservation}
+            activeFilterId={
+              isCancelled
+                ? ReservationStatusEnum.CANCELLED
+                : ReservationStatusEnum.ACTIVE
+            }
+            cancelReservation={cancelReservation}
+            editReservation={editReservation}
+            isRequesting={isRequesting}
+          />
+        </>
       </div>
     </>
   );

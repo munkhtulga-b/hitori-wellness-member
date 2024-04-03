@@ -1,4 +1,4 @@
-import Image from "next/image";
+// import Image from "next/image";
 import $api from "@/app/_api";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc";
@@ -86,19 +86,19 @@ const PaymentHistory = async () => {
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-4">
                 <section className="tw-grow tw-flex tw-flex-col tw-gap-2">
                   <span className="tw-text-sm tw-tracking-[0.12px]">
-                    購入詳細
+                    購入商品
                   </span>
                   <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
                     {nullSafety(payment.description)}
                   </p>
                 </section>
-                <Image
+                {/* <Image
                   src="/assets/profile/arrow-right.svg"
                   alt="go"
                   width={0}
                   height={0}
                   style={{ width: "auto", height: "auto" }}
-                />
+                /> */}
               </div>
             </section>
           ))

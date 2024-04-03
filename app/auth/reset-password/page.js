@@ -12,13 +12,11 @@ const NewPassword = () => {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [showWarning, setShowWarning] = useState(false);
 
   const onFinish = (params) => {
     if (!isValidPassword(params.confirm)) {
-      return setShowWarning(true);
+      return;
     }
-    setShowWarning(false);
     resetPassword(params.confirm);
   };
 
@@ -121,16 +119,13 @@ const NewPassword = () => {
             >
               <Input.Password placeholder="半角英数8文字以上" />
             </Form.Item>
-
-            {showWarning && (
-              <section className="tw-my-[28px]">
-                <div className="tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info">
-                  <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px]">
-                    ８文字以上の半角英数記号、大文字、記号、それ以外をそれぞれ一文字以上使用してください。
-                  </p>
-                </div>
-              </section>
-            )}
+            <section className="tw-my-[28px]">
+              <div className="tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info">
+                <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px]">
+                  ８文字以上の半角英数記号、大文字、記号、それ以外をそれぞれ一文字以上使用してください。
+                </p>
+              </div>
+            </section>
 
             <Form.Item>
               <Button

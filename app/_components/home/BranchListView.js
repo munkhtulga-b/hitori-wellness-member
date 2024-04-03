@@ -33,7 +33,7 @@ const BranchListView = ({ list, cardType }) => {
                   className="tw-flex tw-flex-col tw-gap-2 tw-p-2 tw-rounded-lg tw-shadow tw-bg-white"
                 >
                   <section className="tw-flex tw-justify-start tw-items-start tw-gap-2">
-                    <section className="tw-self-stretch tw-rounded-lg tw-min-w-[30%] tw-max-w-[30%] tw-bg-gray-200 tw-overflow-hidden">
+                    <section className="tw-self-stretch tw-rounded-lg tw-min-w-[30%] tw-max-w-[30%] tw-min-h-[155px] tw-max-h-[155px] tw-bg-gray-200 tw-overflow-hidden">
                       {branch.thumbnail_code ? (
                         <Image
                           priority
