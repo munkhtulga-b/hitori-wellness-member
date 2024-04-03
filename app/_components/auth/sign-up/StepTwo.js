@@ -111,7 +111,7 @@ const SignupStepTwo = ({ onComplete }) => {
               },
             ]}
           >
-            <Input placeholder="226" type="number" maxLength={3} />
+            <Input placeholder="000" type="number" maxLength={3} />
           </Form.Item>
           <Form.Item
             name="zipCode2"
@@ -124,7 +124,7 @@ const SignupStepTwo = ({ onComplete }) => {
             ]}
           >
             <Input
-              placeholder="0027"
+              placeholder="0000"
               type="number"
               maxLength={4}
               suffix={
