@@ -23,6 +23,8 @@ const ReservationCard = ({
     return result;
   };
 
+  console.log(reservation);
+
   return (
     <>
       <>
@@ -157,7 +159,14 @@ const ReservationCard = ({
               ※キャンセルは取り消すことはできません。本当にキャンセルしますか？
             </p>
           </section>
-          <section className="tw-flex tw-justify-center">
+          <section className="tw-flex tw-justify-end tw-items-center tw-gap-2">
+            <Button
+              onClick={() => setIsModalOpen(false)}
+              size="large"
+              className="tw-w-auto"
+            >
+              戻る
+            </Button>
             <Button
               onClick={() => cancelReservation(reservation)}
               loading={isRequesting}

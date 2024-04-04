@@ -25,8 +25,6 @@ const MemberPlanCard = ({ memberPlan }) => {
     setIsLoading(false);
   };
 
-  console.log(memberPlan);
-
   return (
     <>
       <section className="tw-flex tw-flex-col tw-gap-2 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow">
@@ -51,7 +49,7 @@ const MemberPlanCard = ({ memberPlan }) => {
       </section>
 
       <Modal
-        title="Cancel plan"
+        title="注意事項"
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={null}
@@ -60,10 +58,17 @@ const MemberPlanCard = ({ memberPlan }) => {
         <div className="tw-flex tw-flex-col tw-gap-6 tw-mt-6">
           <section className="tw-rounded-xl tw-border-2 tw-border-warning tw-p-4">
             <p className="tw-leading-[26px] tw-tracking-[0.14px]">
-              Are you sure you want to cancel this plan?
+              当プランの解約時には前払いの返金はございません。本当に解約いたしますか？
             </p>
           </section>
-          <section className="tw-flex tw-justify-center">
+          <section className="tw-flex tw-justify-end tw-items-center tw-gap-2">
+            <Button
+              onClick={() => setIsModalOpen(false)}
+              size="large"
+              className="tw-w-auto"
+            >
+              戻る
+            </Button>
             <Button
               onClick={() => cancelMemberPlan()}
               loading={isLoading}

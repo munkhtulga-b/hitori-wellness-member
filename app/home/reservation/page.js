@@ -109,6 +109,8 @@ const ProgramsPage = () => {
       const grouped = _.groupBy(data, "service_minutes");
       if (Object.values(grouped).length) {
         setProgramList(Object.values(grouped));
+      } else {
+        setProgramList(data);
       }
     }
     setIsFetching((prev) => ({ ...prev, programs: false }));
@@ -184,7 +186,11 @@ const ProgramsPage = () => {
                     )}
                   </>
                 ) : (
-                  <NoData message={"No Data"} />
+                  <NoData
+                    message={
+                      "選択した時間帯に予約可能なプログラムがありません。"
+                    }
+                  />
                 )}
               </>
             ) : (
