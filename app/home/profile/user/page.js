@@ -395,7 +395,7 @@ const EditUserInfo = () => {
             name="address3"
             rules={[
               {
-                required: true,
+                required: false,
                 message: "ビル・マンション名を入力してください。",
                 whitespace: true,
               },
