@@ -93,23 +93,30 @@ const ProgramsPage = () => {
   }, [activeStepId]);
 
   const fetchPrograms = async () => {
+    let queries = {};
     setIsFetching((prev) => ({ ...prev, programs: true }));
-    const { isOk, data } = await $api.member.program.getMany(
-      reservationBody.ticket
-        ? {
-            ticketId: reservationBody.ticket.ticket?.id,
-            startAt: `${dayjs(reservationBody.time[0]).format(
-              "YYYY-MM-DD"
-            )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
-          }
-        : reservationBody.time
-        ? {
-            startAt: `${dayjs(reservationBody.time[0]).format(
-              "YYYY-MM-DD"
-            )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
-          }
-        : undefined
-    );
+    if (reservationBody.ticket) {
+      if (reservationBody.time) {
+        queries = {
+          ticketId: reservationBody.ticket.ticket?.id,
+          startAt: `${dayjs(reservationBody.time[0]).format(
+            "YYYY-MM-DD"
+          )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
+        };
+      } else {
+        queries = {
+          ticketId: reservationBody.ticket.ticket?.id,
+        };
+      }
+    }
+    if (!reservationBody.ticket && reservationBody.time) {
+      queries = {
+        startAt: `${dayjs(reservationBody.time[0]).format(
+          "YYYY-MM-DD"
+        )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
+      };
+    }
+    const { isOk, data } = await $api.member.program.getMany(queries);
     if (isOk) {
       const grouped = _.groupBy(data, "service_minutes");
       if (Object.values(grouped).length) {
