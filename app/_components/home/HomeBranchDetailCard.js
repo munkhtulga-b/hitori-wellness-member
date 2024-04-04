@@ -141,19 +141,21 @@ const HomeBranchDetailCard = ({
             予約する
           </Button>
         </section>
-        <>
-          <ReservationCard
-            reservation={nearestReservation}
-            activeFilterId={
-              isCancelled
-                ? ReservationStatusEnum.CANCELLED
-                : ReservationStatusEnum.ACTIVE
-            }
-            cancelReservation={cancelReservation}
-            editReservation={editReservation}
-            isRequesting={isRequesting}
-          />
-        </>
+        {reservations?.length ? (
+          <>
+            <ReservationCard
+              reservation={nearestReservation}
+              activeFilterId={
+                isCancelled
+                  ? ReservationStatusEnum.CANCELLED
+                  : ReservationStatusEnum.ACTIVE
+              }
+              cancelReservation={cancelReservation}
+              editReservation={editReservation}
+              isRequesting={isRequesting}
+            />
+          </>
+        ) : null}
       </div>
     </>
   );
