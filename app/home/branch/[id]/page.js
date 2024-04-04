@@ -39,7 +39,7 @@ const BranchDetail = async ({ params }) => {
 
   return (
     <>
-      {branch ? (
+      {branch && memberPlan && memberTickets && permittedBranches ? (
         <>
           <BranchDetailCard
             branch={branch}

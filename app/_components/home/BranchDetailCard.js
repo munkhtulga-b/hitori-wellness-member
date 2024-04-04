@@ -27,7 +27,7 @@ const BranchDetailCard = ({
       setReservationBody({ branch: branch });
       router.push(`/home/tickets/${branch.id}`);
     }
-  }, []);
+  }, [memberPlan, memberTickets]);
 
   const handleMakeReservation = () => {
     resetReservationBody();

@@ -44,17 +44,28 @@ const TimeSlotSelect = ({ timeSlotList, fetchTimeslots, isFetching }) => {
         const slotsLength = timeSlots.length;
         const currentIdx = timeIdx + i;
         const nextDayIndex = currentIdx - slotsLength;
-        if (!getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].isAvailable) {
+        if (
+          dateIdx + 1 < 7 &&
+          !getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].isAvailable
+        ) {
           return messageApi.open({
             type: "warning",
             content: "選択不可能な時間です。別の開始時間をご選択ください。",
           });
         }
-        shallowSlots.push(
-          `${dayjs(day).add(1, "day").format("YYYY-MM-DD")} ${
-            getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].time
-          }`
-        );
+        if (dateIdx + 1 < 7) {
+          shallowSlots.push(
+            `${dayjs(day).add(1, "day").format("YYYY-MM-DD")} ${
+              getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].time
+            }`
+          );
+        } else {
+          shallowSlots.push(
+            dayjs(shallowSlots[0])
+              .add(getReservation.program.service_minutes, "minutes")
+              .format("YYYY-MM-DD HH:mm")
+          );
+        }
       } else {
         if (!timeSlots[timeIdx + i].isAvailable) {
           return messageApi.open({
