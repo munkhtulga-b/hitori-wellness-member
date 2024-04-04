@@ -80,6 +80,7 @@ const AppProvider = ({ children, fontFamily }) => {
             },
             Select: {
               controlHeightLG: 46,
+              fontSizeLG: 14,
               fontSize: 14,
               colorBgContainer: colors.formInputBackground,
               colorTextPlaceholder: colors.inputPlaceholder,

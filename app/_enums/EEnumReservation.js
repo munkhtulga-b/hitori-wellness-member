@@ -11,6 +11,7 @@ const ReservationEnum = {
   },
   TIMESLOT: {
     queryString: "time",
+    next: "program",
     value: 3,
   },
 };

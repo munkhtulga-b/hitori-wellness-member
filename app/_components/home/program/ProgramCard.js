@@ -9,16 +9,21 @@ import ReservationEnum from "@/app/_enums/EEnumReservation";
 const ProgramCard = ({ program }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const getReservationBody = useReservationStore((state) => state.getBody());
   const setProgram = useReservationStore((state) => state.setBody);
 
   const onProgramSelect = () => {
     setProgram({ program: program });
-    router.push(
-      `/home/reservation?${createQueryString(
-        "select",
-        ReservationEnum.PROGRAM.next
-      )}`
-    );
+    if (!getReservationBody.time) {
+      router.push(
+        `/home/reservation?${createQueryString(
+          "select",
+          ReservationEnum.PROGRAM.next
+        )}`
+      );
+    } else {
+      router.push("/home/reservation/confirm");
+    }
   };
 
   const createQueryString = useCallback(

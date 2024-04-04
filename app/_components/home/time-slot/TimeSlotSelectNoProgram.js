@@ -6,7 +6,7 @@ import { useReservationStore } from "@/app/_store/reservation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
-const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
+const TimeSlotSelectNoProgram = ({ timeSlotList, fetchTimeslots }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
@@ -32,7 +32,7 @@ const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
   };
 
   const onSlotConfirm = () => {
-    setReservation({ time: selectedSlot });
+    setReservation({ time: [selectedSlot] });
     router.push(pathName + "?" + createQueryString("select", "program"));
   };
 
@@ -42,6 +42,7 @@ const TimeSlotSelectNoProgram = ({ timeSlotList }) => {
       start: selectedWeek.start[type](1, "week"),
       end: selectedWeek.end[type](1, "week"),
     });
+    fetchTimeslots(selectedWeek.start[type](1, "week").format("YYYY-MM-DD"));
   };
 
   const getDaysOfWeek = () => {

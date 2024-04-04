@@ -44,9 +44,10 @@ const ProgramsPage = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const reservationBody = useReservationStore((state) => state.getBody());
-  const [isLoading, setIsLoading] = useState({
-    isFetching: false,
-    isRequesting: false,
+  const [isFetching, setIsFetching] = useState({
+    programs: false,
+    coaches: false,
+    timeslots: false,
   });
   const [programList, setProgramList] = useState(null);
   const [coachList, setCoachList] = useState(null);
@@ -65,10 +66,10 @@ const ProgramsPage = () => {
     if (query === ReservationEnum.COACH.queryString) {
       return setActiveStepId(ReservationEnum.COACH.value);
     }
-    if (query === ReservationEnum.TIMESLOT.queryString) {
-      return setActiveStepId(ReservationEnum.TIMESLOT.value);
+    if (query === ReservationEnum.PROGRAM.queryString) {
+      return setActiveStepId(ReservationEnum.PROGRAM.value);
     }
-    setActiveStepId(ReservationEnum.PROGRAM.value);
+    setActiveStepId(ReservationEnum.TIMESLOT.value);
   }, [searchParams]);
 
   useEffect(() => {
@@ -92,10 +93,16 @@ const ProgramsPage = () => {
   }, [activeStepId]);
 
   const fetchPrograms = async () => {
-    setIsLoading((prev) => ({ ...prev, isFetching: true }));
+    setIsFetching((prev) => ({ ...prev, programs: true }));
     const { isOk, data } = await $api.member.program.getMany(
       reservationBody.ticket
         ? { ticketId: reservationBody.ticket.ticket?.id }
+        : reservationBody.time
+        ? {
+            startAt: `${dayjs(reservationBody.time[0]).format(
+              "YYYY-MM-DD"
+            )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
+          }
         : undefined
     );
     if (isOk) {
@@ -104,7 +111,7 @@ const ProgramsPage = () => {
         setProgramList(Object.values(grouped));
       }
     }
-    setIsLoading((prev) => ({ ...prev, isFetching: false }));
+    setIsFetching((prev) => ({ ...prev, programs: false }));
   };
 
   const fetchCoaches = async () => {
@@ -118,6 +125,7 @@ const ProgramsPage = () => {
   };
 
   const fetchTimeslots = async (startDate) => {
+    setIsFetching((prev) => ({ ...prev, timeslots: true }));
     const branchId = reservationBody.branch?.id;
     const { isOk, data } = await $api.member.reservation.getTimeSlot(
       { startAt: startDate ?? dayjs().format("YYYY-MM-DD") },
@@ -126,7 +134,7 @@ const ProgramsPage = () => {
     if (isOk) {
       setTimeslotList(data);
     }
-    setIsLoading((prev) => ({ ...prev, isFetching: false }));
+    setIsFetching((prev) => ({ ...prev, timeslots: false }));
   };
 
   const createQueryString = useCallback(
@@ -147,9 +155,9 @@ const ProgramsPage = () => {
           activeStepId={activeStepId}
           setActiveStepId={setActiveStepId}
         />
-        {!isLoading.isFetching ? (
+        {activeStepId === 1 && (
           <>
-            {activeStepId === 1 && (
+            {!isFetching.programs ? (
               <>
                 {programList?.length ? (
                   <>
@@ -179,19 +187,25 @@ const ProgramsPage = () => {
                   <NoData message={"No Data"} />
                 )}
               </>
+            ) : (
+              <FullScreenLoading isLoading={isFetching.programs} />
             )}
-            {activeStepId === 2 && (
+          </>
+        )}
+        {activeStepId === 2 && (
+          <>
+            {coachList?.length ? (
               <>
-                {coachList?.length ? (
-                  <>
-                    <CoachSelect />
-                  </>
-                ) : (
-                  <NoData message={"No Data"} />
-                )}
+                <CoachSelect />
               </>
+            ) : (
+              <NoData message={"No Data"} />
             )}
-            {activeStepId === 3 && (
+          </>
+        )}
+        {activeStepId === 3 && (
+          <>
+            {!isFetching.timeslots ? (
               <>
                 {reservationBody.program ? (
                   <TimeSlotSelect
@@ -199,13 +213,16 @@ const ProgramsPage = () => {
                     fetchTimeslots={fetchTimeslots}
                   />
                 ) : (
-                  <TimeSlotSelectNoProgram timeSlotList={timeslotList} />
+                  <TimeSlotSelectNoProgram
+                    timeSlotList={timeslotList}
+                    fetchTimeslots={fetchTimeslots}
+                  />
                 )}
               </>
+            ) : (
+              <FullScreenLoading isLoading={isFetching.timeslots} />
             )}
           </>
-        ) : (
-          <FullScreenLoading isLoading={isLoading.isFetching} />
         )}
       </div>
     </>

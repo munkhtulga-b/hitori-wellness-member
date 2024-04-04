@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import { Button, Form, Input, Select } from "antd";
 import { useSignupStore } from "@/app/_store/user-signup";
 import { useEffect, useState } from "react";
+import { getYears, getMonths, getDays } from "@/app/_utils/helpers";
 
 const SignupStepOne = ({ onComplete }) => {
   const [form] = Form.useForm();
@@ -55,44 +56,6 @@ const SignupStepOne = ({ onComplete }) => {
     setGenderValue(value);
     form.setFieldValue("gender", value);
     form.validateFields(["gender"]);
-  };
-
-  const getYears = () => {
-    const years = [];
-    for (let i = 0; i < 100; i++) {
-      years.push({
-        value: dayjs().year() - i,
-        label: dayjs().year() - i,
-      });
-    }
-    return years;
-  };
-
-  const getMonths = () => {
-    const months = [];
-    for (let month = 1; month <= 12; month++) {
-      months.push({
-        value: dayjs()
-          .month(month - 1)
-          .format("MM"),
-        label: dayjs()
-          .month(month - 1)
-          .format("MM"),
-      });
-    }
-    return months;
-  };
-
-  const getDays = () => {
-    const days = [];
-    for (let day = 1; day <= 31; day++) {
-      days.push({
-        value: day.toString().padStart(2, "0"),
-        label: day.toString().padStart(2, "0"),
-        disabled: form.getFieldValue("birthMonth") === "02" && day > 28,
-      });
-    }
-    return days;
   };
 
   const customizeRequiredMark = (label, { required }) => (
