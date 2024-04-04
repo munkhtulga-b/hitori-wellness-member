@@ -25,6 +25,8 @@ const MemberPlanCard = ({ memberPlan }) => {
     setIsLoading(false);
   };
 
+  console.log(memberPlan);
+
   return (
     <>
       <section className="tw-flex tw-flex-col tw-gap-2 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow">
@@ -35,7 +37,7 @@ const MemberPlanCard = ({ memberPlan }) => {
         <div className="tw-flex tw-justify-between tw-items-center tw-gap-4">
           <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
             {`料金: ${thousandSeparator(
-              memberPlan?.plan?.monthly_item?.prices?.price
+              memberPlan?.plan?.monthly_item?.prices[0]?.price
             )}円 （税込）／月`}
           </span>
           <Button

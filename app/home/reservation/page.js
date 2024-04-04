@@ -96,7 +96,12 @@ const ProgramsPage = () => {
     setIsFetching((prev) => ({ ...prev, programs: true }));
     const { isOk, data } = await $api.member.program.getMany(
       reservationBody.ticket
-        ? { ticketId: reservationBody.ticket.ticket?.id }
+        ? {
+            ticketId: reservationBody.ticket.ticket?.id,
+            startAt: `${dayjs(reservationBody.time[0]).format(
+              "YYYY-MM-DD"
+            )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
+          }
         : reservationBody.time
         ? {
             startAt: `${dayjs(reservationBody.time[0]).format(
