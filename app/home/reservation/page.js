@@ -66,10 +66,10 @@ const ProgramsPage = () => {
     if (query === ReservationEnum.COACH.queryString) {
       return setActiveStepId(ReservationEnum.COACH.value);
     }
-    if (query === ReservationEnum.PROGRAM.queryString) {
-      return setActiveStepId(ReservationEnum.PROGRAM.value);
+    if (query === ReservationEnum.TIMESLOT.queryString) {
+      return setActiveStepId(ReservationEnum.TIMESLOT.value);
     }
-    setActiveStepId(ReservationEnum.TIMESLOT.value);
+    setActiveStepId(ReservationEnum.PROGRAM.value);
   }, [searchParams]);
 
   useEffect(() => {
