@@ -20,10 +20,12 @@ const CreditCards = () => {
     isDeleting: false,
   });
   const [cards, setCards] = useState([]);
+  const [memberPlan, setMemberPlan] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
 
   useEffect(() => {
     fetchCards();
+    fetchMemberPlan();
   }, []);
 
   const fetchCards = async () => {
@@ -34,6 +36,13 @@ const CreditCards = () => {
       setCards(sorted);
     }
     setIsLoading((prev) => ({ ...prev, isFetching: false }));
+  };
+
+  const fetchMemberPlan = async () => {
+    const { isOk, data } = await $api.member.memberPlan.getMany();
+    if (isOk) {
+      setMemberPlan(data);
+    }
   };
 
   const updateCard = async () => {
@@ -50,6 +59,10 @@ const CreditCards = () => {
   };
 
   const deleteCard = async () => {
+    if (cards.length === 1 && memberPlan.length)
+      return messageApi.warning(
+        "プラン加入中はカードを削除することはできません。"
+      );
     setIsLoading((prev) => ({ ...prev, isDeleting: true }));
     const { isOk } = await $api.member.card.remove(selectedCard.id);
     if (isOk) {
