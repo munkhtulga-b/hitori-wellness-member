@@ -2,9 +2,15 @@
 
 import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { Button, Form, Input, DatePicker, Checkbox, Spin, message } from "antd";
+import { Button, Form, Input, Select, Checkbox, Spin, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { getAddressFromPostalCode, nullSafety } from "@/app/_utils/helpers";
+import {
+  getAddressFromPostalCode,
+  nullSafety,
+  getYears,
+  getMonths,
+  getDays,
+} from "@/app/_utils/helpers";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/app/_store/user";
 import $api from "@/app/_api";
@@ -80,9 +86,15 @@ const EditUserInfo = () => {
     ];
     if (user) {
       for (const { camel, snake } of fields) {
-        form.setFieldsValue({
-          [camel]: snake === "birthday" ? dayjs(user[snake]) : user[snake],
-        });
+        if (snake === "birthday") {
+          form.setFieldValue("birthYear", dayjs(user[snake]).format("YYYY"));
+          form.setFieldValue("birthMonth", dayjs(user[snake]).format("MM"));
+          form.setFieldValue("birthDay", dayjs(user[snake]).format("DD"));
+        } else {
+          form.setFieldsValue({
+            [camel]: user[snake],
+          });
+        }
       }
     }
   }, [user]);
@@ -97,8 +109,12 @@ const EditUserInfo = () => {
     setIsFetching(false);
   };
 
-  const updateUserDetails = async (body) => {
-    delete body.birthday;
+  const updateUserDetails = async (params) => {
+    const birthday = `${params.birthYear}-${params.birthMonth}-${params.birthDay}`;
+    delete params.birthYear;
+    delete params.birthMonth;
+    delete params.birthDay;
+    const body = { ...params, birthday };
     setIsRequesting(true);
     const { isOk } = await $api.member.user.update(getUser.id, body);
     if (isOk) {
@@ -211,27 +227,67 @@ const EditUserInfo = () => {
             </div>
           </section>
 
-          <Form.Item
-            name="birthday"
-            label="生年月日"
-            rules={[
-              {
-                type: "object",
-                required: true,
-                message: "誕生日をご選択ください。",
-              },
-            ]}
-          >
-            <DatePicker
-              className="tw-w-full"
-              placeholder="yyyy/mm/dd"
-              disabledDate={(current) =>
-                current && current > dayjs().endOf("day")
-              }
-              disabled
-              format={"YYYY/MM/DD"}
-            />
-          </Form.Item>
+          <section className="tw-flex tw-flex-col tw-gap-2">
+            <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
+              生年月日
+            </label>
+            <div className="tw-grid tw-grid-cols-3 tw-gap-2">
+              <Form.Item
+                name="birthYear"
+                rules={[
+                  {
+                    required: true,
+                    message: "ご選択ください。",
+                  },
+                ]}
+              >
+                <Select
+                  style={{
+                    width: "100%",
+                  }}
+                  size="large"
+                  options={getYears()}
+                  placeholder="1990"
+                />
+              </Form.Item>
+              <Form.Item
+                name="birthMonth"
+                rules={[
+                  {
+                    required: true,
+                    message: "ご選択ください。",
+                  },
+                ]}
+              >
+                <Select
+                  style={{
+                    width: "100%",
+                  }}
+                  size="large"
+                  options={getMonths()}
+                  placeholder="01"
+                />
+              </Form.Item>
+              <Form.Item
+                name="birthDay"
+                rules={[
+                  {
+                    required: true,
+                    message: "ご選択ください。",
+                  },
+                ]}
+              >
+                <Select
+                  style={{
+                    width: "100%",
+                  }}
+                  size="large"
+                  options={getDays()}
+                  placeholder="01"
+                />
+              </Form.Item>
+            </div>
+          </section>
 
           <Form.Item
             name="tel"

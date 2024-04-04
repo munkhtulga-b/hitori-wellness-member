@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 /**
  * Gets the address from the postal code using the Postcode-JP API.
  *
@@ -105,4 +107,56 @@ export const createQueryString = (queryObject) => {
   });
 
   return queryString;
+};
+
+/**
+ * Generates an array of objects representing years.
+ *
+ * @return {Array} An array of objects containing the value and label of each year.
+ */
+export const getYears = () => {
+  const years = [];
+  for (let i = 0; i < 100; i++) {
+    years.push({
+      value: dayjs().year() - i,
+      label: dayjs().year() - i,
+    });
+  }
+  return years;
+};
+
+/**
+ * Generates an array of objects representing months with formatted values and labels.
+ *
+ * @return {Array} An array of objects containing month values and labels
+ */
+export const getMonths = () => {
+  const months = [];
+  for (let month = 1; month <= 12; month++) {
+    months.push({
+      value: dayjs()
+        .month(month - 1)
+        .format("MM"),
+      label: dayjs()
+        .month(month - 1)
+        .format("MM"),
+    });
+  }
+  return months;
+};
+
+/**
+ * Generates an array of days with padded values from 01 to 31.
+ *
+ * @return {Array} An array of objects containing 'value' and 'label' properties.
+ */
+export const getDays = () => {
+  const days = [];
+  for (let day = 1; day <= 31; day++) {
+    days.push({
+      value: day.toString().padStart(2, "0"),
+      label: day.toString().padStart(2, "0"),
+    });
+  }
+  return days;
 };
