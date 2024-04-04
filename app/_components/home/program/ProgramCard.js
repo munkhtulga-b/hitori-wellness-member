@@ -5,15 +5,16 @@ import { nullSafety } from "@/app/_utils/helpers";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useReservationStore } from "@/app/_store/reservation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
+import dayjs from "dayjs";
 
 const ProgramCard = ({ program }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const getReservationBody = useReservationStore((state) => state.getBody());
-  const setProgram = useReservationStore((state) => state.setBody);
+  const setReservationBody = useReservationStore((state) => state.setBody);
 
   const onProgramSelect = () => {
-    setProgram({ program: program });
+    setReservationBody({ program: program });
     if (!getReservationBody.time) {
       router.push(
         `/home/reservation?${createQueryString(
@@ -22,6 +23,15 @@ const ProgramCard = ({ program }) => {
         )}`
       );
     } else {
+      setReservationBody({
+        time: [
+          getReservationBody.time[0],
+          dayjs(getReservationBody.time[0]).add(
+            program.service_minutes,
+            "minutes"
+          ),
+        ],
+      });
       router.push("/home/reservation/confirm");
     }
   };
