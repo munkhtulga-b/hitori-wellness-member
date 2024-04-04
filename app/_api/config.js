@@ -19,6 +19,9 @@ const fetchData = async (endpoint, method, body, serverToken) => {
       method: method,
       headers: headers,
       cache: "no-store",
+      next: {
+        revalidate: 0,
+      },
     };
 
     if (body) {
