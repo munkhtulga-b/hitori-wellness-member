@@ -5,8 +5,13 @@ import Image from "next/image";
 import { useReservationStore } from "@/app/_store/reservation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import FullScreenLoading from "../../animation/FullScreenLoading";
 
-const TimeSlotSelectNoProgram = ({ timeSlotList, fetchTimeslots }) => {
+const TimeSlotSelectNoProgram = ({
+  timeSlotList,
+  fetchTimeslots,
+  isFetching,
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathName = usePathname();
@@ -174,7 +179,7 @@ const TimeSlotSelectNoProgram = ({ timeSlotList, fetchTimeslots }) => {
         <section>
           <span className="tw-text-xxl tw-font-medium">日時</span>
         </section>
-        {timeSlotList ? (
+        {timeSlotList && !isFetching ? (
           <>
             <section className="tw-flex tw-justify-start tw-items-center tw-gap-2">
               <div className="tw-grow tw-h-[48px] tw-bg-white tw-rounded-lg tw-border tw-border-form tw-flex tw-justify-center tw-items-center tw-relative">
@@ -294,7 +299,9 @@ const TimeSlotSelectNoProgram = ({ timeSlotList, fetchTimeslots }) => {
               })}
             </section>
           </>
-        ) : null}
+        ) : (
+          <FullScreenLoading isLoading={isFetching} />
+        )}
       </div>
 
       <AnimatePresence>

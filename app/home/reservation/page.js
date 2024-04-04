@@ -205,22 +205,18 @@ const ProgramsPage = () => {
         )}
         {activeStepId === 3 && (
           <>
-            {!isFetching.timeslots ? (
-              <>
-                {reservationBody.program ? (
-                  <TimeSlotSelect
-                    timeSlotList={timeslotList}
-                    fetchTimeslots={fetchTimeslots}
-                  />
-                ) : (
-                  <TimeSlotSelectNoProgram
-                    timeSlotList={timeslotList}
-                    fetchTimeslots={fetchTimeslots}
-                  />
-                )}
-              </>
+            {reservationBody.program ? (
+              <TimeSlotSelect
+                isFetching={isFetching.timeslots}
+                timeSlotList={timeslotList}
+                fetchTimeslots={fetchTimeslots}
+              />
             ) : (
-              <FullScreenLoading isLoading={isFetching.timeslots} />
+              <TimeSlotSelectNoProgram
+                isFetching={isFetching.timeslots}
+                timeSlotList={timeslotList}
+                fetchTimeslots={fetchTimeslots}
+              />
             )}
           </>
         )}

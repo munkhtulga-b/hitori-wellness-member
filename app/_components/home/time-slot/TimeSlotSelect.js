@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 import FullScreenLoading from "../../animation/FullScreenLoading";
 // import { useUserStore } from "@/app/_store/user";
 
-const TimeSlotSelect = ({ timeSlotList, fetchTimeslots }) => {
+const TimeSlotSelect = ({ timeSlotList, fetchTimeslots, isFetching }) => {
   const router = useRouter();
   // const getUser = useUserStore((state) => state.getUser());
   const [messageApi, contextHolder] = message.useMessage();
@@ -264,7 +264,7 @@ const TimeSlotSelect = ({ timeSlotList, fetchTimeslots }) => {
             </div>
           </Button>
         </section>
-        {timeSlotList ? (
+        {timeSlotList && !isFetching ? (
           <section className="tw-grid tw-grid-cols-7 tw-auto-rows-auto tw-gap-[6px]">
             {getDaysOfWeek().map((date, dateIdx) => {
               return (
@@ -319,7 +319,7 @@ const TimeSlotSelect = ({ timeSlotList, fetchTimeslots }) => {
             })}
           </section>
         ) : (
-          <FullScreenLoading isLoading={timeSlotList === null} />
+          <FullScreenLoading isLoading={isFetching} />
         )}
       </div>
 

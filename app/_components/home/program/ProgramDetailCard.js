@@ -8,20 +8,35 @@ import { useReservationStore } from "@/app/_store/reservation";
 import { useRouter, useSearchParams } from "next/navigation";
 import ReservationEnum from "@/app/_enums/EEnumReservation";
 import Image from "next/image";
+import dayjs from "dayjs";
 
 const ProgramDetailCard = ({ program }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const setProgram = useReservationStore((state) => state.setBody);
+  const getReservationBody = useReservationStore((state) => state.getBody());
+  const setReservationBody = useReservationStore((state) => state.setBody);
 
   const onProgramSelect = () => {
-    setProgram({ program: program });
-    router.push(
-      `/home/reservation?${createQueryString(
-        "select",
-        ReservationEnum.PROGRAM.next
-      )}`
-    );
+    setReservationBody({ program: program });
+    if (!getReservationBody.time) {
+      router.push(
+        `/home/reservation?${createQueryString(
+          "select",
+          ReservationEnum.PROGRAM.next
+        )}`
+      );
+    } else {
+      setReservationBody({
+        time: [
+          getReservationBody.time[0],
+          dayjs(getReservationBody.time[0]).add(
+            program.service_minutes,
+            "minutes"
+          ),
+        ],
+      });
+      router.push("/home/reservation/confirm");
+    }
   };
 
   const createQueryString = useCallback(
