@@ -25,7 +25,7 @@ const HomeBranchDetailPage = async () => {
 
   return (
     <>
-      {memberPlan?.length ? (
+      {memberPlan?.length && reservations ? (
         <>
           <HomeBranchDetailCard
             branch={memberPlan[0].studio}
