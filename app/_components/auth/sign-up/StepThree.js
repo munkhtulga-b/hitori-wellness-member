@@ -8,7 +8,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
   const onFinish = (params) => {
     if (!isValidPassword(params.confirm)) {
       return messageApi.error(
-        "８文字以上の半角英数記号、大文字、記号、それ以外をそれぞれ一文字以上使用してください。"
+        "「半角英大文字、半角英小文字、数字、記号の中から3種類を含む8文字以上を指定してください。」"
       );
     }
     delete params.confirm;
@@ -71,7 +71,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
         <section className="tw-mt-[28px]">
           <div className="tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info">
             <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px]">
-              ８文字以上の半角英数記号、大文字、記号、それ以外をそれぞれ一文字以上使用してください。
+              「半角英大文字、半角英小文字、数字、記号の中から3種類を含む8文字以上を指定してください。」
             </p>
           </div>
         </section>

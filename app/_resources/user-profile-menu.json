@@ -37,7 +37,7 @@
     ],
     "4": [
         {
-            "text": "入退館記録",
+            "text": "入館記録",
             "icon": "/assets/profile/check-in-history.svg",
             "alt": "check-in",
             "route": "/home/profile/check-in"

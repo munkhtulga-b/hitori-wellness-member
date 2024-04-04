@@ -16,7 +16,7 @@ const MemberPlanCard = ({ memberPlan }) => {
     const { isOk } = await $api.member.memberPlan.cancel(memberPlan.id);
 
     if (isOk) {
-      toast.success("Your member plan has been cancelled");
+      toast.success("解約が完了しました。");
       setIsModalOpen(false);
       setTimeout(() => {
         router.refresh();
