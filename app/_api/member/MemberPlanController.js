@@ -7,3 +7,7 @@ export const getMany = (token) => {
 export const getOne = (id) => {
   return fetchData(`memberplans/${id}`, "GET");
 };
+
+export const cancel = (id) => {
+  return fetchData(`memberplans/cancel/${id}`, "GET");
+};

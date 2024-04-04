@@ -1,8 +1,8 @@
 import $api from "@/app/_api";
 import { cookies } from "next/headers";
-import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
-import { Button } from "antd";
+import { nullSafety } from "@/app/_utils/helpers";
 import NoData from "@/app/_components/custom/NoData";
+import MemberPlanCard from "@/app/_components/home/profile/plan/PlanCard";
 
 const ActiveSubscription = async () => {
   const cookieStore = cookies();
@@ -23,22 +23,7 @@ const ActiveSubscription = async () => {
         </section>
         {memberPlan?.length ? (
           <>
-            <section className="tw-flex tw-flex-col tw-gap-2 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow">
-              <span className="tw-text-lg">
-                {nullSafety(memberPlan[0]?.plan?.name)}
-              </span>
-              <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-line">
-                {nullSafety(memberPlan[0]?.plan?.description)}
-              </p>
-              <div className="tw-flex tw-justify-between tw-items-center tw-gap-4">
-                <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-                  {`料金: ${thousandSeparator(
-                    memberPlan[0]?.plan?.monthly_item?.prices[0]?.price
-                  )}円 （税込）／月`}
-                </span>
-                <Button className="tw-w-[100px]">解約</Button>
-              </div>
-            </section>
+            <MemberPlanCard memberPlan={memberPlan[0]} />
           </>
         ) : (
           <>
@@ -51,7 +36,6 @@ const ActiveSubscription = async () => {
         )}
         {memberTickets?.length ? (
           <>
-            {/* TODO: Integrate tickets */}
             {memberTickets?.map((ticket) => (
               <section
                 key={ticket.id}

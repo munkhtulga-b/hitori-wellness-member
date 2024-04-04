@@ -14,7 +14,9 @@ const ChangePassword = () => {
 
   const onFinish = (params) => {
     if (!isValidPassword(params.newConfirm)) {
-      return;
+      return messageApi.error(
+        "８文字以上の半角英数記号、大文字、記号、それ以外をそれぞれ一文字以上使用してください。"
+      );
     }
     changePassword(params);
   };

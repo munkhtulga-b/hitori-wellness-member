@@ -74,14 +74,17 @@ export const isValidPassword = (value) => {
   const uppercaseRegex = /[A-Z]/;
   const numberRegex = /[0-9]/;
 
-  // Check if the string contains at least one of each
-  const containsSymbol = symbolRegex.test(value);
-  const containsUppercase = uppercaseRegex.test(value);
-  const containsNumber = numberRegex.test(value);
+  // Check if the string meets the length requirement
+  const isLongEnough = value.length >= 8;
 
-  return (
-    value.length >= 8 && containsSymbol && containsUppercase && containsNumber
-  );
+  // Count how many criteria the password meets
+  let criteriaMet = 0;
+  if (symbolRegex.test(value)) criteriaMet++;
+  if (uppercaseRegex.test(value)) criteriaMet++;
+  if (numberRegex.test(value)) criteriaMet++;
+
+  // Check if the password meets the criteria
+  return isLongEnough && criteriaMet >= 2;
 };
 
 /**

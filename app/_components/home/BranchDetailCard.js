@@ -10,6 +10,7 @@ import { useEffect } from "react";
 
 const BranchDetailCard = ({
   branch,
+  permittedBranches,
   memberPlan,
   memberTickets,
   reservations,
@@ -133,7 +134,10 @@ const BranchDetailCard = ({
             </span>
             <Button
               size="small"
-              onClick={() => router.push("/home/profile/purchase")}
+              onClick={() => {
+                setReservationBody({ branch: branch });
+                router.push("/home/profile/purchase/plan");
+              }}
             >
               買う
             </Button>
@@ -149,7 +153,11 @@ const BranchDetailCard = ({
         </section> */}
         <section className="tw-mt-1">
           <Button
-            disabled={!memberPlan?.length || isReachedMaxReservation()}
+            disabled={
+              !memberPlan?.length ||
+              isReachedMaxReservation() ||
+              !permittedBranches?.includes(branch.id)
+            }
             onClick={handleMakeReservation}
             size="large"
             type="primary"

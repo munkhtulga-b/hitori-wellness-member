@@ -29,6 +29,9 @@ const BranchDetail = async ({ params }) => {
     { status: ReservationStatusEnum.ACTIVE },
     serverToken
   );
+  const { data: permittedBranches } = await $api.member.branch.getPermitted(
+    serverToken
+  );
 
   if (status === 401) {
     redirect("/auth/login");
@@ -43,6 +46,7 @@ const BranchDetail = async ({ params }) => {
             memberPlan={memberPlan}
             reservations={reservations}
             memberTickets={memberTickets}
+            permittedBranches={permittedBranches}
           />
         </>
       ) : (
