@@ -39,6 +39,7 @@ const MemberPlanCard = ({ memberPlan }) => {
             )}円 （税込）／月`}
           </span>
           <Button
+            disabled={!memberPlan?.plan?.is_enabled_withdraw}
             loading={isLoading}
             className="tw-w-[100px]"
             onClick={() => setIsModalOpen(true)}
