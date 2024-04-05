@@ -136,7 +136,9 @@ const BranchDetailCard = ({
               size="small"
               onClick={() => {
                 setReservationBody({ branch: branch });
-                router.push("/home/profile/purchase/plan");
+                setTimeout(() => {
+                  router.push("/home/profile/purchase/plan");
+                }, 300);
               }}
             >
               買う

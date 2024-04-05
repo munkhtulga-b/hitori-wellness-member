@@ -34,6 +34,16 @@ export const nullSafety = (value) => {
 };
 
 /**
+ * Check if the value is null or undefined.
+ *
+ * @param {any} value - The value to check
+ * @return {boolean} Whether the value is null or undefined
+ */
+export const isNullOrUndefined = (value) => {
+  return value === null || value === undefined;
+};
+
+/**
  * Returns the full name by concatenating the provided last name and first name.
  *
  * @param {string} lastName - The last name

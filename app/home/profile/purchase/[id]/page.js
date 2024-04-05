@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
+import {
+  isNullOrUndefined,
+  nullSafety,
+  thousandSeparator,
+} from "@/app/_utils/helpers";
 import { Form, Button, Input, Radio, Modal } from "antd";
 import Image from "next/image";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
@@ -15,10 +19,13 @@ import { usePurchaseStore } from "@/app/_store/purchase";
 const SubscriptionDetail = () => {
   const router = useRouter();
   const [form] = Form.useForm();
+  const setPurchaseBody = usePurchaseStore((state) => state.setBody);
   const getPuchaseBody = usePurchaseStore((state) => state.getBody());
+  const resetPurchaseBody = usePurchaseStore((state) => state.resetBody);
   const [step, setStep] = useState(1);
   const [cards, setCards] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [usedCouponCode, setUsedCouponCode] = useState(null);
   const [isLoading, setIsLoading] = useState({
     isFetching: true,
     isRequesting: false,
@@ -52,9 +59,42 @@ const SubscriptionDetail = () => {
     setIsLoading((prev) => ({ ...prev, isRequesting: true }));
     const { isOk } = await $api.member.purchase.create(body);
     if (isOk) {
+      resetPurchaseBody();
       setStep(3);
     } else {
       setIsModalOpen(true);
+    }
+    setIsLoading((prev) => ({ ...prev, isRequesting: false }));
+  };
+
+  const onCouponConfirm = async ({ coupon }) => {
+    setIsLoading((prev) => ({ ...prev, isRequesting: true }));
+    let isSuccess = false;
+    if (getPuchaseBody.plan) {
+      const { isOk, data } = await $api.member.plan.getCoupon(
+        getPuchaseBody.plan.id,
+        { couponCode: coupon, studioId: getPuchaseBody.branch?.id }
+      );
+      if (isOk) {
+        isSuccess = true;
+        setPurchaseBody({ plan: data });
+      }
+    } else if (getPuchaseBody.item) {
+      const { isOk, data } = await $api.member.item.getCoupon(
+        getPuchaseBody.item.id,
+        {
+          couponCode: coupon,
+          studioId: getPuchaseBody.branch?.id,
+        }
+      );
+      if (isOk) {
+        isSuccess = true;
+        setPurchaseBody({ item: data });
+      }
+    }
+
+    if (isSuccess) {
+      setUsedCouponCode(coupon);
     }
     setIsLoading((prev) => ({ ...prev, isRequesting: false }));
   };
@@ -67,6 +107,9 @@ const SubscriptionDetail = () => {
         : getPuchaseBody.plan.id,
       cardId: selectedCard?.id,
     };
+    if (usedCouponCode) {
+      body["couponCode"] = usedCouponCode;
+    }
     createPurchase(body);
   };
 
@@ -104,28 +147,44 @@ const SubscriptionDetail = () => {
             )}（税込）／月`}</span>
           </div>
         </section>
-        <section className="tw-grow">
+        <section className="tw-grow tw-mt-4">
           <Form
             form={form}
             name="PurchasePlan"
-            onFinish={onPlanConfirm}
+            onFinish={(params) => onCouponConfirm(params)}
             style={{ height: "100%" }}
+            requiredMark={false}
           >
             <div className="tw-flex tw-flex-col tw-justify-between tw-h-full">
-              <section>
-                {/* <Form.Item
-                  name="coupon"
-                  label="クーポンを選択してください"
-                  rules={[
-                    {
-                      required: false,
-                      message: "電話番号を入力してください。",
-                      whitespace: false,
-                    },
-                  ]}
-                >
-                  <Input placeholder="クーポンコードを入力する" />
-                </Form.Item> */}
+              <section className="tw-flex tw-flex-col tw-gap-2">
+                <label>クーポンを選択してください</label>
+                <section className="tw-flex tw-justify-start tw-items-start tw-gap-4">
+                  <Form.Item
+                    name="coupon"
+                    rules={[
+                      {
+                        required: true,
+                        message: "",
+                        whitespace: false,
+                        len: 6,
+                      },
+                    ]}
+                    validateTrigger="onBlur"
+                    className="tw-grow"
+                  >
+                    <Input placeholder="クーポンコードを入力する" />
+                  </Form.Item>
+                  <Form.Item>
+                    <Button
+                      loading={isLoading.isRequesting}
+                      size="large"
+                      htmlType="submit"
+                      className="tw-w-full"
+                    >
+                      使用する
+                    </Button>
+                  </Form.Item>
+                </section>
               </section>
               <section className="tw-flex tw-flex-col tw-gap-4 tw-pt-4 tw-border-t tw-border-dividerLight">
                 <ul>
@@ -143,54 +202,167 @@ const SubscriptionDetail = () => {
                         <span className="tw-text-lg tw-font-light">{`初月（日割り ${nullSafety(
                           getPuchaseBody[itemType].remaininng_days
                         )} 日分）`}</span>
-                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
-                          ￥
-                          {thousandSeparator(
-                            getPuchaseBody[itemType].first_month_price
-                          )}
-                        </span>
+                        <div className="tw-flex tw-justify-start tw-gap-2">
+                          <span
+                            className={`tw-leading-[22px] tw-tracking-[0.14px] ${
+                              !isNullOrUndefined(
+                                getPuchaseBody[itemType]
+                                  .discounted_price_for_first_month
+                              ) &&
+                              getPuchaseBody[itemType].first_month_price !==
+                                getPuchaseBody[itemType]
+                                  .discounted_price_for_first_month
+                                ? "tw-line-through"
+                                : ""
+                            }`}
+                          >
+                            ￥
+                            {thousandSeparator(
+                              getPuchaseBody[itemType].first_month_price
+                            )}
+                          </span>
+                          {!isNullOrUndefined(
+                            getPuchaseBody[itemType]
+                              .discounted_price_for_first_month
+                          ) &&
+                            getPuchaseBody[itemType].first_month_price !==
+                              getPuchaseBody[itemType]
+                                .discounted_price_for_first_month && (
+                              <span
+                                className={`tw-leading-[22px] tw-tracking-[0.14px] tw-w-[70px] tw-text-right`}
+                              >
+                                ￥
+                                {thousandSeparator(
+                                  getPuchaseBody[itemType]
+                                    .discounted_price_for_first_month
+                                )}
+                              </span>
+                            )}
+                        </div>
                       </li>
                       <li className="tw-flex tw-justify-between">
                         <span className="tw-text-lg tw-font-light">入会金</span>
-                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
-                          ￥
-                          {thousandSeparator(
-                            getPuchaseBody[itemType].admission_fee
-                          )}
-                        </span>
+                        <div className="tw-flex tw-justify-start tw-gap-2">
+                          <span
+                            className={`tw-leading-[22px] tw-tracking-[0.14px] ${
+                              !isNullOrUndefined(
+                                getPuchaseBody[itemType]
+                                  .discounted_price_for_admission_fee
+                              ) &&
+                              getPuchaseBody[itemType].admission_fee !==
+                                getPuchaseBody[itemType]
+                                  .discounted_price_for_admission_fee
+                                ? "tw-line-through"
+                                : ""
+                            }`}
+                          >
+                            ￥
+                            {thousandSeparator(
+                              getPuchaseBody[itemType].admission_fee
+                            )}
+                          </span>
+                          {!isNullOrUndefined(
+                            getPuchaseBody[itemType]
+                              .discounted_price_for_admission_fee
+                          ) &&
+                            getPuchaseBody[itemType].admission_fee !==
+                              getPuchaseBody[itemType]
+                                .discounted_price_for_admission_fee && (
+                              <span
+                                className={`tw-leading-[22px] tw-tracking-[0.14px] tw-w-[70px] tw-text-right`}
+                              >
+                                ￥
+                                {thousandSeparator(
+                                  getPuchaseBody[itemType]
+                                    .discounted_price_for_admission_fee
+                                )}
+                              </span>
+                            )}
+                        </div>
                       </li>
                       <li className="tw-flex tw-justify-between">
                         <span className="tw-text-lg tw-font-light">翌月</span>
-                        <span className="tw-leading-[22px] tw-tracking-[0.14px]">
-                          ￥
-                          {thousandSeparator(
-                            getPuchaseBody[itemType].monthly_price
-                          )}
-                        </span>
+                        <div className="tw-flex tw-justify-start tw-gap-2">
+                          <span
+                            className={`tw-leading-[22px] tw-tracking-[0.14px] ${
+                              !isNullOrUndefined(
+                                getPuchaseBody[itemType]
+                                  .discounted_price_for_monthly_item
+                              ) &&
+                              getPuchaseBody[itemType].monthly_price !==
+                                getPuchaseBody[itemType]
+                                  .discounted_price_for_monthly_item
+                                ? "tw-line-through"
+                                : ""
+                            }`}
+                          >
+                            ￥
+                            {thousandSeparator(
+                              getPuchaseBody[itemType].monthly_price
+                            )}
+                          </span>
+                          {!isNullOrUndefined(
+                            getPuchaseBody[itemType]
+                              .discounted_price_for_monthly_item
+                          ) &&
+                            getPuchaseBody[itemType].monthly_price !==
+                              getPuchaseBody[itemType]
+                                .discounted_price_for_monthly_item && (
+                              <span
+                                className={`tw-leading-[22px] tw-tracking-[0.14px] tw-w-[70px] tw-text-right`}
+                              >
+                                ￥
+                                {thousandSeparator(
+                                  getPuchaseBody[itemType]
+                                    .discounted_price_for_monthly_item
+                                )}
+                              </span>
+                            )}
+                        </div>
                       </li>
                     </>
                   ) : null}
                   <li className="tw-flex tw-justify-between">
                     <span className="tw-text-lg">合計額</span>
-                    <span className="tw-text-lg">
-                      ￥
-                      {thousandSeparator(
-                        getPuchaseBody[itemType].total_price ??
-                          getPuchaseBody[itemType].prices[0].price
+                    <div className="tw-flex tw-justify-start tw-gap-2">
+                      <span
+                        className={`tw-text-lg ${
+                          !isNullOrUndefined(getPuchaseBody.item?.default_price)
+                            ? "tw-line-through"
+                            : ""
+                        }`}
+                      >
+                        ￥
+                        {thousandSeparator(
+                          getPuchaseBody[itemType].total_price ??
+                            (!isNullOrUndefined(
+                              getPuchaseBody.item?.default_price
+                            )
+                              ? getPuchaseBody.item?.default_price
+                              : getPuchaseBody[itemType].prices[0].price)
+                        )}
+                      </span>
+                      {!isNullOrUndefined(
+                        getPuchaseBody.item?.default_price
+                      ) && (
+                        <span className="tw-text-lg tw-w-[70px] tw-text-right">
+                          ￥
+                          {thousandSeparator(
+                            getPuchaseBody.item?.prices[0].price
+                          )}
+                        </span>
                       )}
-                    </span>
+                    </div>
                   </li>
                 </ul>
-                <Form.Item>
-                  <Button
-                    size="large"
-                    type="primary"
-                    htmlType="submit"
-                    className="tw-w-full"
-                  >
-                    次へ
-                  </Button>
-                </Form.Item>
+                <Button
+                  size="large"
+                  type="primary"
+                  className="tw-w-full"
+                  onClick={() => onPlanConfirm()}
+                >
+                  次へ
+                </Button>
               </section>
             </div>
           </Form>
