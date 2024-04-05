@@ -201,13 +201,17 @@ const ReservationConfirm = () => {
               </div>
               <div>
                 <span className="tw-text-secondary">
-                  {`${dayjs(reservationBody?.time[0]).format(
-                    "YYYY/MM/DD"
-                  )}(${dayjs(reservationBody?.time[0]).format("ddd")}) ${dayjs(
-                    reservationBody?.time[0]
-                  ).format("HH:mm")} ~ ${dayjs(
-                    reservationBody?.time[reservationBody?.time?.length - 1]
-                  ).format("HH:mm")}`}
+                  {`${dayjs
+                    .utc(reservationBody?.time[0])
+                    .format("YYYY/MM/DD")}(${dayjs
+                    .utc(reservationBody?.time[0])
+                    .format("ddd")}) ${dayjs
+                    .utc(reservationBody?.time[0])
+                    .format("HH:mm")} ~ ${dayjs
+                    .utc(
+                      reservationBody?.time[reservationBody?.time?.length - 1]
+                    )
+                    .format("HH:mm")}`}
                 </span>
               </div>
             </section>
