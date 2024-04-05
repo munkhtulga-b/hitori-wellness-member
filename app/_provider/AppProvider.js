@@ -1,6 +1,5 @@
 "use client";
 
-import { ThemeProvider } from "next-themes";
 import { ConfigProvider } from "antd";
 import "dayjs/locale/ja";
 import locale from "antd/locale/ja_JP";
@@ -34,72 +33,70 @@ const colors = {
 
 const AppProvider = ({ children, fontFamily }) => {
   return (
-    <ThemeProvider enableSystem={false} attribute="class">
-      <ConfigProvider
-        locale={locale}
-        theme={{
-          token: {
-            fontFamily,
-            colorPrimary: colors.primary,
-            colorPrimaryHover: colors.primaryHover,
-            colorPrimaryText: colors.textPrimary,
-            colorError: colors.error,
+    <ConfigProvider
+      locale={locale}
+      theme={{
+        token: {
+          fontFamily,
+          colorPrimary: colors.primary,
+          colorPrimaryHover: colors.primaryHover,
+          colorPrimaryText: colors.textPrimary,
+          colorError: colors.error,
+        },
+        components: {
+          Button: {
+            defaultActiveBorderColor: colors.secondary,
+            defaultHoverBorderColor: colors.secondary,
+            defaultHoverColor: colors.textSecondary,
+            defaultActiveColor: colors.textSecondary,
+            colorBgContainerDisabled: colors.primaryDisabled,
+            colorTextDisabled: "#BABCC4",
+            borderRadius: 8,
+            borderRadiusSM: 8,
+            controlHeightLG: 48,
+            controlHeight: 40,
+            controlHeightSM: 36,
+            paddingInline: 16,
+            paddingInlineSM: 16,
           },
-          components: {
-            Button: {
-              defaultActiveBorderColor: colors.secondary,
-              defaultHoverBorderColor: colors.secondary,
-              defaultHoverColor: colors.textSecondary,
-              defaultActiveColor: colors.textSecondary,
-              colorBgContainerDisabled: colors.primaryDisabled,
-              colorTextDisabled: "#BABCC4",
-              borderRadius: 8,
-              borderRadiusSM: 8,
-              controlHeightLG: 48,
-              controlHeight: 40,
-              controlHeightSM: 36,
-              paddingInline: 16,
-              paddingInlineSM: 16,
-            },
-            Radio: {
-              colorPrimary: colors.textSecondary,
-              radioSize: 20,
-              dotSize: 10,
-            },
-            Form: {
-              labelHeight: 22,
-              verticalLabelPadding: "0 0 8px 0",
-              itemMarginBottom: 16,
-              labelRequiredMarkColor: colors.formRequiredMark,
-            },
-            Input: {
-              controlHeight: 46,
-              fontSize: 14,
-              colorBgContainer: colors.formInputBackground,
-              colorTextPlaceholder: colors.inputPlaceholder,
-            },
-            Select: {
-              controlHeightLG: 46,
-              fontSizeLG: 14,
-              fontSize: 14,
-              colorBgContainer: colors.formInputBackground,
-              colorTextPlaceholder: colors.inputPlaceholder,
-            },
-            DatePicker: {
-              controlHeight: 46,
-              colorBgContainer: colors.formInputBackground,
-              colorTextPlaceholder: colors.inputPlaceholder,
-            },
-            Layout: {
-              headerBg: colors.headerBg,
-              siderBg: colors.headerBg,
-            },
+          Radio: {
+            colorPrimary: colors.textSecondary,
+            radioSize: 20,
+            dotSize: 10,
           },
-        }}
-      >
-        {children}
-      </ConfigProvider>
-    </ThemeProvider>
+          Form: {
+            labelHeight: 22,
+            verticalLabelPadding: "0 0 8px 0",
+            itemMarginBottom: 16,
+            labelRequiredMarkColor: colors.formRequiredMark,
+          },
+          Input: {
+            controlHeight: 46,
+            fontSize: 14,
+            colorBgContainer: colors.formInputBackground,
+            colorTextPlaceholder: colors.inputPlaceholder,
+          },
+          Select: {
+            controlHeightLG: 46,
+            fontSizeLG: 14,
+            fontSize: 14,
+            colorBgContainer: colors.formInputBackground,
+            colorTextPlaceholder: colors.inputPlaceholder,
+          },
+          DatePicker: {
+            controlHeight: 46,
+            colorBgContainer: colors.formInputBackground,
+            colorTextPlaceholder: colors.inputPlaceholder,
+          },
+          Layout: {
+            headerBg: colors.headerBg,
+            siderBg: colors.headerBg,
+          },
+        },
+      }}
+    >
+      {children}
+    </ConfigProvider>
   );
 };
 

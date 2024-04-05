@@ -9,3 +9,8 @@ export const getMany = (queries) => {
 export const getOne = (id) => {
   return fetchData(`items/${id}`, "GET");
 };
+
+export const getCoupon = (id, queries) => {
+  const queryString = createQueryString(queries);
+  return fetchData(`items/${id}${queryString}`, "GET");
+};
