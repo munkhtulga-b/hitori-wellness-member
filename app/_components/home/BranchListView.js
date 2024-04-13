@@ -43,7 +43,7 @@ const BranchListView = ({ list, cardType }) => {
                           height={0}
                           style={{
                             objectFit: "cover",
-                            width: "auto",
+                            width: "100%",
                             height: "100%",
                           }}
                           unoptimized

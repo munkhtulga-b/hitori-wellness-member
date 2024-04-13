@@ -137,8 +137,8 @@ const AddCreditCard = () => {
                 getValueFromEvent={(e) => {
                   const value = e.target.value;
                   let formatted = value.replace(/\D/g, "");
-                  if (formatted.length > 3) {
-                    formatted = formatted.slice(0, 3);
+                  if (formatted.length > 4) {
+                    formatted = formatted.slice(0, 4);
                   }
                   return formatted;
                 }}
