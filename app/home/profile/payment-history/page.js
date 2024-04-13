@@ -22,7 +22,7 @@ const PaymentHistory = async () => {
     <>
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section className="tw-mt-4">
-          <span className="tw-text-xxl tw-font-medium">支払歴</span>
+          <span className="tw-text-xxl tw-font-medium">支払い履歴</span>
         </section>
         {payments?.length ? (
           payments.map((payment) => (
@@ -103,7 +103,7 @@ const PaymentHistory = async () => {
             </section>
           ))
         ) : (
-          <NoData message={"履歴が存在しません。"} />
+          <NoData message={"履歴がありません。"} />
         )}
       </div>
     </>
