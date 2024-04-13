@@ -1,16 +1,16 @@
 "use client";
 
 import $api from "@/app/_api";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import NoData from "@/app/_components/custom/NoData";
 import BranchDetailCard from "@/app/_components/home/BranchDetailCard";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 import { useEffect, useState } from "react";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 
-const BranchDetail = ({ params }) => {
+const BranchDetail = () => {
   const router = useRouter();
-  const { id } = params;
+  const { id } = useParams();
 
   const [isLoading, setIsLoading] = useState(false);
   const [branch, setBranch] = useState(null);

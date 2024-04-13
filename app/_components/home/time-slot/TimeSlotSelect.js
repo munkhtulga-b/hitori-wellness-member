@@ -39,7 +39,7 @@ const TimeSlotSelect = ({ timeSlotList, fetchTimeslots, isFetching }) => {
     }
     const slotsToCheck = getReservation.program.service_minutes / slotInterval;
     const shallowSlots = [];
-    for (let i = 0; i <= slotsToCheck; i++) {
+    for (let i = 0; i <= slotsToCheck - 1; i++) {
       if (timeIdx + i > timeSlots.length - 1) {
         const slotsLength = timeSlots.length;
         const currentIdx = timeIdx + i;
@@ -362,9 +362,12 @@ const TimeSlotSelect = ({ timeSlotList, fetchTimeslots, isFetching }) => {
                     selectedSlots[0]
                   ).format("ddd")}) ${dayjs(selectedSlots[0]).format(
                     "HH:mm"
-                  )} ~ ${dayjs(selectedSlots[selectedSlots?.length - 1]).format(
-                    "HH:mm"
-                  )}`}
+                  )} ~ ${dayjs(
+                    dayjs(selectedSlots[selectedSlots?.length - 1]).add(
+                      30,
+                      "minute"
+                    )
+                  ).format("HH:mm")}`}
                 </p>
               </section>
               <section>
@@ -374,7 +377,15 @@ const TimeSlotSelect = ({ timeSlotList, fetchTimeslots, isFetching }) => {
                   className="tw-w-full"
                   onClick={() => {
                     setReservation({
-                      time: selectedSlots,
+                      time: [
+                        ...selectedSlots,
+                        dayjs(
+                          dayjs(selectedSlots[selectedSlots.length - 1]).add(
+                            30,
+                            "minute"
+                          )
+                        ).format("YYYY-MM-DD HH:mm"),
+                      ],
                     });
                     router.push("/home/reservation/confirm");
                   }}
