@@ -1,12 +1,11 @@
 "use client";
 
-// import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
-import { useEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 
 const BranchDetailCard = ({
   branch,
@@ -19,15 +18,22 @@ const BranchDetailCard = ({
   const getReservationBody = useReservationStore((state) => state.getBody());
   const setReservationBody = useReservationStore((state) => state.setBody);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
+  const [isMounted, setIsMounted] = useState(false);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    checkMemberTickets().then(() => {
+      setIsMounted(true);
+    });
+  }, [memberPlan, memberTickets]);
+
+  const checkMemberTickets = async () => {
     if (!memberPlan?.length && memberTickets?.length) {
       resetReservationBody();
       setReservationBody({ branch: branch });
       router.push(`/home/tickets/${branch.id}`);
     }
-  }, [memberPlan, memberTickets]);
+  };
 
   const handleMakeReservation = () => {
     resetReservationBody();
@@ -49,103 +55,105 @@ const BranchDetailCard = ({
 
   return (
     <>
-      {isReachedMaxReservation()}
-      <div className="tw-flex tw-flex-col tw-gap-4">
-        <section className="tw-flex tw-flex-col tw-gap-1">
-          <div
-            className={`tw-w-full ${
-              !branch.thumbnail_code ? "tw-h-[285px]" : ""
-            } tw-bg-gray-200 tw-rounded-xl tw-overflow-hidden`}
-          >
-            {branch.thumbnail_code ? (
+      {isMounted ? (
+        <div className="tw-flex tw-flex-col tw-gap-4">
+          <section className="tw-flex tw-flex-col tw-gap-1">
+            <div
+              className={`tw-w-full ${
+                !branch.thumbnail_code ? "tw-h-[285px]" : ""
+              } tw-bg-gray-200 tw-rounded-xl tw-overflow-hidden`}
+            >
+              {branch.thumbnail_code ? (
+                <Image
+                  priority
+                  src={`https://${process.env.BASE_IMAGE_URL}${branch.thumbnail_code}`}
+                  alt="thumbnail"
+                  width={0}
+                  height={0}
+                  style={{
+                    objectFit: "contain",
+                    width: "100%",
+                    height: "auto",
+                  }}
+                  unoptimized
+                />
+              ) : null}
+            </div>
+            <span className="tw-text-xxl tw-font-medium">
+              {nullSafety(branch.name)}
+            </span>
+          </section>
+          <section className="tw-flex tw-flex-col tw-gap-4">
+            <div className="tw-flex tw-flex-col tw-gap-1">
+              <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
+                <Image
+                  src="/assets/branch/schedule-icon.svg"
+                  alt="schedule"
+                  width={0}
+                  height={0}
+                  style={{ width: "auto", height: "auto" }}
+                />
+                <span className="tw-text-lg">営業時間</span>
+              </div>
+              <p className="tw-whitespace-pre-line">
+                {nullSafety(branch.business_hours)}
+              </p>
+            </div>
+            <div className="tw-flex tw-flex-col tw-gap-1">
+              <a
+                href={branch.gmap_url ? branch.gmap_url : "#"}
+                target="_blank"
+                rel="noreferrer"
+                className="tw-flex tw-justify-start tw-items-center tw-gap-2 tw-text-current"
+              >
+                <Image
+                  src="/assets/branch/location-icon.svg"
+                  alt="location"
+                  width={20}
+                  height={20}
+                />
+                <span className="tw-tracking-[0.14px]">
+                  {nullSafety(branch.prefecture)}
+                </span>
+              </a>
+              <p className="tw-whitespace-normal">
+                {`${nullSafety(branch.address1)} ${nullSafety(
+                  branch.address2
+                )} ${nullSafety(branch.address3)}`}
+              </p>
+            </div>
+          </section>
+          {isReachedMaxReservation() && (
+            <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
+              <p className="tw-leading-[22px] tw-tracking-[0.14px]">
+                一日あたりの同時予約上限数に達しています。
+              </p>
+            </section>
+          )}
+          {!memberPlan?.length ? (
+            <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4 tw-flex tw-justify-between tw-items-center tw-gap-2">
               <Image
-                priority
-                src={`https://${process.env.BASE_IMAGE_URL}${branch.thumbnail_code}`}
-                alt="thumbnail"
-                width={0}
-                height={0}
-                style={{ objectFit: "contain", width: "100%", height: "auto" }}
-                unoptimized
-              />
-            ) : null}
-          </div>
-          <span className="tw-text-xxl tw-font-medium">
-            {nullSafety(branch.name)}
-          </span>
-        </section>
-        <section className="tw-flex tw-flex-col tw-gap-4">
-          <div className="tw-flex tw-flex-col tw-gap-1">
-            <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
-              <Image
-                src="/assets/branch/schedule-icon.svg"
-                alt="schedule"
+                src="/assets/branch/warning-icon.svg"
+                alt="warning"
                 width={0}
                 height={0}
                 style={{ width: "auto", height: "auto" }}
               />
-              <span className="tw-text-lg">営業時間</span>
-            </div>
-            <p className="tw-whitespace-pre-line">
-              {nullSafety(branch.business_hours)}
-            </p>
-          </div>
-          <div className="tw-flex tw-flex-col tw-gap-1">
-            <a
-              href={branch.gmap_url ? branch.gmap_url : "#"}
-              target="_blank"
-              rel="noreferrer"
-              className="tw-flex tw-justify-start tw-items-center tw-gap-2 tw-text-current"
-            >
-              <Image
-                src="/assets/branch/location-icon.svg"
-                alt="location"
-                width={20}
-                height={20}
-              />
-              <span className="tw-tracking-[0.14px]">
-                {nullSafety(branch.prefecture)}
+              <span className="tw-grow tw-text-sm tw-tracking-[0.12px]">
+                予約するにはプランへの加入・チケットが必要です。
               </span>
-            </a>
-            <p className="tw-whitespace-normal">
-              {`${nullSafety(branch.address1)} ${nullSafety(
-                branch.address2
-              )} ${nullSafety(branch.address3)}`}
-            </p>
-          </div>
-        </section>
-        {isReachedMaxReservation() && (
-          <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4">
-            <p className="tw-leading-[22px] tw-tracking-[0.14px]">
-              一日あたりの同時予約上限数に達しています。
-            </p>
-          </section>
-        )}
-        {!memberPlan?.length ? (
-          <section className="tw-w-full tw-rounded-xl tw-border tw-border-info tw-p-4 tw-flex tw-justify-between tw-items-center tw-gap-2">
-            <Image
-              src="/assets/branch/warning-icon.svg"
-              alt="warning"
-              width={0}
-              height={0}
-              style={{ width: "auto", height: "auto" }}
-            />
-            <span className="tw-grow tw-text-sm tw-tracking-[0.12px]">
-              予約するにはプランへの加入・チケットが必要です。
-            </span>
-            <Button
-              size="small"
-              onClick={() => {
-                setReservationBody({ branch: branch });
-                setTimeout(() => {
+              <Button
+                size="small"
+                onClick={() => {
+                  setReservationBody({ branch: branch });
                   router.push("/home/profile/purchase/plan");
-                }, 300);
-              }}
-            >
-              買う
-            </Button>
-          </section>
-        ) : null}
-        {/* <section className="tw-py-6">
+                }}
+              >
+                買う
+              </Button>
+            </section>
+          ) : null}
+          {/* <section className="tw-py-6">
           <Checkbox
             checked={isHomeBranch}
             onChange={(e) => setIsHomeBranch(e.target.checked)}
@@ -153,22 +161,23 @@ const BranchDetailCard = ({
             所属店舗にする。
           </Checkbox>
         </section> */}
-        <section className="tw-mt-1">
-          <Button
-            disabled={
-              !memberPlan?.length ||
-              isReachedMaxReservation() ||
-              !permittedBranches?.includes(branch.id)
-            }
-            onClick={handleMakeReservation}
-            size="large"
-            type="primary"
-            className="tw-w-full"
-          >
-            予約する
-          </Button>
-        </section>
-      </div>
+          <section className="tw-mt-1">
+            <Button
+              disabled={
+                !memberPlan?.length ||
+                isReachedMaxReservation() ||
+                !permittedBranches?.includes(branch.id)
+              }
+              onClick={handleMakeReservation}
+              size="large"
+              type="primary"
+              className="tw-w-full"
+            >
+              予約する
+            </Button>
+          </section>
+        </div>
+      ) : null}
     </>
   );
 };
