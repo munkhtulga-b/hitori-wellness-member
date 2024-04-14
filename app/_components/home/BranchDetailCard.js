@@ -41,6 +41,11 @@ const BranchDetailCard = ({
     router.push("/home/reservation");
   };
 
+  const onPurchaseWithoutMemberPlan = () => {
+    setReservationBody({ branch: branch });
+    router.push("/home/profile/purchase/plan");
+  };
+
   const isReachedMaxReservation = () => {
     let result = false;
     if (
@@ -144,10 +149,7 @@ const BranchDetailCard = ({
               </span>
               <Button
                 size="small"
-                onClick={() => {
-                  setReservationBody({ branch: branch });
-                  router.push("/home/profile/purchase/plan");
-                }}
+                onClick={() => onPurchaseWithoutMemberPlan()}
               >
                 買う
               </Button>
