@@ -6,6 +6,7 @@ import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
 import { useLayoutEffect, useState } from "react";
+import { usePurchaseStore } from "@/app/_store/purchase";
 
 const BranchDetailCard = ({
   branch,
@@ -18,6 +19,8 @@ const BranchDetailCard = ({
   const getReservationBody = useReservationStore((state) => state.getBody());
   const setReservationBody = useReservationStore((state) => state.setBody);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
+  const setPurchaseBody = usePurchaseStore((state) => state.setBody);
+  const resetPurchaseBody = usePurchaseStore((state) => state.resetBody);
   const [isMounted, setIsMounted] = useState(false);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
@@ -42,7 +45,8 @@ const BranchDetailCard = ({
   };
 
   const onPurchaseWithoutMemberPlan = () => {
-    setReservationBody({ branch: branch });
+    resetPurchaseBody();
+    setPurchaseBody({ branch: branch });
     router.push("/home/profile/purchase/plan");
   };
 
