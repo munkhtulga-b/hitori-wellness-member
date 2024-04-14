@@ -9,18 +9,11 @@ export default function Template({ children }) {
   const purchaseBody = usePurchaseStore((state) => state.getBody());
 
   useEffect(() => {
-    if (purchaseBody) {
-      setTimeout(() => {
-        if (!purchaseBody.branch) {
-          router.push("/home/profile/purchase");
-        }
-      }, 1000);
-      // if (purchaseBody.branch && !purchaseBody.plan) {
-      //   router.push("/home/profile/purchase/plan");
-      // }
-    } else {
-      router.push("/home/profile");
-    }
+    setTimeout(() => {
+      if (!purchaseBody.branch) {
+        router.push("/home/");
+      }
+    }, 1500);
   }, [purchaseBody]);
 
   return <>{children}</>;
