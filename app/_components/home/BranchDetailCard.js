@@ -10,9 +10,8 @@ import { usePurchaseStore } from "@/app/_store/purchase";
 
 const BranchDetailCard = ({
   branch,
-  permittedBranches,
   memberPlan,
-  memberTickets,
+  permittedBranches,
   reservations,
 }) => {
   const router = useRouter();
@@ -28,10 +27,13 @@ const BranchDetailCard = ({
     checkMemberTickets().then(() => {
       setIsMounted(true);
     });
-  }, [memberPlan, memberTickets]);
+  }, [permittedBranches]);
 
   const checkMemberTickets = async () => {
-    if (!memberPlan?.length && memberTickets?.length) {
+    if (
+      !permittedBranches.plan.includes(branch.id) &&
+      permittedBranches.ticket?.includes(branch.id)
+    ) {
       resetReservationBody();
       setReservationBody({ branch: branch });
       router.push(`/home/tickets/${branch.id}`);
@@ -182,11 +184,7 @@ const BranchDetailCard = ({
         </section> */}
           <section className="tw-mt-1">
             <Button
-              disabled={
-                !memberPlan?.length ||
-                isReachedMaxReservation() ||
-                !isBranchPermitted()
-              }
+              disabled={isReachedMaxReservation() || !isBranchPermitted()}
               onClick={handleMakeReservation}
               size="large"
               type="primary"
