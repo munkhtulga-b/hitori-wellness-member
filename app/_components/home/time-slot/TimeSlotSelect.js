@@ -112,7 +112,10 @@ const TimeSlotSelect = ({ timeSlotList, fetchTimeslots, isFetching }) => {
           if (slotIndex !== -1) {
             daysOfWeek[item.week_day].timeSlots[slotIndex].currentCapacity =
               slot.current_capacity;
-            if (slot.current_capacity >= item.max_capacity) {
+            if (
+              slot.current_capacity >= item.max_capacity ||
+              !slot.is_available
+            ) {
               daysOfWeek[item.week_day].timeSlots[
                 slotIndex
               ].isAvailable = false;
