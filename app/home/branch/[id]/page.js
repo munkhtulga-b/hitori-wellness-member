@@ -40,7 +40,11 @@ const BranchDetail = () => {
     setIsLoading(true);
     const { isOk, data } = await $api.member.branch.getPermitted();
     if (isOk) {
-      setPermittedBranches(data);
+      if (data.plan?.length) {
+        setPermittedBranches(data.plan);
+      } else {
+        setPermittedBranches(data.ticket);
+      }
     }
     setIsLoading(false);
   };
