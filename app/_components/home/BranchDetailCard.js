@@ -62,6 +62,19 @@ const BranchDetailCard = ({
     return result;
   };
 
+  const isBranchPermitted = () => {
+    let result = false;
+    if (permittedBranches) {
+      if (permittedBranches.plan?.includes(branch.id)) {
+        result = true;
+      }
+      if (permittedBranches.ticket?.includes(branch.id)) {
+        result = true;
+      }
+    }
+    return result;
+  };
+
   return (
     <>
       {isMounted ? (
@@ -172,8 +185,7 @@ const BranchDetailCard = ({
               disabled={
                 !memberPlan?.length ||
                 isReachedMaxReservation() ||
-                !permittedBranches.plan?.includes(branch.id) ||
-                !permittedBranches.ticket?.includes(branch.id)
+                !isBranchPermitted()
               }
               onClick={handleMakeReservation}
               size="large"
