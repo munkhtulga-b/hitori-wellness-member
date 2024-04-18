@@ -80,7 +80,7 @@ export const thousandSeparator = (value) => {
  */
 export const isValidPassword = (value) => {
   // Regular expressions to check for symbol, uppercase character, and number
-  const symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
+  const symbolRegex = /[!@#$%^&*(),.?":{}|<>-_+=]/;
   const uppercaseRegex = /[A-Z]/;
   const numberRegex = /[0-9]/;
 
