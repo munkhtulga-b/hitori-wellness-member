@@ -172,7 +172,8 @@ const BranchDetailCard = ({
               disabled={
                 !memberPlan?.length ||
                 isReachedMaxReservation() ||
-                !permittedBranches?.includes(branch.id)
+                !permittedBranches.plan?.includes(branch.id) ||
+                !permittedBranches.ticket?.includes(branch.id)
               }
               onClick={handleMakeReservation}
               size="large"
