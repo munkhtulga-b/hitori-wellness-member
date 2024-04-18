@@ -1,57 +1,108 @@
+"use client";
+
 import $api from "@/app/_api";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import NoData from "@/app/_components/custom/NoData";
 import BranchDetailCard from "@/app/_components/home/BranchDetailCard";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
+import { useEffect, useState } from "react";
+import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 
-export const generateMetadata = async ({ params }) => {
-  const { id } = params;
-  const { data } = await $api.member.branch.getOne(id);
+const BranchDetail = () => {
+  const router = useRouter();
+  const { id } = useParams();
 
-  return {
-    title: data?.name ?? process.env.BASE_META_TITLE,
+  const [isLoading, setIsLoading] = useState(false);
+  const [branch, setBranch] = useState(null);
+  const [permittedBranches, setPermittedBranches] = useState(null);
+  const [memberPlan, setMemberPlan] = useState(null);
+  const [memberTickets, setMemberTickets] = useState(null);
+  const [reservations, setReservations] = useState(null);
+
+  useEffect(() => {
+    fetchBranch();
+    fetchPermittedBranches();
+    fetchMemberPlan();
+    fetchMemberTickets();
+    fetchReservations();
+  }, []);
+
+  const fetchBranch = async () => {
+    setIsLoading(true);
+    const { isOk, data } = await $api.member.branch.getOne(id);
+    if (isOk) {
+      setBranch(data);
+    }
+    setIsLoading(false);
   };
-};
 
-const BranchDetail = async ({ params }) => {
-  const cookieStore = cookies();
-  const serverToken = cookieStore.get("token").value;
-  const { id } = params;
-  const { data: branch } = await $api.member.branch.getOne(id); // Fetching branch detail on the server side
-  const { status, data: memberPlan } = await $api.member.memberPlan.getMany(
-    serverToken
-  );
-  const { data: memberTickets } = await $api.member.memberTicket.getMany(
-    serverToken
-  );
-  const { data: reservations } = await $api.member.reservation.getMany(
-    { status: ReservationStatusEnum.ACTIVE },
-    serverToken
-  );
-  const { data: permittedBranches } = await $api.member.branch.getPermitted(
-    serverToken
-  );
+  const fetchPermittedBranches = async () => {
+    setIsLoading(true);
+    const { isOk, data } = await $api.member.branch.getPermitted();
+    if (isOk) {
+      setPermittedBranches(data);
+    }
+    setIsLoading(false);
+  };
 
-  if (status === 401) {
-    redirect("/auth/login");
-  }
+  const fetchMemberPlan = async () => {
+    setIsLoading(true);
+    const { isOk, data, status } = await $api.member.memberPlan.getMany();
+    if (isOk) {
+      setMemberPlan(data);
+    } else {
+      if (status === 401) {
+        router.push("/auth/login");
+      }
+    }
+    setIsLoading(false);
+  };
+
+  const fetchMemberTickets = async () => {
+    setIsLoading(true);
+    const { isOk, data } = await $api.member.memberTicket.getMany();
+    if (isOk) {
+      setMemberTickets(data);
+    }
+    setIsLoading(false);
+  };
+
+  const fetchReservations = async () => {
+    setIsLoading(true);
+    const { isOk, data } = await $api.member.reservation.getMany({
+      status: ReservationStatusEnum.ACTIVE,
+    });
+    if (isOk) {
+      setReservations(data);
+    }
+    setIsLoading(false);
+  };
 
   return (
     <>
-      {branch && memberPlan && memberTickets && permittedBranches ? (
+      {!isLoading ? (
         <>
-          <BranchDetailCard
-            branch={branch}
-            memberPlan={memberPlan}
-            reservations={reservations}
-            memberTickets={memberTickets}
-            permittedBranches={permittedBranches}
-          />
+          {branch &&
+          memberPlan &&
+          memberTickets &&
+          permittedBranches &&
+          reservations ? (
+            <>
+              <BranchDetailCard
+                branch={branch}
+                memberPlan={memberPlan}
+                reservations={reservations}
+                memberTickets={memberTickets}
+                permittedBranches={permittedBranches}
+              />
+            </>
+          ) : (
+            <NoData message={"No branch found"} />
+          )}
         </>
       ) : (
         <>
-          <NoData message={"No branch found"} />
+          <FullScreenLoading isLoading={isLoading} />
         </>
       )}
     </>

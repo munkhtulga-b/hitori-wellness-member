@@ -9,7 +9,7 @@ const nextConfig = {
   ],
   env: {
     APP_VERSION: "1.0.0",
-    BASE_META_TITLE: "Hitori Wellness",
+    BASE_META_TITLE: "HITORI WELLNESS",
     BASE_META_DESCRIPTION: "Gym Reservation",
     BASE_IMAGE_URL: "storage.googleapis.com/gym-reservation/",
   },

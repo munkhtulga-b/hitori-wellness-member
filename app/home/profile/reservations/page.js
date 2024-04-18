@@ -154,7 +154,7 @@ const ReservationHistory = () => {
                 })}
               </>
             ) : (
-              <NoData message={"履歴が存在しません。"} />
+              <NoData message={"履歴がありません。"} />
             )}
           </>
         ) : (

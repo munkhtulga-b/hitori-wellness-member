@@ -23,12 +23,11 @@ const ReservationCard = ({
     return result;
   };
 
-  console.log(reservation);
-
   return (
     <>
       <>
-        {activeFilterId === ReservationStatusEnum.CANCELLED ? (
+        {activeFilterId === ReservationStatusEnum.CANCELLED ||
+        activeFilterId === ReservationStatusEnum.AUTOMATIC_CANCELLATION ? (
           <section className="tw-absolute tw-top-4 tw--right-4 tw-rotate-[38deg]">
             <span className="tw-text-sm tw-leading-6 tw-tracking-[0.12px] tw-py-[2px] tw-px-2 tw-rounded-full tw-shadow">
               キャンセル済み
@@ -174,7 +173,7 @@ const ReservationCard = ({
               size="large"
               className="tw-w-auto"
             >
-              キャンセル
+              解約
             </Button>
           </section>
         </div>
