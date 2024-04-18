@@ -1,8 +1,7 @@
 "use client";
 
 import $api from "@/app/_api";
-import { useRouter, useParams } from "next/navigation";
-import NoData from "@/app/_components/custom/NoData";
+import { useParams, useRouter } from "next/navigation";
 import BranchDetailCard from "@/app/_components/home/BranchDetailCard";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 import { useEffect, useState } from "react";
@@ -12,41 +11,26 @@ const BranchDetail = () => {
   const router = useRouter();
   const { id } = useParams();
 
-  const [isLoading, setIsLoading] = useState(false);
   const [branch, setBranch] = useState(null);
-  const [permittedBranches, setPermittedBranches] = useState(null);
   const [memberPlan, setMemberPlan] = useState(null);
-  const [memberTickets, setMemberTickets] = useState(null);
+  const [permittedBranches, setPermittedBranches] = useState(null);
   const [reservations, setReservations] = useState(null);
 
   useEffect(() => {
     fetchBranch();
-    fetchPermittedBranches();
     fetchMemberPlan();
-    fetchMemberTickets();
+    fetchPermittedBranches();
     fetchReservations();
   }, []);
 
   const fetchBranch = async () => {
-    setIsLoading(true);
     const { isOk, data } = await $api.member.branch.getOne(id);
     if (isOk) {
       setBranch(data);
     }
-    setIsLoading(false);
-  };
-
-  const fetchPermittedBranches = async () => {
-    setIsLoading(true);
-    const { isOk, data } = await $api.member.branch.getPermitted();
-    if (isOk) {
-      setPermittedBranches(data);
-    }
-    setIsLoading(false);
   };
 
   const fetchMemberPlan = async () => {
-    setIsLoading(true);
     const { isOk, data, status } = await $api.member.memberPlan.getMany();
     if (isOk) {
       setMemberPlan(data);
@@ -55,55 +39,37 @@ const BranchDetail = () => {
         router.push("/auth/login");
       }
     }
-    setIsLoading(false);
   };
 
-  const fetchMemberTickets = async () => {
-    setIsLoading(true);
-    const { isOk, data } = await $api.member.memberTicket.getMany();
+  const fetchPermittedBranches = async () => {
+    const { isOk, data } = await $api.member.branch.getPermitted();
     if (isOk) {
-      setMemberTickets(data);
+      setPermittedBranches(data);
     }
-    setIsLoading(false);
   };
 
   const fetchReservations = async () => {
-    setIsLoading(true);
     const { isOk, data } = await $api.member.reservation.getMany({
       status: ReservationStatusEnum.ACTIVE,
     });
     if (isOk) {
       setReservations(data);
     }
-    setIsLoading(false);
   };
 
   return (
     <>
-      {!isLoading ? (
+      {branch && permittedBranches && reservations && memberPlan ? (
         <>
-          {branch &&
-          memberPlan &&
-          memberTickets &&
-          permittedBranches &&
-          reservations ? (
-            <>
-              <BranchDetailCard
-                branch={branch}
-                memberPlan={memberPlan}
-                reservations={reservations}
-                memberTickets={memberTickets}
-                permittedBranches={permittedBranches}
-              />
-            </>
-          ) : (
-            <NoData message={"No branch found"} />
-          )}
+          <BranchDetailCard
+            branch={branch}
+            memberPlan={memberPlan}
+            reservations={reservations}
+            permittedBranches={permittedBranches}
+          />
         </>
       ) : (
-        <>
-          <FullScreenLoading isLoading={isLoading} />
-        </>
+        <FullScreenLoading isLoading={true} />
       )}
     </>
   );
