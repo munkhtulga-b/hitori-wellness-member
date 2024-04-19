@@ -93,6 +93,7 @@ const ProgramsPage = () => {
   }, [activeStepId]);
 
   const fetchPrograms = async () => {
+    // TODO: ADD STUDIO ID QUERY
     let queries = {};
     setIsFetching((prev) => ({ ...prev, programs: true }));
     if (reservationBody.ticket) {
@@ -102,6 +103,7 @@ const ProgramsPage = () => {
           startAt: `${dayjs(reservationBody.time[0]).format(
             "YYYY-MM-DD"
           )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
+          studioId: reservationBody.branch.id,
         };
       } else {
         queries = {
@@ -114,6 +116,7 @@ const ProgramsPage = () => {
         startAt: `${dayjs(reservationBody.time[0]).format(
           "YYYY-MM-DD"
         )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
+        studioId: reservationBody.branch.id,
       };
     }
     const { isOk, data } = await $api.member.program.getMany(queries);
