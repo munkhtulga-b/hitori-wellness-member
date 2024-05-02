@@ -24,9 +24,10 @@ const TicketCard = ({ ticket, branch }) => {
       >
         <div className="tw-flex tw-flex-col tw-gap-2">
           <span className="tw-text-lg">{nullSafety(ticket.ticket?.name)}</span>
-          <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-whitespace-pre-wrap">
-            {nullSafety(ticket.description)}
-          </p>
+          <p
+            dangerouslySetInnerHTML={{ __html: nullSafety(ticket.description) }}
+            className="tw-leading-[22px] tw-tracking-[0.14px] tw-whitespace-pre-wrap"
+          ></p>
           <Button size="large" onClick={() => onSelect(ticket)}>
             選択
           </Button>

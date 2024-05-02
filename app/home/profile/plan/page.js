@@ -45,9 +45,12 @@ const ActiveSubscription = async () => {
                   {nullSafety(ticket.ticket?.name)}
                   {`(${nullSafety(ticket.num)}回券)`}
                 </span>
-                <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-wrap">
-                  {nullSafety(ticket.description)}
-                </p>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: nullSafety(ticket.description),
+                  }}
+                  className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary"
+                ></p>
               </section>
             ))}
           </>

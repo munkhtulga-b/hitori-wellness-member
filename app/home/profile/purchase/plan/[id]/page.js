@@ -1,5 +1,4 @@
 import $api from "@/app/_api";
-import NoData from "@/app/_components/custom/NoData";
 import PlanDetailCard from "@/app/_components/home/profile/plan/PlanDetailCard";
 
 export const generateMetadata = async ({ params }) => {
@@ -11,23 +10,10 @@ export const generateMetadata = async ({ params }) => {
   };
 };
 
-const PlanDetail = async ({ params }) => {
-  const { id } = params;
-  const { data: plan } = await $api.member.plan.getOne(id); // Fetching plan detail on the server side
-
+const PlanDetail = () => {
   return (
     <>
-      {plan ? (
-        <>
-          <PlanDetailCard plan={plan} />
-        </>
-      ) : (
-        <>
-          <NoData
-            message={" 現在、ご購入されたプラン・チケットはございません。"}
-          />
-        </>
-      )}
+      <PlanDetailCard />
     </>
   );
 };

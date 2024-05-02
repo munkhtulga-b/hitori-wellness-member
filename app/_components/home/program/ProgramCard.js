@@ -26,10 +26,9 @@ const ProgramCard = ({ program }) => {
       setReservationBody({
         time: [
           getReservationBody.time[0],
-          dayjs(getReservationBody.time[0]).add(
-            program.service_minutes,
-            "minutes"
-          ),
+          dayjs(getReservationBody.time[0])
+            .add(program.service_minutes, "minutes")
+            .format("YYYY-MM-DD HH:mm"),
         ],
       });
       router.push("/home/reservation/confirm");
@@ -68,9 +67,10 @@ const ProgramCard = ({ program }) => {
           </p>
         </section>
         <section className="tw-flex tw-flex-col tw-justify-between tw-gap-2 tw-h-full">
-          <p className="tw-text-sm tw-tracking-[0.12px] tw-line-clamp-3">
-            {nullSafety(program.description)}
-          </p>
+          <p
+            dangerouslySetInnerHTML={{ __html: program.description }}
+            className="tw-text-sm tw-tracking-[0.12px] tw-line-clamp-3"
+          ></p>
           <div className="tw-grid tw-grid-cols-2 tw-auto-rows-min tw-gap-2">
             <Button
               onClick={() => router.push(`/home/program/${program.id}`)}

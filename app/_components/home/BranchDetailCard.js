@@ -119,9 +119,11 @@ const BranchDetailCard = ({
                 />
                 <span className="tw-text-lg">営業時間</span>
               </div>
-              <p className="tw-whitespace-pre-line">
-                {nullSafety(branch.business_hours)}
-              </p>
+              <p
+                dangerouslySetInnerHTML={{
+                  __html: nullSafety(branch.business_hours),
+                }}
+              ></p>
             </div>
             <div className="tw-flex tw-flex-col tw-gap-1">
               <a

@@ -26,7 +26,7 @@ const PurchaseSubscription = () => {
   const fetchPlans = async () => {
     setIsLoading(true);
     const filters = {
-      branch: getPurchaseBody?.branch?.id ?? null,
+      studioId: getPurchaseBody?.branch?.id ?? null,
     };
     const { isOk, data } = await $api.member.plan.getMany(filters);
     if (isOk) {
@@ -39,6 +39,7 @@ const PurchaseSubscription = () => {
     setIsLoading(true);
     const { isOk, data } = await $api.member.item.getMany({
       itemType: "ticket",
+      studioId: getPurchaseBody?.branch?.id ?? null,
     });
     if (isOk) {
       setTickets(data);
@@ -51,9 +52,12 @@ const PurchaseSubscription = () => {
       [type]: item,
       [type === "plan" ? "item" : "plan"]: null,
     });
-    router.push(`/home/profile/purchase/${item.id}`, {
-      scroll: false,
-    });
+    router.push(
+      `/home/profile/purchase/${type === "plan" ? item.id : item.m_ticket?.id}`,
+      {
+        scroll: false,
+      }
+    );
   };
 
   return (
@@ -78,9 +82,10 @@ const PurchaseSubscription = () => {
                         <span className="tw-text-lg">
                           {nullSafety(plan.name)}
                         </span>
-                        <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-wrap tw-line-clamp-3">
-                          {nullSafety(plan.description)}
-                        </p>
+                        <p
+                          dangerouslySetInnerHTML={{ __html: plan.description }}
+                          className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-line-clamp-3"
+                        ></p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
                           plan.monthly_price
                         )}（税込）／月`}</span>
@@ -133,9 +138,12 @@ const PurchaseSubscription = () => {
                         <span className="tw-text-lg">
                           {nullSafety(ticket.name)}
                         </span>
-                        <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-wrap tw-line-clamp-3">
-                          {nullSafety(ticket.description)}
-                        </p>
+                        <p
+                          dangerouslySetInnerHTML={{
+                            __html: ticket.description,
+                          }}
+                          className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-line-clamp-3"
+                        ></p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
                           ticket.prices[0]?.price
                         )}（税込）／回`}</span>
@@ -145,7 +153,7 @@ const PurchaseSubscription = () => {
                             className="tw-w-full"
                             onClick={() =>
                               router.push(
-                                `/home/profile/purchase/ticket/${ticket.id}`
+                                `/home/profile/purchase/ticket/${ticket.m_ticket?.id}`
                               )
                             }
                           >

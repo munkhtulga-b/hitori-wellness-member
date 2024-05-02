@@ -36,7 +36,7 @@ const ReservationConfirm = () => {
       endAt: reservationBody.time[reservationBody.time?.length - 1],
     };
     if (reservationBody.ticket) {
-      body["memberTicketId"] = reservationBody.ticket.id;
+      body["memberTicketId"] = reservationBody.ticket.ticket_id;
     }
     const { isOk } = await $api.member.reservation.create(body);
     if (isOk) {
@@ -153,9 +153,12 @@ const ReservationConfirm = () => {
                 </span>
               </div>
               <div>
-                <p className="tw-tracking-[0.14px] tw-leading-[22px] tw-text-secondary tw-line-clamp-3">
-                  {nullSafety(reservationBody?.program?.description)}
-                </p>
+                <p
+                  dangerouslySetInnerHTML={{
+                    __html: nullSafety(reservationBody?.program?.description),
+                  }}
+                  className="tw-tracking-[0.14px] tw-leading-[22px] tw-text-secondary tw-line-clamp-3"
+                ></p>
               </div>
             </section>
           ) : null}

@@ -31,9 +31,12 @@ const MemberPlanCard = ({ memberPlan }) => {
     <>
       <section className="tw-flex tw-flex-col tw-gap-2 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow">
         <span className="tw-text-lg">{nullSafety(memberPlan?.plan?.name)}</span>
-        <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-line">
-          {nullSafety(memberPlan?.plan?.description)}
-        </p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html: nullSafety(memberPlan?.plan?.description),
+          }}
+          className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary"
+        ></p>
         <div className="tw-flex tw-justify-between tw-items-center tw-gap-4">
           <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
             {`料金: ${thousandSeparator(

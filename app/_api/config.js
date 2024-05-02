@@ -18,7 +18,6 @@ const fetchData = async (endpoint, method, body, serverToken) => {
     const init = {
       method: method,
       headers: headers,
-      cache: "no-store",
     };
 
     if (body) {
