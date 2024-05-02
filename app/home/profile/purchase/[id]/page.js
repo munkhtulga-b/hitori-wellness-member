@@ -137,9 +137,12 @@ const SubscriptionDetail = () => {
             <span className="tw-text-lg">
               {nullSafety(getPuchaseBody[itemType].name)}
             </span>
-            <p className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-              {nullSafety(getPuchaseBody[itemType].description)}
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: nullSafety(getPuchaseBody[itemType].description),
+              }}
+              className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary"
+            ></p>
             <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
               itemType === "plan"
                 ? getPuchaseBody[itemType].monthly_price

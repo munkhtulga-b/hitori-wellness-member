@@ -33,7 +33,7 @@ const ReservationTickets = () => {
 
   const fetchMemberTickets = async () => {
     const { isOk, data } = await $api.member.memberTicket.getMany(undefined, {
-      branch: params.branch,
+      studioId: params.branch,
     });
     if (isOk) {
       setMemberTickets(data);

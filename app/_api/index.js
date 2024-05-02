@@ -17,6 +17,7 @@ import * as purchase from "./member/PurchaseController";
 import * as reservation from "./member/ReservationController";
 import * as memberTicket from "./member/MemberTicketController";
 import * as item from "./member/ItemController";
+import * as ticket from "./member/TicketController";
 import * as user from "./member/UserController";
 
 const $api = {
@@ -39,6 +40,7 @@ const $api = {
     reservation,
     memberTicket,
     item,
+    ticket,
     user,
   },
 };

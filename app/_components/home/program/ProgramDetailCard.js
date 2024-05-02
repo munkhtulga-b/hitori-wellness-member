@@ -78,9 +78,12 @@ const ProgramDetailCard = ({ program }) => {
             </span>
           </section>
           <section>
-            <p className="tw-leading-[22px] tw-tracking-[0.14px]">
-              {nullSafety(program.description)}
-            </p>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: nullSafety(program.description),
+              }}
+              className="tw-leading-[22px] tw-tracking-[0.14px]"
+            ></p>
           </section>
           <section className="tw-p-4 tw-rounded-xl tw-border tw-border-info">
             <p className="w-leading-[26px] tw-tracking-[0.14px]">
