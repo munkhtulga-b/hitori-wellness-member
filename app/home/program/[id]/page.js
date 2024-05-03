@@ -1,31 +1,22 @@
 import $api from "@/app/_api";
-import NoData from "@/app/_components/custom/NoData";
 import ProgramDetailCard from "@/app/_components/home/program/ProgramDetailCard";
+import { cookies } from "next/headers";
 
 export const generateMetadata = async ({ params }) => {
+  const cookieStore = cookies();
+  const token = cookieStore.get("token").value;
   const { id } = params;
-  const { data } = await $api.member.program.getOne(id);
+  const { data } = await $api.member.program.getOne(id, token);
 
   return {
     title: data?.name ?? process.env.BASE_META_TITLE,
   };
 };
 
-const ProgramDetail = async ({ params }) => {
-  const { id } = params;
-  const { data: program } = await $api.member.program.getOne(id);
-
+const ProgramDetail = () => {
   return (
     <>
-      {program ? (
-        <>
-          <ProgramDetailCard program={program} />
-        </>
-      ) : (
-        <>
-          <NoData message={"No program found"} />
-        </>
-      )}
+      <ProgramDetailCard />
     </>
   );
 };

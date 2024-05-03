@@ -31,8 +31,9 @@ const BranchDetailCard = ({
 
   const checkMemberTickets = async () => {
     if (
-      !permittedBranches.plan.includes(branch.id) &&
-      permittedBranches.ticket?.includes(branch.id)
+      !permittedBranches.plan?.includes(branch.id) &&
+      (permittedBranches.ticket?.includes(branch.id) ||
+        permittedBranches.ticket?.length === 0)
     ) {
       resetReservationBody();
       setReservationBody({ branch: branch });

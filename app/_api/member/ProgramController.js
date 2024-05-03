@@ -6,6 +6,6 @@ export const getMany = (queries) => {
   return fetchData(`programs${queryString}`, "GET");
 };
 
-export const getOne = (id) => {
-  return fetchData(`programs/${id}`, "GET");
+export const getOne = (id, serverToken) => {
+  return fetchData(`programs/${id}`, "GET", undefined, serverToken);
 };
