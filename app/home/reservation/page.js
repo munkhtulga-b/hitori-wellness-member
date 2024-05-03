@@ -44,6 +44,7 @@ const ProgramsPage = () => {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const reservationBody = useReservationStore((state) => state.getBody());
+  const setReservationBody = useReservationStore((state) => state.setBody);
   const [isFetching, setIsFetching] = useState({
     programs: false,
     coaches: false,
@@ -73,6 +74,14 @@ const ProgramsPage = () => {
   }, [searchParams]);
 
   useEffect(() => {
+    setReservationBody({
+      ...reservationBody,
+      time: null,
+      program: null,
+    });
+  }, []);
+
+  useEffect(() => {
     if (activeStepId === 1) {
       fetchPrograms();
     }
@@ -93,13 +102,12 @@ const ProgramsPage = () => {
   }, [activeStepId]);
 
   const fetchPrograms = async () => {
-    // TODO: ADD STUDIO ID QUERY
     let queries = {};
     setIsFetching((prev) => ({ ...prev, programs: true }));
     if (reservationBody.ticket) {
       if (reservationBody.time) {
         queries = {
-          ticketId: reservationBody.ticket.ticket?.id,
+          ticketId: reservationBody.ticket?.ticket_id,
           startAt: `${dayjs(reservationBody.time[0]).format(
             "YYYY-MM-DD"
           )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
@@ -107,7 +115,7 @@ const ProgramsPage = () => {
         };
       } else {
         queries = {
-          ticketId: reservationBody.ticket.ticket?.id,
+          ticketId: reservationBody.ticket?.ticket_id,
         };
       }
     }
