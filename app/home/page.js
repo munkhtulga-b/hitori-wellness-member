@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import $api from "../_api";
 import _ from "lodash";
 import BranchCard from "../_components/home/BranchCard";
+import VerificationReminder from "../_components/home/VerificationReminder";
 
 const HomePage = () => {
   const [branchList, setBranchList] = useState(null);
@@ -44,6 +45,7 @@ const HomePage = () => {
     <div className="tw-flex tw-flex-col tw-gap-y-4">
       {!isLoading ? (
         <>
+          <VerificationReminder />
           {branchList?.length ? (
             <FilterButtonGroup
               options={branchList}

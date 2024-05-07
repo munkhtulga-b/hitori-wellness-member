@@ -57,7 +57,7 @@ const TimeSlotSelectNoProgram = ({
     for (let i = 0; i < 7; i++) {
       daysOfWeek.push({
         day: currentDate,
-        timeSlots: getAllAvailableTimes("00:00", currentDate),
+        timeSlots: getAllAvailableTimes(currentDate),
       });
       currentDate = currentDate.add(1, "day");
     }
@@ -86,9 +86,13 @@ const TimeSlotSelectNoProgram = ({
     return daysOfWeek;
   };
 
-  const getAllAvailableTimes = (startTime, currentDate) => {
-    const start = dayjs(`01/01/2024 ${startTime}`);
-    const end = start.add(1, "day");
+  const getAllAvailableTimes = (currentDate) => {
+    const branchStartTime =
+      getReservation.branch?.timeperiod_details[0]?.start_hour;
+    const branchEndTime =
+      getReservation.branch?.timeperiod_details[0]?.end_hour;
+    const start = dayjs(`01/01/2024 ${branchStartTime}`);
+    const end = dayjs(`01/01/2024 ${branchEndTime}`);
 
     const times = [];
 
