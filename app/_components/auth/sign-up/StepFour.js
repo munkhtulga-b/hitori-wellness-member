@@ -1,6 +1,9 @@
+import { useSearchParams } from "next/navigation";
 import StatusAnimation from "../../animation/StatusAnimation";
 
 const SignupStepFour = ({ registeredEmail }) => {
+  const searchParams = useSearchParams();
+  const queryEmail = searchParams.get("email");
   return (
     <div className="tw-flex tw-flex-col tw-items-center tw-gap-6 tw-mt-[68px]">
       <StatusAnimation />
@@ -12,7 +15,7 @@ const SignupStepFour = ({ registeredEmail }) => {
       <section>
         <p className="tw-leading-[26px] tw-tracking-[0.14px] tw-text-center">
           {`登録されたメールアドレス（${
-            registeredEmail ?? "mailaddress"
+            registeredEmail ?? queryEmail ?? "mailaddress"
           }）に確認メールを送信しました。メールの本文内のリンクから確認ページにアクセスして登録を完了してください。`}
         </p>
       </section>
