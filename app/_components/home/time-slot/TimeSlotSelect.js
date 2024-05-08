@@ -8,7 +8,12 @@ import { useRouter } from "next/navigation";
 import FullScreenLoading from "../../animation/FullScreenLoading";
 // import { useUserStore } from "@/app/_store/user";
 
-const TimeSlotSelect = ({ timeSlotList, fetchTimeslots, isFetching }) => {
+const TimeSlotSelect = ({
+  timeSlotList,
+  fetchTimeslots,
+  isFetching,
+  maxDailyReservation,
+}) => {
   const router = useRouter();
   // const getUser = useUserStore((state) => state.getUser());
   const [messageApi, contextHolder] = message.useMessage();
@@ -197,7 +202,10 @@ const TimeSlotSelect = ({ timeSlotList, fetchTimeslots, isFetching }) => {
       });
       if (matched) {
         result = matched.user_reserved;
-        if (matched.user_reserved === true && getReservationEdit.date) {
+        if (
+          matched.user_reserved >= maxDailyReservation &&
+          getReservationEdit.date
+        ) {
           if (
             dayjs(dayjs(currentDate).format("YYYY-MM-DD")).isSame(
               dayjs.utc(getReservationEdit.date).format("YYYY-MM-DD")

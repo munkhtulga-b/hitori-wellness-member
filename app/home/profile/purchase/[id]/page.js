@@ -15,13 +15,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import $api from "@/app/_api";
 import dayjs from "dayjs";
 import { usePurchaseStore } from "@/app/_store/purchase";
+import { useReservationStore } from "@/app/_store/reservation";
 
 const SubscriptionDetail = () => {
   const router = useRouter();
   const [form] = Form.useForm();
   const setPurchaseBody = usePurchaseStore((state) => state.setBody);
   const getPuchaseBody = usePurchaseStore((state) => state.getBody());
-  const resetPurchaseBody = usePurchaseStore((state) => state.resetBody);
+  const reserPurchaseBody = usePurchaseStore((state) => state.resetBody);
+  const setReservationBody = useReservationStore((state) => state.setBody);
   const [step, setStep] = useState(1);
   const [cards, setCards] = useState(null);
   const [selectedCard, setSelectedCard] = useState(null);
@@ -59,7 +61,6 @@ const SubscriptionDetail = () => {
     setIsLoading((prev) => ({ ...prev, isRequesting: true }));
     const { isOk } = await $api.member.purchase.create(body);
     if (isOk) {
-      resetPurchaseBody();
       setStep(3);
     } else {
       setIsModalOpen(true);
@@ -111,6 +112,12 @@ const SubscriptionDetail = () => {
       body["couponCode"] = usedCouponCode;
     }
     createPurchase(body);
+  };
+
+  const onContinueReservation = () => {
+    setReservationBody({ branch: getPuchaseBody.branch });
+    router.push(`/home/reservation`);
+    reserPurchaseBody();
   };
 
   const onPlanConfirm = () => {
@@ -642,12 +649,12 @@ const SubscriptionDetail = () => {
         </section>
         <section className="tw-w-full">
           <Button
-            onClick={() => router.push("/home")}
+            onClick={() => onContinueReservation()}
             size="large"
             type="primary"
             className="tw-w-full"
           >
-            ホームページヘ戻る
+            予約を続ける
           </Button>
         </section>
       </section>

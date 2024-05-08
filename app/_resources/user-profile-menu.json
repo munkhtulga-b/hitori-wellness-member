@@ -1,46 +1,46 @@
 {
-    "1": [
-        {
-            "text": "加入中プラン・所持チケット",
-            "icon": "/assets/profile/current-plan.svg",
-            "alt": "plan",
-            "route": "/home/profile/plan"
-        },
-        {
-            "text": "プラン・チケット購入",
-            "icon": "/assets/profile/purchase-ticket.svg",
-            "alt": "purchase",
-            "route": "/home/profile/purchase"
-        }
-    ],
-    "2": [
-        {
-            "text": "保存しているクレジットカード",
-            "icon": "/assets/profile/credit-card.svg",
-            "alt": "card",
-            "route": "/home/profile/credit-cards"
-        },
-        {
-            "text": "支払い履歴",
-            "icon": "/assets/profile/payment-history.svg",
-            "alt": "payment",
-            "route": "/home/profile/payment-history"
-        }
-    ],
-    "3": [
-        {
-            "text": "パスワードを変更する",
-            "icon": "/assets/profile/change-password.svg",
-            "alt": "password",
-            "route": "/home/profile/change-password"
-        }
-    ],
-    "4": [
-        {
-            "text": "入館記録",
-            "icon": "/assets/profile/check-in-history.svg",
-            "alt": "check-in",
-            "route": "/home/profile/check-in"
-        }
-    ]
+  "1": [
+    {
+      "text": "加入中プラン・所持チケット",
+      "icon": "/assets/profile/current-plan.svg",
+      "alt": "plan",
+      "route": "/home/profile/plan"
+    },
+    {
+      "text": "プラン・チケット購入",
+      "icon": "/assets/profile/purchase-ticket.svg",
+      "alt": "purchase",
+      "route": "/home/profile/purchase"
+    }
+  ],
+  "2": [
+    {
+      "text": "支払い方法",
+      "icon": "/assets/profile/credit-card.svg",
+      "alt": "card",
+      "route": "/home/profile/credit-cards"
+    },
+    {
+      "text": "支払い履歴",
+      "icon": "/assets/profile/payment-history.svg",
+      "alt": "payment",
+      "route": "/home/profile/payment-history"
+    }
+  ],
+  "3": [
+    {
+      "text": "パスワードを変更する",
+      "icon": "/assets/profile/change-password.svg",
+      "alt": "password",
+      "route": "/home/profile/change-password"
+    }
+  ],
+  "4": [
+    {
+      "text": "入館記録",
+      "icon": "/assets/profile/check-in-history.svg",
+      "alt": "check-in",
+      "route": "/home/profile/check-in"
+    }
+  ]
 }

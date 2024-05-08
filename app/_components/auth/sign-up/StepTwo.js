@@ -75,12 +75,26 @@ const SignupStepTwo = ({ onComplete }) => {
     </>
   );
 
+  const beforeComplete = (params) => {
+    params.tel = formatPhoneNumber(params.tel);
+    params.emergencyTel = formatPhoneNumber(params.emergencyTel);
+    onComplete(params);
+  };
+
+  const formatPhoneNumber = (value) => {
+    let result = "";
+    if (value) {
+      result = value.toString().replace("-", "");
+    }
+    return result;
+  };
+
   return (
     <Form
       requiredMark={customizeRequiredMark}
       form={form}
       name="SignupStepTwo"
-      onFinish={onComplete}
+      onFinish={beforeComplete}
     >
       <Form.Item
         name="tel"
@@ -92,8 +106,12 @@ const SignupStepTwo = ({ onComplete }) => {
             whitespace: false,
           },
         ]}
+        getValueFromEvent={(e) => {
+          const value = e.target.value;
+          return value.replace(/[^0-9-]/g, "");
+        }}
       >
-        <Input placeholder="電話番号" type="number" />
+        <Input placeholder="電話番号" />
       </Form.Item>
 
       <section className="tw-flex tw-flex-col tw-gap-2">
@@ -110,8 +128,13 @@ const SignupStepTwo = ({ onComplete }) => {
                 whitespace: false,
               },
             ]}
+            getValueFromEvent={(e) => {
+              const value = e.target.value;
+              const numberString = value.replace(/^\D*(\d{3})\D*$/, "$1");
+              return numberString;
+            }}
           >
-            <Input placeholder="000" type="number" maxLength={3} />
+            <Input placeholder="000" maxLength={3} />
           </Form.Item>
           <Form.Item
             name="zipCode2"
@@ -122,6 +145,11 @@ const SignupStepTwo = ({ onComplete }) => {
                 whitespace: false,
               },
             ]}
+            getValueFromEvent={(e) => {
+              const value = e.target.value;
+              const numberString = value.replace(/^\D*(\d{4})\D*$/, "$1");
+              return numberString;
+            }}
           >
             <Input
               placeholder="0000"
@@ -211,8 +239,12 @@ const SignupStepTwo = ({ onComplete }) => {
             whitespace: false,
           },
         ]}
+        getValueFromEvent={(e) => {
+          const value = e.target.value;
+          return value.replace(/[^0-9-]/g, "");
+        }}
       >
-        <Input placeholder="電話番号" type="number" />
+        <Input placeholder="電話番号" />
       </Form.Item>
 
       <Form.Item>

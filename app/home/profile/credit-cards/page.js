@@ -120,6 +120,11 @@ const CreditCards = () => {
 
     return (
       <>
+        {!selectedCard && !card.is_default && (
+          <section className="tw-leading-[22px] tw-tracking-[0.14px]">
+            予備カード（主要カードは利用不可能だった場合に利用される）
+          </section>
+        )}
         <section
           className={`tw-relative ${
             !selectedCard && !card.is_default
@@ -322,15 +327,13 @@ const CreditCards = () => {
       {contextHolder}
       <div className="tw-flex tw-flex-col tw-gap-4">
         <section>
-          <span className="tw-text-xxl tw-font-medium">
-            保存しているクレジットカード
-          </span>
+          <span className="tw-text-xxl tw-font-medium">支払い方法</span>
         </section>
 
         {!isLoading.isFetching ? (
           <section className="tw-flex tw-flex-col tw-gap-2">
             <span className="tw-leading-[22px] tw-tracking-[0.14px]">
-              クレジットカード
+              主要カード
             </span>
             <AnimatePresence mode="wait">
               {!selectedCard ? (
