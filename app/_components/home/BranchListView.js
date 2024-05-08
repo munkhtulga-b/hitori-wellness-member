@@ -59,9 +59,12 @@ const BranchListView = ({ list, cardType }) => {
                           branch.address2
                         )} ${nullSafety(branch.address3)}`}
                       </span>
-                      <p className="tw-mt-1 tw-whitespace-pre-line tw-line-clamp-3">
-                        {`${nullSafety(branch.business_hours)}`}
-                      </p>
+                      <p
+                        dangerouslySetInnerHTML={{
+                          __html: nullSafety(branch.business_hours),
+                        }}
+                        className="tw-mt-1 tw-whitespace-pre-line tw-line-clamp-3"
+                      ></p>
                     </section>
                   </section>
                   {cardType === "purchase" ? (

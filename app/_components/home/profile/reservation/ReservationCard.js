@@ -89,9 +89,12 @@ const ReservationCard = ({
           <span className="tw-leading-[22px] tw-tracking-[0.14px]">
             {nullSafety(reservation.m_program?.name)}
           </span>
-          <span className="tw-text-secondary tw-text-sm tw-tracking-[0.12px]">
-            {nullSafety(reservation.m_program?.description)}
-          </span>
+          <p
+            dangerouslySetInnerHTML={{
+              __html: nullSafety(reservation.m_program?.description),
+            }}
+            className="tw-text-secondary tw-text-sm tw-tracking-[0.12px]"
+          ></p>
         </section>
         {/* <section className="tw-flex tw-flex-col tw-gap-2">
           <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">

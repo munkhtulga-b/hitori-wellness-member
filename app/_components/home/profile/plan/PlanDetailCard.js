@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { Button } from "antd";
-import { nullSafety } from "@/app/_utils/helpers";
+import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
 import { usePurchaseStore } from "@/app/_store/purchase";
 import { useEffect, useState } from "react";
 import $api from "@/app/_api";
@@ -45,13 +45,16 @@ const PlanDetailCard = () => {
                   {nullSafety(plan.name)}
                 </span>
               </section>
-              <section className="tw-bg-white tw-rounded-xl tw-p-4 tw-shadow">
+              <section className="tw-bg-white tw-rounded-xl tw-p-4 tw-shadow tw-flex tw-flex-col tw-gap-2">
                 <p
                   dangerouslySetInnerHTML={{
                     __html: nullSafety(plan.description),
                   }}
                   className="tw-leading-[22px] tw-tracking-[0.14px] tw-whitespace-pre-wrap"
                 ></p>
+                <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
+                  plan.monthly_price
+                )}（税込）／月`}</span>
               </section>
               <section className="tw-mt-1">
                 <Button
