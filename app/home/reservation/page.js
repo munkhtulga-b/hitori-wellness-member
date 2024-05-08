@@ -53,6 +53,7 @@ const ProgramsPage = () => {
   const [programList, setProgramList] = useState(null);
   const [coachList, setCoachList] = useState(null);
   const [timeslotList, setTimeslotList] = useState(null);
+  const [memberPlan, setMemberPlan] = useState(null);
   const [activeFilterId, setActiveFilterId] = useState(null);
   const [activeStepId, setActiveStepId] = useState(null);
 
@@ -79,6 +80,7 @@ const ProgramsPage = () => {
       time: null,
       program: null,
     });
+    fetchMemberPlan();
   }, []);
 
   useEffect(() => {
@@ -162,6 +164,13 @@ const ProgramsPage = () => {
     setIsFetching((prev) => ({ ...prev, timeslots: false }));
   };
 
+  const fetchMemberPlan = async () => {
+    const { isOk, data } = await $api.member.memberPlan.getMany();
+    if (isOk) {
+      setMemberPlan(data);
+    }
+  };
+
   const createQueryString = useCallback(
     (name, value) => {
       const params = new URLSearchParams(searchParams);
@@ -236,12 +245,22 @@ const ProgramsPage = () => {
           <>
             {reservationBody.program ? (
               <TimeSlotSelect
+                maxDailyReservation={
+                  memberPlan?.length
+                    ? memberPlan[0]?.plan?.max_reservable_num_at_day_by_plan
+                    : 0
+                }
                 isFetching={isFetching.timeslots}
                 timeSlotList={timeslotList}
                 fetchTimeslots={fetchTimeslots}
               />
             ) : (
               <TimeSlotSelectNoProgram
+                maxDailyReservation={
+                  memberPlan?.length
+                    ? memberPlan[0]?.plan?.max_reservable_num_at_day_by_plan
+                    : 0
+                }
                 isFetching={isFetching.timeslots}
                 timeSlotList={timeslotList}
                 fetchTimeslots={fetchTimeslots}

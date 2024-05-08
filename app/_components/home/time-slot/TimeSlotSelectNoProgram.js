@@ -11,6 +11,7 @@ const TimeSlotSelectNoProgram = ({
   timeSlotList,
   fetchTimeslots,
   isFetching,
+  maxDailyReservation,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -156,7 +157,10 @@ const TimeSlotSelectNoProgram = ({
       });
       if (matched) {
         result = matched.user_reserved;
-        if (matched.user_reserved === true && getReservationEdit.date) {
+        if (
+          matched.user_reserved >= maxDailyReservation &&
+          getReservationEdit.date
+        ) {
           if (
             dayjs(dayjs(currentDate).format("YYYY-MM-DD")).isSame(
               dayjs.utc(getReservationEdit.date).format("YYYY-MM-DD")
