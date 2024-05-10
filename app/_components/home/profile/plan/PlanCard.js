@@ -25,8 +25,6 @@ const MemberPlanCard = ({ memberPlan }) => {
     setIsLoading(false);
   };
 
-  console.log(memberPlan);
-
   return (
     <>
       <section className="tw-flex tw-flex-col tw-gap-2 tw-bg-white tw-p-4 tw-rounded-xl tw-shadow">
@@ -88,7 +86,7 @@ const MemberPlanCard = ({ memberPlan }) => {
               size="large"
               className="tw-w-auto"
             >
-              キャンセル
+              解約
             </Button>
           </section>
         </div>
