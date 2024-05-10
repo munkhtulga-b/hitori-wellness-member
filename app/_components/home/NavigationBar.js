@@ -28,7 +28,7 @@ const NavigationBar = ({ setCollapsed, collapsed }) => {
         ) : null}
         <Image
           priority
-          src="/assets/logo-white.png"
+          src="/assets/logo-white.svg"
           alt="logo"
           width={188}
           height={28}

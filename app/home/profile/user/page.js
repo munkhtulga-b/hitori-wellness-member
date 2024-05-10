@@ -4,13 +4,7 @@ import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
 import { Button, Form, Input, Select, Checkbox, Spin, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import {
-  getAddressFromPostalCode,
-  nullSafety,
-  getYears,
-  getMonths,
-  getDays,
-} from "@/app/_utils/helpers";
+import { nullSafety, getYears, getMonths, getDays } from "@/app/_utils/helpers";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/app/_store/user";
 import $api from "@/app/_api";
@@ -35,9 +29,9 @@ const EditUserInfo = () => {
     const fullPostalCode = `${zipCode1}${zipCode2}`;
     const fetchAddress = async () => {
       setIsFetching(true);
-      const result = await getAddressFromPostalCode(fullPostalCode);
-      if (result.length) {
-        setAddress(result[0]);
+      const { isOk, data } = await $api.admin.post.getOne(fullPostalCode);
+      if (isOk) {
+        setAddress(data);
       } else {
         setAddress(null);
       }

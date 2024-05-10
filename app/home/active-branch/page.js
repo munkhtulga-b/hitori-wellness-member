@@ -58,6 +58,7 @@ const HomeBranchDetailPage = () => {
               maxReservation={
                 memberPlan[0]?.plan?.max_cc_reservable_num_by_plan
               }
+              fetchList={fetchReservations}
             />
           ) : (
             <NoData message={"No branch found"} />

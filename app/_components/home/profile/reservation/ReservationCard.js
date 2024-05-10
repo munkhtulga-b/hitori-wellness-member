@@ -4,21 +4,32 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
+import $api from "@/app/_api";
 
 const ReservationCard = ({
   reservation,
   activeFilterId,
-  isRequesting,
-  cancelReservation,
   editReservation,
+  fetchList,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isRequesting, setIsRequesting] = useState(false);
 
-  const isReservationCancellable = ({ start_at }) => {
-    let result = false;
+  const cancelReservation = async ({ id }) => {
+    setIsRequesting(true);
+    const { isOk } = await $api.member.reservation.cancel(id);
+    if (isOk) {
+      await fetchList();
+      setIsModalOpen(false);
+    }
+    setIsRequesting(false);
+  };
+
+  const isNotCancellable = ({ start_at }) => {
+    let result = true;
     if (start_at) {
-      const cancellableDate = dayjs.utc(start_at).subtract(24, "hour");
-      result = dayjs().isAfter(cancellableDate);
+      const timeDifference = dayjs(dayjs.utc(start_at)).diff(dayjs(), "hour");
+      result = timeDifference >= 24 ? false : true;
     }
     return result;
   };
@@ -116,26 +127,27 @@ const ReservationCard = ({
             </section>
           </div>
         </section> */}
-        {activeFilterId === ReservationStatusEnum.ACTIVE &&
-        reservation.m_program?.cancellation_policy ? (
+        {activeFilterId === ReservationStatusEnum.ACTIVE ? (
           <>
-            <section className="tw-p-2 tw-rounded-xl tw-border-2 tw-border-info">
-              <p className="tw-leading-[22px] tw-tracking-[0.14px]">
-                {nullSafety(reservation.m_program?.cancellation_policy)}
-              </p>
-            </section>
+            {reservation.m_program?.cancellation_policy ? (
+              <section className="tw-p-2 tw-rounded-xl tw-border-2 tw-border-info">
+                <p className="tw-leading-[22px] tw-tracking-[0.14px]">
+                  {nullSafety(reservation.m_program?.cancellation_policy)}
+                </p>
+              </section>
+            ) : null}
 
             <section className="tw-flex tw-justify-end tw-gap-2">
               <Button
-                disabled={isReservationCancellable(reservation)}
+                disabled={isNotCancellable(reservation)}
                 size="large"
                 className="tw-w-[128px]"
                 onClick={() => setIsModalOpen(true)}
               >
-                キャンセル
+                キャンセルする
               </Button>
               <Button
-                disabled={isReservationCancellable(reservation)}
+                disabled={isNotCancellable(reservation)}
                 type="primary"
                 size="large"
                 className="tw-w-[128px]"

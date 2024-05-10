@@ -37,7 +37,6 @@ const filters = [
 const ReservationHistory = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
-  const [isRequesting, setIsRequesting] = useState(false);
   const [reservations, setReservations] = useState(null);
   const [activeFilterId, setActiveFilterId] = useState(
     ReservationStatusEnum.ACTIVE
@@ -59,15 +58,6 @@ const ReservationHistory = () => {
       setReservations(data);
     }
     setIsLoading(false);
-  };
-
-  const cancelReservation = async ({ id }) => {
-    setIsRequesting(true);
-    const { isOk } = await $api.member.reservation.cancel(id);
-    if (isOk) {
-      await fetchReservations();
-    }
-    setIsRequesting(false);
   };
 
   const editReservation = (reservation) => {
@@ -144,9 +134,8 @@ const ReservationHistory = () => {
                         <ReservationCard
                           reservation={reservation}
                           activeFilterId={activeFilterId}
-                          isRequesting={isRequesting}
-                          cancelReservation={cancelReservation}
                           editReservation={editReservation}
+                          fetchList={fetchReservations}
                         />
                       </div>
                     </section>

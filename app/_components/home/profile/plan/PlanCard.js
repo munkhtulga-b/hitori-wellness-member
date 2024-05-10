@@ -37,12 +37,12 @@ const MemberPlanCard = ({ memberPlan }) => {
           }}
           className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary"
         ></p>
-        <div className="tw-flex tw-justify-between tw-items-center tw-gap-4">
-          <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
-            {`料金: ${thousandSeparator(
-              memberPlan?.plan?.monthly_item?.prices[0]?.price
-            )}円 （税込）／月`}
-          </span>
+        <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
+          {`料金: ${thousandSeparator(
+            memberPlan?.plan?.monthly_item?.prices[0]?.price
+          )}円 （税込）／月`}
+        </span>
+        <div className="tw-flex tw-justify-end tw-items-center tw-gap-4 tw-mt-4">
           <Button
             disabled={!memberPlan?.plan?.is_enabled_withdraw}
             loading={isLoading}
@@ -50,6 +50,12 @@ const MemberPlanCard = ({ memberPlan }) => {
             onClick={() => setIsModalOpen(true)}
           >
             解約
+          </Button>
+          <Button
+            disabled={!memberPlan?.plan?.is_enabled_change_plan}
+            className="tw-w-[100px]"
+          >
+            変更
           </Button>
         </div>
       </section>
@@ -64,7 +70,7 @@ const MemberPlanCard = ({ memberPlan }) => {
         <div className="tw-flex tw-flex-col tw-gap-6 tw-mt-6">
           <section className="tw-rounded-xl tw-border-2 tw-border-warning tw-p-4">
             <p className="tw-leading-[26px] tw-tracking-[0.14px]">
-              当プランの解約時には前払いの返金はございません。本当に解約いたしますか？
+              ※当プランの解約時には前払いの返金はございません。本当に解約いたしますか？
             </p>
           </section>
           <section className="tw-flex tw-justify-end tw-items-center tw-gap-2">

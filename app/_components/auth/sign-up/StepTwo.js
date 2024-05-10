@@ -1,8 +1,8 @@
 import { Button, Form, Input, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { getAddressFromPostalCode } from "@/app/_utils/helpers";
 import { useEffect, useState } from "react";
 import { useSignupStore } from "@/app/_store/user-signup";
+import $api from "@/app/_api";
 
 const SignupStepTwo = ({ onComplete }) => {
   const [form] = Form.useForm();
@@ -20,7 +20,7 @@ const SignupStepTwo = ({ onComplete }) => {
     const fullPostalCode = `${zipCode1}${zipCode2}`;
     const fetchAddress = async () => {
       setIsFetching(true);
-      const result = await getAddressFromPostalCode(fullPostalCode);
+      const result = await $api.member.post.getOne(fullPostalCode);
       if (result.length) {
         setAddress(result[0]);
       } else {
