@@ -141,7 +141,6 @@ const ReservationCard = ({
               <Button
                 disabled={isNotCancellable(reservation)}
                 size="large"
-                className="tw-w-[128px]"
                 onClick={() => setIsModalOpen(true)}
               >
                 キャンセルする
@@ -188,7 +187,7 @@ const ReservationCard = ({
               size="large"
               className="tw-w-auto"
             >
-              解約
+              キャンセルする
             </Button>
           </section>
         </div>
