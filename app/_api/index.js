@@ -19,6 +19,7 @@ import * as memberTicket from "./member/MemberTicketController";
 import * as item from "./member/ItemController";
 import * as ticket from "./member/TicketController";
 import * as user from "./member/UserController";
+import * as post from "./member/PostJPController";
 
 const $api = {
   auth: {
@@ -31,6 +32,7 @@ const $api = {
     changeEmail,
   },
   member: {
+    post,
     branch,
     program,
     card,

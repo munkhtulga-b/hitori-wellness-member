@@ -1,25 +1,6 @@
 import dayjs from "dayjs";
 
 /**
- * Gets the address from the postal code using the Postcode-JP API.
- *
- * @param {string} postCode - The postal code to look up.
- * @return {Promise} A Promise that resolves to the JSON response from the API.
- */
-export const getAddressFromPostalCode = async (postCode) => {
-  const resp = await fetch(
-    `https://apis.postcode-jp.com/api/v5/postcodes/${postCode}`,
-    {
-      headers: {
-        "X-API-KEY": process.env.NEXT_PUBLIC_POST_JP_API_KEY,
-      },
-    }
-  );
-
-  return resp.json();
-};
-
-/**
  * Checks for null or undefined and returns the value or a dash if null or undefined.
  *
  * @param {any} value - the value to check for null or undefined

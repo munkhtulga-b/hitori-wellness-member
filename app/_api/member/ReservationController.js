@@ -19,7 +19,7 @@ export const update = (id, body) => {
 };
 
 export const cancel = (id) => {
-  return fetchData(`reservations/cancel/${id}`, "POST");
+  return fetchData(`reservations/cancel/${id}`, "DELETE");
 };
 
 export const getAllTimeSlots = (queries) => {

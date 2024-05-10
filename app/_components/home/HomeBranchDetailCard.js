@@ -1,12 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import { useReservationStore } from "@/app/_store/reservation";
-import $api from "@/app/_api";
 import ReservationCard from "./profile/reservation/ReservationCard";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 
@@ -20,23 +18,12 @@ const HomeBranchDetailCard = ({
   const getReservationBody = useReservationStore((state) => state.getBody());
   const setReservationBody = useReservationStore((state) => state.setBody);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
-  const [isCancelled, setIsCancelled] = useState(false);
-  const [isRequesting, setIsRequesting] = useState(false);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
   const handleMakeReservation = () => {
     resetReservationBody();
     setReservationBody({ branch: branch });
     router.push("/home/reservation");
-  };
-
-  const cancelReservation = async ({ id }) => {
-    setIsRequesting(true);
-    const { isOk } = await $api.member.reservation.cancel(id);
-    if (isOk) {
-      setIsCancelled(true);
-    }
-    setIsRequesting(false);
   };
 
   const editReservation = (reservation) => {
@@ -148,14 +135,8 @@ const HomeBranchDetailCard = ({
           <>
             <ReservationCard
               reservation={nearestReservation}
-              activeFilterId={
-                isCancelled
-                  ? ReservationStatusEnum.CANCELLED
-                  : ReservationStatusEnum.ACTIVE
-              }
-              cancelReservation={cancelReservation}
+              activeFilterId={ReservationStatusEnum.ACTIVE}
               editReservation={editReservation}
-              isRequesting={isRequesting}
             />
           </>
         ) : null}

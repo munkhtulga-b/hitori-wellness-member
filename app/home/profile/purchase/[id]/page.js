@@ -174,12 +174,12 @@ const SubscriptionDetail = () => {
                     rules={[
                       {
                         required: true,
-                        message: "",
+                        message: "正しいクーポンコードを入力ください。",
                         whitespace: false,
-                        len: 6,
+                        min: 4,
                       },
                     ]}
-                    validateTrigger="onBlur"
+                    validateTrigger="onSubmit"
                     className="tw-grow"
                   >
                     <Input placeholder="クーポンコードを入力する" />
