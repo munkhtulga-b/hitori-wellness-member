@@ -52,7 +52,9 @@ const UserChangeEmail = () => {
       {!isEmailSent ? (
         <div className="tw-flex tw-flex-col tw-gap-4">
           <section>
-            <span className="tw-text-xl tw-font-medium">ログイン</span>
+            <span className="tw-text-xl tw-font-medium">
+              メールアドレス変更
+            </span>
           </section>
           <section>
             <Form

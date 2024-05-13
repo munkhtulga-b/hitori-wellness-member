@@ -13,6 +13,7 @@ const HomeBranchDetailCard = ({
   nearestReservation,
   reservations,
   maxReservation,
+  fetchReservations,
 }) => {
   const router = useRouter();
   const getReservationBody = useReservationStore((state) => state.getBody());
@@ -137,6 +138,7 @@ const HomeBranchDetailCard = ({
               reservation={nearestReservation}
               activeFilterId={ReservationStatusEnum.ACTIVE}
               editReservation={editReservation}
+              fetchList={fetchReservations}
             />
           </>
         ) : null}
