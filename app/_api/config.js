@@ -33,6 +33,7 @@ const fetchData = async (endpoint, method, body, serverToken) => {
     const isOk = response.ok;
     const status = response.status;
     const data = await response.json();
+    const range = response.headers.get("Content-Range");
 
     if (!isOk) {
       toast.error(data?.error?.message || "An error occurred");
@@ -48,6 +49,7 @@ const fetchData = async (endpoint, method, body, serverToken) => {
       isOk,
       status,
       data,
+      range,
     };
   } catch (error) {
     return error;

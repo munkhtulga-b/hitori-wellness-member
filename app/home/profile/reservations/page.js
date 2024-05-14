@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "antd";
+import { Button, Pagination } from "antd";
 import Image from "next/image";
 import $api from "@/app/_api";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
@@ -45,17 +45,37 @@ const ReservationHistory = () => {
   const setReservationBody = useReservationStore((state) => state.setBody);
   const setReservationEdit = useReservationStore((state) => state.setEdit);
 
-  useEffect(() => {
-    fetchReservations();
-  }, [activeFilterId]);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    size: 10,
+    total: 0,
+  });
 
-  const fetchReservations = async () => {
-    setIsLoading(true);
-    const { isOk, data } = await $api.member.reservation.getMany({
+  useEffect(() => {
+    fetchReservations({
       status: activeFilterId,
+      page: pagination.current - 1,
+      limit: pagination.size,
     });
+  }, []);
+
+  const fetchReservations = async (queries) => {
+    setIsLoading(true);
+    const { isOk, data, range } = await $api.member.reservation.getMany(
+      queries
+        ? queries
+        : {
+            status: activeFilterId,
+            page: pagination.current - 1,
+            limit: pagination.size,
+          }
+    );
     if (isOk) {
       setReservations(data);
+      setPagination((prev) => ({
+        ...prev,
+        total: Number(range?.split("/")[1]),
+      }));
     }
     setIsLoading(false);
   };
@@ -76,9 +96,35 @@ const ReservationHistory = () => {
   };
 
   const onFilterChange = ({ id }) => {
-    if (id === activeFilterId)
-      return setActiveFilterId(ReservationStatusEnum.ACTIVE);
-    setActiveFilterId(id);
+    setPagination((prev) => ({
+      ...prev,
+      current: 1,
+      size: 10,
+    }));
+    if (id === activeFilterId) {
+      setActiveFilterId(ReservationStatusEnum.ACTIVE);
+    } else {
+      setActiveFilterId(id);
+    }
+    fetchReservations({
+      status: id,
+      page: 0,
+      limit: 10,
+    });
+  };
+
+  const onPaginationChange = (page, size) => {
+    console.log(page, size);
+    setPagination((prev) => ({
+      ...prev,
+      current: page,
+      size: size,
+    }));
+    fetchReservations({
+      status: activeFilterId,
+      page: page - 1,
+      limit: size,
+    });
   };
 
   const isFilterActive = ({ id }) => {
@@ -149,6 +195,17 @@ const ReservationHistory = () => {
         ) : (
           <FullScreenLoading />
         )}
+
+        {reservations?.length && !isLoading ? (
+          <section className="tw-flex tw-justify-center">
+            <Pagination
+              current={pagination.current}
+              pageSize={pagination.size}
+              total={pagination.total}
+              onChange={(page, size) => onPaginationChange(page, size)}
+            />
+          </section>
+        ) : null}
       </div>
     </>
   );
