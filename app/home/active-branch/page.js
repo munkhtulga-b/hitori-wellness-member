@@ -51,18 +51,24 @@ const HomeBranchDetailPage = () => {
       {!isLoading ? (
         <>
           {memberPlan?.length && reservations ? (
-            <HomeBranchDetailCard
-              branch={memberPlan[0].studio}
-              nearestReservation={reservations?.length ? reservations[0] : null}
-              reservations={reservations}
-              maxReservation={
-                memberPlan[0]?.plan?.max_cc_reservable_num_by_plan
-              }
-              fetchReservations={fetchReservations}
-            />
-          ) : (
-            <NoData message={"No branch found"} />
-          )}
+            <>
+              {memberPlan[0]?.studio ? (
+                <HomeBranchDetailCard
+                  branch={memberPlan[0].studio}
+                  nearestReservation={
+                    reservations?.length ? reservations[0] : null
+                  }
+                  reservations={reservations}
+                  maxReservation={
+                    memberPlan[0]?.plan?.max_cc_reservable_num_by_plan
+                  }
+                  fetchReservations={fetchReservations}
+                />
+              ) : (
+                <NoData message={"No branch found"} />
+              )}
+            </>
+          ) : null}
         </>
       ) : (
         <>
