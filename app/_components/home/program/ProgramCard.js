@@ -69,7 +69,7 @@ const ProgramCard = ({ program }) => {
         <section className="tw-flex tw-flex-col tw-justify-between tw-gap-2 tw-h-full">
           <p
             dangerouslySetInnerHTML={{ __html: program.description }}
-            className="tw-text-sm tw-tracking-[0.12px] tw-line-clamp-3"
+            className="tw-text-sm tw-tracking-[0.12px] tw-line-clamp-3 tw-whitespace-pre-line"
           ></p>
           <div className="tw-grid tw-grid-cols-2 tw-auto-rows-min tw-gap-2">
             <Button

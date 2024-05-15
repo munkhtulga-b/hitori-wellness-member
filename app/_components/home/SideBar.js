@@ -1,14 +1,24 @@
 import Menus from "@/app/_resources/sidebar-menu.json";
 import Image from "next/image";
-import { Button } from "antd";
+import { Button, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const SideBar = ({ setCollapsed, onLogOut }) => {
   const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleMenuClick = ({ route }) => {
     router.push(route);
     setCollapsed(true);
+  };
+
+  const handleLogOut = () => {
+    setIsLoggingOut(true);
+    setTimeout(() => {
+      onLogOut();
+    }, 1000);
   };
 
   return (
@@ -56,20 +66,34 @@ const SideBar = ({ setCollapsed, onLogOut }) => {
           <Button
             size="large"
             type="primary"
-            onClick={onLogOut}
+            onClick={handleLogOut}
             className="tw-mb-20"
           >
             <div className="tw-flex tw-justify-between tw-items-center">
               <span className="tw-text-white tw-tracking-[0.14px]">
                 ログアウト
               </span>
-              <Image
-                src="/assets/sidebar/logout-icon.svg"
-                alt="logout"
-                width={0}
-                height={0}
-                style={{ height: "auto", width: "auto" }}
-              />
+              {!isLoggingOut ? (
+                <Image
+                  src="/assets/sidebar/logout-icon.svg"
+                  alt="logout"
+                  width={0}
+                  height={0}
+                  style={{ height: "auto", width: "auto" }}
+                />
+              ) : (
+                <Spin
+                  indicator={
+                    <LoadingOutlined
+                      style={{
+                        fontSize: 16,
+                        color: "white",
+                      }}
+                      spin
+                    />
+                  }
+                />
+              )}
             </div>
           </Button>
         </section>

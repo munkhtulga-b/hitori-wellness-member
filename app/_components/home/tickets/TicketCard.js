@@ -26,7 +26,7 @@ const TicketCard = ({ ticket, branch }) => {
           <span className="tw-text-lg">{nullSafety(ticket.ticket?.name)}</span>
           <p
             dangerouslySetInnerHTML={{ __html: nullSafety(ticket.description) }}
-            className="tw-leading-[22px] tw-tracking-[0.14px] tw-whitespace-pre-wrap"
+            className="tw-leading-[22px] tw-tracking-[0.14px] tw-whitespace-pre-line"
           ></p>
           <Button size="large" onClick={() => onSelect(ticket)}>
             選択

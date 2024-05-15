@@ -49,7 +49,7 @@ const ActiveSubscription = async () => {
                   dangerouslySetInnerHTML={{
                     __html: nullSafety(ticket.description),
                   }}
-                  className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary"
+                  className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-line"
                 ></p>
               </section>
             ))}
