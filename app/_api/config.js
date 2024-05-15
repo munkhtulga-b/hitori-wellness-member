@@ -36,12 +36,26 @@ const fetchData = async (endpoint, method, body, serverToken) => {
     const range = response.headers.get("Content-Range");
 
     if (!isOk) {
-      toast.error(data?.error?.message || "An error occurred");
-
       // Redirects the user back to login page if their token has expired
       if (status === 401) {
-        Cookies.remove("token");
-        authRedirect();
+        const refreshToken =
+          localStorage.getItem("user-storage")?.state?.user?.token;
+        const accessResponse = await fetch(`${baseURL}/auth/refresh-token`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${refreshToken}`,
+          },
+        });
+        if (accessResponse.ok && accessResponse.status !== 401) {
+          const { data } = await accessResponse.json();
+          Cookies.set("token", data?.tokens?.access_token);
+        } else {
+          Cookies.remove("token");
+          authRedirect();
+        }
+      } else {
+        toast.error(data?.error?.message || "An error occurred");
       }
     }
 
