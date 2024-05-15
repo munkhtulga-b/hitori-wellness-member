@@ -157,7 +157,7 @@ const ReservationConfirm = () => {
                   dangerouslySetInnerHTML={{
                     __html: nullSafety(reservationBody?.program?.description),
                   }}
-                  className="tw-tracking-[0.14px] tw-leading-[22px] tw-text-secondary tw-line-clamp-3"
+                  className="tw-tracking-[0.14px] tw-leading-[22px] tw-text-secondary tw-line-clamp-3 tw-whitespace-pre-line"
                 ></p>
               </div>
             </section>

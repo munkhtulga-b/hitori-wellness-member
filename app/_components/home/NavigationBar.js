@@ -9,9 +9,7 @@ const NavigationBar = ({ setCollapsed, collapsed }) => {
 
   return (
     <div className="tw-h-auto tw-w-full tw-bg-primary tw-relative">
-      <div
-        className={`tw-mt-[36px] tw-py-3 tw-px-4 tw-flex tw-justify-between tw-items-center`}
-      >
+      <div className={`tw-p-4 tw-flex tw-justify-between tw-items-center`}>
         {path !== "/home" ? (
           <Image
             src="/assets/back-arrow-white.svg"

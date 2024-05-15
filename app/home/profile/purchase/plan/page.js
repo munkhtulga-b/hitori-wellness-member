@@ -9,6 +9,7 @@ import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
 import $api from "@/app/_api";
 import { usePurchaseStore } from "@/app/_store/purchase";
 import { useRouter } from "next/navigation";
+import _ from "lodash";
 
 const PurchaseSubscription = () => {
   const router = useRouter();
@@ -17,6 +18,7 @@ const PurchaseSubscription = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [plans, setPlans] = useState(null);
   const [tickets, setTickets] = useState(null);
+  const [expandedItems, setExpandedItems] = useState([]);
 
   useEffect(() => {
     fetchPlans();
@@ -60,6 +62,31 @@ const PurchaseSubscription = () => {
     );
   };
 
+  const onExpand = ({ id, name }) => {
+    const shallow = [...expandedItems];
+    const matched = _.find(shallow, (item) => {
+      return item.id === id && item.name === name;
+    });
+    if (matched) {
+      _.remove(shallow, (item) => {
+        return item.id === id && item.name === name;
+      });
+    } else {
+      shallow.push({ id, name });
+    }
+    setExpandedItems(shallow);
+  };
+
+  const isItemExpanded = ({ id, name }) => {
+    const matched = _.find(expandedItems, (item) => {
+      return item.id === id && item.name === name;
+    });
+    if (matched) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <>
       <div className="tw-flex tw-flex-col tw-gap-4">
@@ -84,18 +111,16 @@ const PurchaseSubscription = () => {
                         </span>
                         <p
                           dangerouslySetInnerHTML={{ __html: plan.description }}
-                          className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-line-clamp-3"
+                          className={`tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-line ${
+                            isItemExpanded(plan) ? "" : "tw-line-clamp-3"
+                          }`}
                         ></p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
                           plan.monthly_price
                         )}（税込）／月`}</span>
                         <div className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
                           <Button
-                            onClick={() =>
-                              router.push(
-                                `/home/profile/purchase/plan/${plan.id}`
-                              )
-                            }
+                            onClick={() => onExpand(plan)}
                             size="small"
                             className="tw-w-full"
                           >
@@ -142,7 +167,9 @@ const PurchaseSubscription = () => {
                           dangerouslySetInnerHTML={{
                             __html: ticket.description,
                           }}
-                          className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-line-clamp-3"
+                          className={`tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-line ${
+                            isItemExpanded(ticket) ? "" : "tw-line-clamp-3"
+                          }`}
                         ></p>
                         <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
                           ticket.prices[0]?.price
@@ -151,11 +178,7 @@ const PurchaseSubscription = () => {
                           <Button
                             size="small"
                             className="tw-w-full"
-                            onClick={() =>
-                              router.push(
-                                `/home/profile/purchase/ticket/${ticket.m_ticket?.id}`
-                              )
-                            }
+                            onClick={() => onExpand(ticket)}
                           >
                             <div className="tw-flex tw-justify-center tw-items-center tw-gap-2">
                               <span>詳細</span>

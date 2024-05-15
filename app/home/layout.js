@@ -63,7 +63,7 @@ const UserAuthenticatedLayout = ({ children }) => {
               <Header
                 style={{
                   padding: 0,
-                  height: 84,
+                  height: "auto",
                   position: "fixed",
                   top: 0,
                   left: 0,
@@ -79,7 +79,7 @@ const UserAuthenticatedLayout = ({ children }) => {
               <Content
                 style={{
                   padding: "16px",
-                  marginTop: "84px",
+                  marginTop: "56px",
                   overflow: "hidden",
                 }}
               >

@@ -107,7 +107,7 @@ const ReservationCard = ({
             dangerouslySetInnerHTML={{
               __html: nullSafety(reservation.m_program?.description),
             }}
-            className="tw-text-secondary tw-text-sm tw-tracking-[0.12px]"
+            className="tw-text-secondary tw-text-sm tw-tracking-[0.12px] tw-whitespace-pre-line"
           ></p>
         </section>
         {/* <section className="tw-flex tw-flex-col tw-gap-2">

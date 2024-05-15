@@ -126,7 +126,7 @@ const CreditCards = () => {
           </section>
         )}
         <section
-          className={`tw-relative ${
+          className={`tw-relative tw-max-w-[343px] tw-max-h-[200px] ${
             !selectedCard && !card.is_default
               ? "tw-scale-75 tw-origin-top-left"
               : ""

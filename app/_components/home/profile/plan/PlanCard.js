@@ -33,7 +33,7 @@ const MemberPlanCard = ({ memberPlan }) => {
           dangerouslySetInnerHTML={{
             __html: nullSafety(memberPlan?.plan?.description),
           }}
-          className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary"
+          className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-line"
         ></p>
         <span className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary">
           {`料金: ${thousandSeparator(
