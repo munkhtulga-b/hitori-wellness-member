@@ -28,8 +28,8 @@ const AuthLogin = () => {
     params.email = params.email.toLowerCase().trim();
     const { isOk, data } = await $api.auth.login(params);
     if (isOk) {
-      Cookies.set("token", data.tokens);
-      setUser(data.user);
+      Cookies.set("token", data?.tokens?.access_token);
+      setUser({ ...data?.user, token: data?.tokens?.refresh_token });
       router.push("/");
     } else {
       setLoginErrorMessage(data.error.message ?? "An error occurred");
