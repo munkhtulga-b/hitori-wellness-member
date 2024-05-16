@@ -22,6 +22,7 @@ const BranchDetailCard = ({
   const resetPurchaseBody = usePurchaseStore((state) => state.resetBody);
   const [isMounted, setIsMounted] = useState(false);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
+  const [reserveText, setReserveText] = useState("プランで予約する");
 
   useLayoutEffect(() => {
     checkMemberTickets().then(() => {
@@ -37,11 +38,14 @@ const BranchDetailCard = ({
     ) {
       resetReservationBody();
       setReservationBody({ branch: branch });
-      router.push(`/home/tickets/${branch.id}`);
+      setReserveText("チケットで予約する");
     }
   };
 
   const handleMakeReservation = () => {
+    if (reserveText === "チケットで予約する") {
+      return router.push(`/home/tickets/${branch.id}`);
+    }
     resetReservationBody();
     setReservationBody({ branch: branch });
     router.push("/home/reservation");
@@ -71,7 +75,10 @@ const BranchDetailCard = ({
       if (permittedBranches.plan?.includes(branch.id)) {
         result = true;
       }
-      if (permittedBranches.ticket?.includes(branch.id)) {
+      if (
+        permittedBranches.ticket?.includes(branch.id) ||
+        permittedBranches.ticket?.length === 0
+      ) {
         result = true;
       }
     }
@@ -194,7 +201,7 @@ const BranchDetailCard = ({
               type="primary"
               className="tw-w-full"
             >
-              予約する
+              {reserveText}
             </Button>
           </section>
         </div>
