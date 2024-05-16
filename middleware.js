@@ -7,7 +7,7 @@ export async function middleware(request) {
   const refreshToken = cookieStore.get("token")?.value;
 
   if (!refreshToken) {
-    return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
   const refreshReponse = await fetch(
