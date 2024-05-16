@@ -7,6 +7,7 @@ import $api from "@/app/_api";
 import { useUserStore } from "@/app/_store/user";
 import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
+import useTokenStore from "@/app/_store/access-token";
 
 const AuthLogin = () => {
   const router = useRouter();
@@ -14,6 +15,7 @@ const AuthLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [loginErrorMessage, setLoginErrorMessage] = useState(null);
   const setUser = useUserStore((state) => state.setUser);
+  const setAccessToken = useTokenStore((state) => state.setToken);
 
   useEffect(() => {
     if (loginErrorMessage !== null) {
@@ -28,8 +30,9 @@ const AuthLogin = () => {
     params.email = params.email.toLowerCase().trim();
     const { isOk, data } = await $api.auth.login(params);
     if (isOk) {
-      Cookies.set("token", data?.tokens?.access_token);
-      setUser({ ...data?.user, token: data?.tokens?.refresh_token });
+      Cookies.set("token", data?.tokens?.refresh_token);
+      setUser({ ...data?.user });
+      setAccessToken(data?.tokens?.access_token);
       router.push("/");
     } else {
       setLoginErrorMessage(data.error.message ?? "An error occurred");

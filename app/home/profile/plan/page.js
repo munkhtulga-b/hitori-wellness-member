@@ -1,17 +1,33 @@
+"use client";
+
 import $api from "@/app/_api";
-import { cookies } from "next/headers";
 import { nullSafety } from "@/app/_utils/helpers";
 import NoData from "@/app/_components/custom/NoData";
 import MemberPlanCard from "@/app/_components/home/profile/plan/PlanCard";
+import { useEffect, useState } from "react";
 
-const ActiveSubscription = async () => {
-  const cookieStore = cookies();
-  const { data: memberPlan } = await $api.member.memberPlan.getMany(
-    cookieStore.get("token").value
-  );
-  const { data: memberTickets } = await $api.member.memberTicket.getMany(
-    cookieStore.get("token").value
-  );
+const ActiveSubscription = () => {
+  const [memberPlan, setMemberPlan] = useState(null);
+  const [memberTickets, setMemberTickets] = useState(null);
+
+  useEffect(() => {
+    fetchMemberPlan();
+    fetchMemberTickets();
+  }, []);
+
+  const fetchMemberPlan = async () => {
+    const { isOk, data } = await $api.member.memberPlan.getMany();
+    if (isOk) {
+      setMemberPlan(data);
+    }
+  };
+
+  const fetchMemberTickets = async () => {
+    const { isOk, data } = await $api.member.memberTicket.getMany();
+    if (isOk) {
+      setMemberTickets(data);
+    }
+  };
 
   return (
     <>
