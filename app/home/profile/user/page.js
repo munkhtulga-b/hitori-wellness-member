@@ -29,7 +29,7 @@ const EditUserInfo = () => {
     const fullPostalCode = `${zipCode1}${zipCode2}`;
     const fetchAddress = async () => {
       setIsFetching(true);
-      const { isOk, data } = await $api.admin.post.getOne(fullPostalCode);
+      const { isOk, data } = await $api.member.post.getOne(fullPostalCode);
       if (isOk) {
         setAddress(data);
       } else {

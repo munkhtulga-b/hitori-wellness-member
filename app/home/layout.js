@@ -8,6 +8,7 @@ import { Layout } from "antd";
 import { useUserStore } from "../_store/user";
 import SideBar from "../_components/home/SideBar";
 import { motion } from "framer-motion";
+import useTokenStore from "../_store/access-token";
 
 const { Header, Content, Sider } = Layout;
 
@@ -18,11 +19,16 @@ const UserAuthenticatedLayout = ({ children }) => {
   const clearUser = useUserStore((state) => state.logOut);
 
   useLayoutEffect(() => {
-    const token = Cookies.get("token");
-    if (!token) {
+    const token = Cookies.get("access_token");
+    if (token) {
+      useTokenStore.setState({ token: token });
+      setTimeout(() => {
+        setIsMounted(true);
+        Cookies.remove("access_token");
+      }, 500);
+    } else {
       redirect("/auth/login");
     }
-    setIsMounted(true);
   }, []);
 
   const logOut = () => {

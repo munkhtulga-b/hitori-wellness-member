@@ -9,5 +9,5 @@ export const getOne = (id) => {
 };
 
 export const cancel = (id) => {
-  return fetchData(`memberplans/cancel/${id}`, "GET");
+  return fetchData(`memberplans/cancel/${id}`, "DELETE");
 };

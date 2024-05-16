@@ -1,5 +1,6 @@
-import { Button } from "antd";
-import Image from "next/image";
+// import { Button } from "antd";
+import NoData from "@/app/_components/custom/NoData";
+// import Image from "next/image";
 
 const CheckInHistory = () => {
   return (
@@ -9,13 +10,13 @@ const CheckInHistory = () => {
           <span className="tw-text-xxl tw-font-medium">入館記録</span>
         </section>
 
-        <section className="tw-flex tw-flex-wrap tw-justify-start tw-items-center tw-gap-2">
+        {/* <section className="tw-flex tw-flex-wrap tw-justify-start tw-items-center tw-gap-2">
           <Button>全て</Button>
           <Button>チェックイン</Button>
           <Button>チェックアウト</Button>
-        </section>
+        </section> */}
 
-        <section className="tw-p-4 tw-rounded-xl tw-bg-white tw-shadow">
+        {/* <section className="tw-p-4 tw-rounded-xl tw-bg-white tw-shadow">
           <div className="tw-flex tw-justify-start tw-items-start tw-gap-3">
             <section className="tw-flex tw-flex-col">
               <Image
@@ -51,7 +52,9 @@ const CheckInHistory = () => {
               </ul>
             </section>
           </div>
-        </section>
+        </section> */}
+
+        <NoData message={`記録がありません。`} />
       </div>
     </>
   );

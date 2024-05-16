@@ -32,14 +32,14 @@ const UserChangeEmail = () => {
           <SuccessAnimation />
           <section className="tw-self-stretch tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info">
             <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px] tw-text-center">
-              ご登録ありがとうございました。
+              メールアドレスの変更を受け付けました。
             </p>
           </section>
           <section>
             <p className="tw-leading-[26px] tw-tracking-[0.14px] tw-text-center">
-              {`登録されたメールアドレス（${
+              {` 新しいメールアドレス（${
                 sentEmail ?? "mailaddress"
-              }）に確認メールを送信しました。メールの本文内のリンクから確認ページにアクセスして登録を完了してください。`}
+              }）に確認メールを送信しました。メールの本文内のリンクから確認ページにアクセスして変更を完了させてください。`}
             </p>
           </section>
         </div>
@@ -65,7 +65,7 @@ const UserChangeEmail = () => {
               <Form.Item
                 required={false}
                 name="mailAddress"
-                label="メールアドレス"
+                label="新しいメールアドレス"
                 validateTrigger="onBlur"
                 rules={[
                   {

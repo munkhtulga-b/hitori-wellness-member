@@ -1,6 +1,7 @@
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 import { authRedirect } from "./actions";
+import useTokenStore from "../_store/access-token";
 
 const fetchData = async (endpoint, method, body, serverToken) => {
   const baseURL =
@@ -8,7 +9,9 @@ const fetchData = async (endpoint, method, body, serverToken) => {
       ? process.env.NEXT_PUBLIC_DEV_BASE_URL
       : process.env.NEXT_PUBLIC_PROD_BASE_URL;
 
-  const token = Cookies.get("token") ? Cookies.get("token") : serverToken;
+  const token = useTokenStore.getState().token
+    ? useTokenStore.getState().token
+    : serverToken;
 
   try {
     const headers = {
@@ -38,21 +41,8 @@ const fetchData = async (endpoint, method, body, serverToken) => {
     if (!isOk) {
       // Redirects the user back to login page if their token has expired
       if (status === 401) {
-        const refreshToken = JSON.parse(localStorage.getItem("user-storage"))
-          ?.state?.user?.token;
-        const accessResponse = await fetch(`${baseURL}/auth/refresh-token`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refreshToken: refreshToken }),
-        });
-        if (accessResponse.ok && accessResponse.status !== 401) {
-          const { access_token } = await accessResponse.json();
-          Cookies.set("token", access_token);
-          window.location.reload();
-        } else {
-          Cookies.remove("token");
+        const refreshToken = Cookies.get("token");
+        if (!refreshToken) {
           authRedirect();
         }
       } else {
