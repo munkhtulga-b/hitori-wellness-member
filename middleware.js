@@ -36,7 +36,7 @@ export async function middleware(request) {
     });
     return response;
   } else {
-    return NextResponse.redirect(new URL("/auth/sign-in", request.url));
+    return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 }
 

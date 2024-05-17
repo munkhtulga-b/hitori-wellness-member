@@ -7,7 +7,7 @@ import {
   nullSafety,
   thousandSeparator,
 } from "@/app/_utils/helpers";
-import { Form, Button, Input, Radio, Modal } from "antd";
+import { Form, Button, Input, Radio, Select, Modal } from "antd";
 import Image from "next/image";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
@@ -492,12 +492,34 @@ const SubscriptionDetail = () => {
         cardNumber: params.cardNumber,
         cvc: params.cvc,
         expireYear: +dayjs()
-          .set("year", `20${params.expiry.split("/")[1]}`)
+          .set("year", `20${params.expireYear}`)
           .format("YYYY"),
-        expireMonth: +dayjs(params.expiry.split("/")[0]).format("MM"),
+        expireMonth: +dayjs(params.expireMonth, "MM").format("MM"),
       };
 
       addCard(body);
+    };
+
+    const generateYears = () => {
+      const numbers = [];
+      for (let i = 0; i < 100; i++) {
+        numbers.push({
+          label: i.toString().padStart(2, "0"),
+          value: i.toString().padStart(2, "0"),
+        });
+      }
+      return numbers;
+    };
+
+    const generateMonths = () => {
+      const numbers = [];
+      for (let i = 1; i <= 12; i++) {
+        numbers.push({
+          label: i.toString().padStart(2, "0"),
+          value: i.toString().padStart(2, "0"),
+        });
+      }
+      return numbers;
     };
 
     return (
@@ -507,6 +529,7 @@ const SubscriptionDetail = () => {
           form={form}
           name="AddCreditCard"
           onFinish={onFinish}
+          validateTrigger="onSubmit"
         >
           <Form.Item
             name="cardNumber"
@@ -555,29 +578,54 @@ const SubscriptionDetail = () => {
           </Form.Item>
 
           <section className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
+            <label className="tw-col-span-full">有効期限</label>
             <Form.Item
-              name="expiry"
-              label="有効期限"
+              name="expireYear"
               rules={[
                 {
                   required: true,
-                  message: "カードの有効期限を入力してください。",
+                  message: "年を選択してください。",
                 },
               ]}
-              getValueFromEvent={(e) => {
-                const value = e.target.value;
-                let formatted = value.replace(/\D/g, "");
-                if (formatted.length > 4) {
-                  formatted = formatted.slice(0, 4);
-                }
-                if (formatted.length > 2) {
-                  formatted = formatted.slice(0, 2) + "/" + formatted.slice(2);
-                }
-                return formatted;
-              }}
             >
-              <Input placeholder="MM/YY" />
+              <Select
+                size="large"
+                showSearch
+                placeholder="月"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={generateYears()}
+              />
             </Form.Item>
+            <Form.Item
+              name="expireMonth"
+              rules={[
+                {
+                  required: true,
+                  message: "月を選択してください。",
+                },
+              ]}
+            >
+              <Select
+                size="large"
+                showSearch
+                placeholder="年"
+                optionFilterProp="children"
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={generateMonths()}
+              />
+            </Form.Item>
+          </section>
+
+          <section className="tw-flex tw-flex-col tw-gap-1 tw-mb-4">
             <Form.Item
               name="cvc"
               label="セキュリティコード"
@@ -595,26 +643,26 @@ const SubscriptionDetail = () => {
                 }
                 return formatted;
               }}
+              style={{ marginBottom: 0 }}
             >
               <Input placeholder="999" />
             </Form.Item>
+            <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px]">
+              支払いカードの裏面にある 3 桁の番号
+            </p>
           </section>
 
-          {/* <Form.Item name="isCardSaved" valuePropName="checked">
-            <Checkbox>カードを保存する</Checkbox>
-          </Form.Item> */}
-
-          <Form.Item>
-            <div className="tw-flex tw-justify-end tw-gap-2">
+          <section className="tw-flex tw-justify-end tw-gap-2">
+            <Button
+              size="large"
+              className="tw-w-[80px]"
+              onClick={() => router.back()}
+            >
+              戻る
+            </Button>
+            <Form.Item>
               <Button
-                size="large"
-                className="tw-w-[80px]"
-                onClick={() => setStep(2)}
-              >
-                戻る
-              </Button>
-              <Button
-                loading={isLoading.isRequesting}
+                loading={isLoading}
                 size="large"
                 type="primary"
                 htmlType="submit"
@@ -622,8 +670,8 @@ const SubscriptionDetail = () => {
               >
                 保存
               </Button>
-            </div>
-          </Form.Item>
+            </Form.Item>
+          </section>
         </Form>
 
         <section className="tw-bg-white tw-rounded-xl tw-border tw-border-info tw-p-4">
