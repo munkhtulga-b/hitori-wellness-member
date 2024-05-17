@@ -16,6 +16,7 @@ const UserChangeEmail = () => {
 
   const changeEmail = async (params) => {
     setIsLoading(true);
+    params.email = params.email.toLowerCase();
     const { isOk } = await $api.auth.changeEmail(params);
     if (isOk) {
       setSentEmail(params.mailAddress);

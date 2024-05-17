@@ -26,6 +26,8 @@ const UserAuthenticatedLayout = ({ children }) => {
   }, []);
 
   const logOut = () => {
+    Cookies.remove("token");
+    Cookies.remove("access_token");
     clearUser();
     router.push("/auth/login");
   };

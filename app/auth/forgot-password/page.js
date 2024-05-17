@@ -20,6 +20,11 @@ const AuthPasswordReset = () => {
     setIsLoading(false);
   };
 
+  const beforeFinish = (params) => {
+    params.email = params.email.toLowerCase();
+    onFinish(params);
+  };
+
   return (
     <div className="tw-py-[28px] tw-px-5 tw-flex tw-flex-col tw-items-center">
       <section>
@@ -31,7 +36,7 @@ const AuthPasswordReset = () => {
         </p>
       </section>
       <section className="tw-mt-[30px] tw-w-full">
-        <Form form={form} name="resetPasswordForm" onFinish={onFinish}>
+        <Form form={form} name="resetPasswordForm" onFinish={beforeFinish}>
           <Form.Item
             required={false}
             name="email"

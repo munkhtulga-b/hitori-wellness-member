@@ -49,6 +49,7 @@ const SignupStepOne = ({ onComplete }) => {
     delete params.birthMonth;
     delete params.birthDay;
     params["birthday"] = birthday;
+    params.mailAddress = params.mailAddress.toLowerCase();
     onComplete(params);
   };
 
