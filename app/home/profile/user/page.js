@@ -418,7 +418,9 @@ const EditUserInfo = () => {
             style={{ marginBottom: 16 }}
           >
             <Checkbox className="tw-text-xl">
-              <span className="tw-text-lg">プロモーションメールを受け取る</span>
+              <span className="tw-text-lg">
+                キャンペーン・お知らせ等の情報をメールで受け取る
+              </span>
             </Checkbox>
           </Form.Item>
 

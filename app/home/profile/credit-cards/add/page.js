@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, Select, message } from "antd";
 import dayjs from "dayjs";
 import $api from "@/app/_api";
 import { useRouter } from "next/navigation";
@@ -20,10 +20,8 @@ const AddCreditCard = () => {
       cardName: params.cardName,
       cardNumber: params.cardNumber,
       cvc: params.cvc,
-      expireYear: +dayjs()
-        .set("year", `20${params.expiry.split("/")[1]}`)
-        .format("YYYY"),
-      expireMonth: +dayjs(params.expiry.split("/")[0]).format("MM"),
+      expireYear: +dayjs().set("year", `20${params.expireYear}`).format("YYYY"),
+      expireMonth: +dayjs(params.expireMonth, "MM").format("MM"),
     };
 
     addCard(body);
@@ -37,6 +35,28 @@ const AddCreditCard = () => {
       router.push("/home/profile/credit-cards");
     }
     setIsLoading(false);
+  };
+
+  const generateYears = () => {
+    const numbers = [];
+    for (let i = 0; i < 100; i++) {
+      numbers.push({
+        label: i.toString().padStart(2, "0"),
+        value: i.toString().padStart(2, "0"),
+      });
+    }
+    return numbers;
+  };
+
+  const generateMonths = () => {
+    const numbers = [];
+    for (let i = 1; i <= 12; i++) {
+      numbers.push({
+        label: i.toString().padStart(2, "0"),
+        value: i.toString().padStart(2, "0"),
+      });
+    }
+    return numbers;
   };
 
   return (
@@ -101,30 +121,54 @@ const AddCreditCard = () => {
             </Form.Item>
 
             <section className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
+              <label className="tw-col-span-full">有効期限</label>
               <Form.Item
-                name="expiry"
-                label="有効期限"
+                name="expireYear"
                 rules={[
                   {
                     required: true,
-                    message: "カードの有効期限を入力してください。",
+                    message: "年を選択してください。",
                   },
                 ]}
-                getValueFromEvent={(e) => {
-                  const value = e.target.value;
-                  let formatted = value.replace(/\D/g, "");
-                  if (formatted.length > 4) {
-                    formatted = formatted.slice(0, 4);
-                  }
-                  if (formatted.length > 2) {
-                    formatted =
-                      formatted.slice(0, 2) + "/" + formatted.slice(2);
-                  }
-                  return formatted;
-                }}
               >
-                <Input placeholder="MM/YY" />
+                <Select
+                  size="large"
+                  showSearch
+                  placeholder="月"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                  options={generateYears()}
+                />
               </Form.Item>
+              <Form.Item
+                name="expireMonth"
+                rules={[
+                  {
+                    required: true,
+                    message: "月を選択してください。",
+                  },
+                ]}
+              >
+                <Select
+                  size="large"
+                  showSearch
+                  placeholder="年"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label ?? "")
+                      .toLowerCase()
+                      .includes(input.toLowerCase())
+                  }
+                  options={generateMonths()}
+                />
+              </Form.Item>
+            </section>
+
+            <section className="tw-flex tw-flex-col tw-gap-1 tw-mb-4">
               <Form.Item
                 name="cvc"
                 label="セキュリティコード"
@@ -142,9 +186,13 @@ const AddCreditCard = () => {
                   }
                   return formatted;
                 }}
+                style={{ marginBottom: 0 }}
               >
                 <Input placeholder="999" />
               </Form.Item>
+              <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px]">
+                支払いカードの裏面にある 3 桁の番号
+              </p>
             </section>
 
             <section className="tw-flex tw-justify-end tw-gap-2">

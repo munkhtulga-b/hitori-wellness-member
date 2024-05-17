@@ -25,11 +25,11 @@ const UserAuthenticatedLayout = ({ children }) => {
       setTimeout(() => {
         setIsMounted(true);
         Cookies.remove("access_token");
-      }, 500);
+      });
     } else {
       redirect("/auth/login");
     }
-  }, []);
+  }, [pathName]);
 
   const logOut = () => {
     clearUser();

@@ -83,7 +83,9 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
             style={{ marginBottom: 0 }}
           >
             <Checkbox className="tw-text-xl">
-              <span className="tw-text-lg">プロモーションメールを受け取る</span>
+              <span className="tw-text-lg">
+                キャンペーン・お知らせ等の情報をメールで受け取る
+              </span>
             </Checkbox>
           </Form.Item>
           <div className="tw-flex tw-flex-col tw-gap-2">
