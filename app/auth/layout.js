@@ -11,7 +11,7 @@ export default function AuthLayout({ children }) {
   const [isMounted, setIsMounted] = useState(false);
 
   useLayoutEffect(() => {
-    const token = Cookies.get("token");
+    const token = Cookies.get("access_token");
     if (token) {
       redirect("/home");
     }
