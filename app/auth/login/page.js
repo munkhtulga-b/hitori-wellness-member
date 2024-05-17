@@ -30,7 +30,14 @@ const AuthLogin = () => {
     params.email = params.email.toLowerCase().trim();
     const { isOk, data } = await $api.auth.login(params);
     if (isOk) {
-      Cookies.set("token", data?.tokens?.refresh_token);
+      Cookies.set("token", data?.tokens?.refresh_token, {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
+      Cookies.set("access_token", data?.tokens?.access_token, {
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "strict",
+      });
       setUser({ ...data?.user });
       setAccessToken(data?.tokens?.access_token);
       router.push("/");

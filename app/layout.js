@@ -1,4 +1,4 @@
-import Script from "next/script";
+// import Script from "next/script";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
@@ -26,7 +26,7 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      {/* <head>
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-B53SHX53M8"
@@ -38,7 +38,7 @@ export default function RootLayout({ children }) {
 
   gtag('config', 'G-B53SHX53M8');`}
         </Script>
-      </head>
+      </head> */}
       <body className={fontFamily.className}>
         <AntdRegistry>
           <ToastContainer pauseOnFocusLoss={false} />
