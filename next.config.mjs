@@ -2,7 +2,7 @@
 
 const cspHeader = `
     default-src 'self';
-    script-src 'self' 'unsafe-eval' 'unsafe-inline';
+    script-src 'self' 'unsafe-inline' 'unsafe-eval';
     style-src 'self' 'unsafe-inline';
     img-src 'self' blob: data: https://storage.googleapis.com/;
     font-src 'self';
@@ -11,7 +11,9 @@ const cspHeader = `
     form-action 'self';
     frame-ancestors 'none';
     upgrade-insecure-requests;
-    connect-src 'self' https://gymapi.reddtech.ai/;`;
+    connect-src 'self' https://gymapi.reddtech.ai/;`
+  .replace(/\s{2,}/g, " ")
+  .trim();
 
 const nextConfig = {
   async headers() {
