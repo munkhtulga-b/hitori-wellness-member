@@ -20,10 +20,9 @@ const AddCreditCard = () => {
       cardName: params.cardName,
       cardNumber: params.cardNumber,
       cvc: params.cvc,
-      expireYear: +dayjs().set("year", `20${params.expireYear}`).format("YYYY"),
+      expireYear: +params.expireYear,
       expireMonth: +dayjs(params.expireMonth, "MM").format("MM"),
     };
-
     addCard(body);
   };
 
@@ -39,10 +38,11 @@ const AddCreditCard = () => {
 
   const generateYears = () => {
     const numbers = [];
-    for (let i = 0; i < 100; i++) {
+    const currentYear = dayjs().year().toString();
+    for (let i = currentYear.slice(-2); i < 100; i++) {
       numbers.push({
-        label: i.toString().padStart(2, "0"),
-        value: i.toString().padStart(2, "0"),
+        label: `20${i.toString().padStart(2, "0")}`,
+        value: `20${i.toString().padStart(2, "0")}`,
       });
     }
     return numbers;
@@ -134,7 +134,7 @@ const AddCreditCard = () => {
                 <Select
                   size="large"
                   showSearch
-                  placeholder="月"
+                  placeholder="年"
                   optionFilterProp="children"
                   filterOption={(input, option) =>
                     (option?.label ?? "")
@@ -156,7 +156,7 @@ const AddCreditCard = () => {
                 <Select
                   size="large"
                   showSearch
-                  placeholder="年"
+                  placeholder="月"
                   optionFilterProp="children"
                   filterOption={(input, option) =>
                     (option?.label ?? "")

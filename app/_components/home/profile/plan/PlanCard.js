@@ -4,8 +4,10 @@ import { Button, Modal } from "antd";
 import { nullSafety, thousandSeparator } from "@/app/_utils/helpers";
 import { useState } from "react";
 import $api from "@/app/_api";
+import dayjs from "dayjs";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import EEnumPlanStatus from "@/app/_enums/EEnumPlanStatus";
 
 const MemberPlanCard = ({ memberPlan }) => {
   const router = useRouter();
@@ -56,6 +58,13 @@ const MemberPlanCard = ({ memberPlan }) => {
             変更
           </Button>
         </div>
+        {memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL && (
+          <div>
+            {`当プランは利用規約通り${dayjs(memberPlan?.cancel_date).format(
+              "YYYY年MM月DD日"
+            )}まで有効です。`}
+          </div>
+        )}
       </section>
 
       <Modal
