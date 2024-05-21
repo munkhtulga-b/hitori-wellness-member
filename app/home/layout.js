@@ -66,10 +66,8 @@ const UserAuthenticatedLayout = ({ children }) => {
                 style={{
                   padding: 0,
                   height: "auto",
-                  position: "fixed",
+                  position: "sticky",
                   top: 0,
-                  left: 0,
-                  right: 0,
                   zIndex: 999,
                 }}
               >
@@ -81,7 +79,6 @@ const UserAuthenticatedLayout = ({ children }) => {
               <Content
                 style={{
                   padding: "16px",
-                  marginTop: "56px",
                   overflow: "hidden",
                 }}
               >
