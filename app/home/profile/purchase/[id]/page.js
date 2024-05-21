@@ -661,7 +661,7 @@ const SubscriptionDetail = () => {
             </Button>
             <Form.Item>
               <Button
-                loading={isLoading}
+                loading={isLoading.isRequesting}
                 size="large"
                 type="primary"
                 htmlType="submit"

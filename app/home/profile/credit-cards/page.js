@@ -122,7 +122,7 @@ const CreditCards = () => {
       <>
         {!selectedCard && !card.is_default && (
           <section className="tw-leading-[22px] tw-tracking-[0.14px]">
-            予備カード（主要カードは利用不可能だった場合に利用される）
+            予備カード（主要カードの利用が不可能だった場合に利用されます）
           </section>
         )}
         <section
@@ -226,7 +226,7 @@ const CreditCards = () => {
           <section className="tw-flex tw-flex-col tw-gap-4">
             <div className="tw-flex tw-flex-col tw-gap-1">
               <span className="tw-leading-[22px] tw-tracking-[0.14px]">
-                名義人
+                カード名義
               </span>
               <span className="tw-text-sm tw-text-secondary tw-tracking-[0.12px]">
                 {nullSafety(selectedCard.card_name)}
@@ -234,7 +234,7 @@ const CreditCards = () => {
             </div>
             <div className="tw-flex tw-flex-col tw-gap-1">
               <span className="tw-leading-[22px] tw-tracking-[0.14px]">
-                利用期限
+                有効期限
               </span>
               <span className="tw-text-sm tw-text-secondary tw-tracking-[0.12px]">
                 {`${nullSafety(selectedCard.expire_month)}/${nullSafety(
