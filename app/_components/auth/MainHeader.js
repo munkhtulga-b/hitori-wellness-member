@@ -46,7 +46,7 @@ const MainHeader = () => {
         ) : null}
         <Image
           priority
-          src="/assets/logo-white.svg"
+          src="/assets/logo-white.png"
           alt="logo"
           width={188}
           height={28}

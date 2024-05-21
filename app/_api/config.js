@@ -12,6 +12,8 @@ const fetchData = async (endpoint, method, body, serverToken) => {
     ? Cookies.get("access_token")
     : serverToken;
 
+  console.log(token);
+
   try {
     const headers = {
       "Content-Type": "application/json",
@@ -20,6 +22,7 @@ const fetchData = async (endpoint, method, body, serverToken) => {
     const init = {
       method: method,
       headers: headers,
+      credentials: "include",
     };
 
     if (body) {
@@ -29,6 +32,8 @@ const fetchData = async (endpoint, method, body, serverToken) => {
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
     }
+
+    console.log(headers);
 
     const response = await fetch(`${baseURL}/${endpoint}`, init);
 
