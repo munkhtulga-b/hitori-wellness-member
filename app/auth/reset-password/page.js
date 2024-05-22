@@ -5,6 +5,7 @@ import { Button, Form, Input } from "antd";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
 import $api from "@/app/_api";
 import { useSearchParams, useRouter } from "next/navigation";
+import { isValidPassword } from "@/app/_utils/helpers";
 
 const NewPassword = () => {
   const [form] = Form.useForm();
@@ -18,22 +19,6 @@ const NewPassword = () => {
       return;
     }
     resetPassword(params.confirm);
-  };
-
-  const isValidPassword = (value) => {
-    // Regular expressions to check for symbol, uppercase character, and number
-    const symbolRegex = /[!@#$%^&*(),.?":{}|<>]/;
-    const uppercaseRegex = /[A-Z]/;
-    const numberRegex = /[0-9]/;
-
-    // Check if the string contains at least one of each
-    const containsSymbol = symbolRegex.test(value);
-    const containsUppercase = uppercaseRegex.test(value);
-    const containsNumber = numberRegex.test(value);
-
-    return (
-      value.length >= 8 && containsSymbol && containsUppercase && containsNumber
-    );
   };
 
   const resetPassword = async (password) => {

@@ -20,9 +20,9 @@ const SignupStepTwo = ({ onComplete }) => {
     const fullPostalCode = `${zipCode1}${zipCode2}`;
     const fetchAddress = async () => {
       setIsFetching(true);
-      const result = await $api.member.post.getOne(fullPostalCode);
-      if (result.length) {
-        setAddress(result[0]);
+      const { isOk, data } = await $api.member.post.getOne(fullPostalCode);
+      if (isOk) {
+        setAddress(data);
       } else {
         setAddress(null);
       }
