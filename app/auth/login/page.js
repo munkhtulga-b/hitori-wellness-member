@@ -5,9 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button, Form, Input } from "antd";
 import $api from "@/app/_api";
 import { useUserStore } from "@/app/_store/user";
-import Cookies from "js-cookie";
 import { motion, AnimatePresence } from "framer-motion";
-import { authLogin } from "./actions";
 
 const AuthLogin = () => {
   const router = useRouter();
@@ -29,15 +27,6 @@ const AuthLogin = () => {
     params.email = params.email.toLowerCase().trim();
     const { isOk, data } = await $api.auth.login(params);
     if (isOk) {
-      await authLogin(data?.tokens?.access_token);
-      Cookies.set("token", data?.tokens?.refresh_token, {
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      });
-      Cookies.set("access_token", data?.tokens?.access_token, {
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
-      });
       setUser({ ...data?.user });
       router.push("/home");
     } else {
