@@ -42,9 +42,10 @@ const ProgramListView = ({ list }) => {
                   <span className="tw-leading-[22px] tw-tracking-[0.14px]">
                     {nullSafety(program.name)}
                   </span>
-                  <p className="tw-mt-2 tw-text-sm tw-tracking-[0.12px] tw-line-clamp-5">
-                    {nullSafety(program.description)}
-                  </p>
+                  <p
+                    dangerouslySetInnerHTML={{ __html: program.description }}
+                    className="tw-mt-2 tw-text-sm tw-tracking-[0.12px] tw-line-clamp-5 tw-whitespace-pre-wrap"
+                  ></p>
                 </section>
               </div>
             );

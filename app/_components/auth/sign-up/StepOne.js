@@ -3,15 +3,29 @@ import { Button, Form, Input, Select } from "antd";
 import { useSignupStore } from "@/app/_store/user-signup";
 import { useEffect, useState } from "react";
 import { getYears, getMonths, getDays } from "@/app/_utils/helpers";
+import _ from "lodash";
 
 const SignupStepOne = ({ onComplete }) => {
   const [form] = Form.useForm();
   const signupStore = useSignupStore((state) => state.getBody());
   const [genderValue, setGenderValue] = useState(null);
+  const birthYear = Form.useWatch("birthYear", form);
+  const birthMonth = Form.useWatch("birthMonth", form);
 
   useEffect(() => {
     assignFieldsValue();
   }, []);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      birthMonth: null,
+      birthDay: null,
+    });
+  }, [birthYear]);
+
+  useEffect(() => {
+    form.setFieldValue("birthDay", null);
+  }, [birthMonth]);
 
   const assignFieldsValue = () => {
     const formFields = [
@@ -189,6 +203,7 @@ const SignupStepOne = ({ onComplete }) => {
             ]}
           >
             <Select
+              disabled={!birthYear}
               style={{
                 width: "100%",
               }}
@@ -207,11 +222,15 @@ const SignupStepOne = ({ onComplete }) => {
             ]}
           >
             <Select
+              disabled={!birthYear || !birthMonth}
               style={{
                 width: "100%",
               }}
               size="large"
-              options={getDays()}
+              options={_.map(getDays(birthYear, birthMonth), (day) => ({
+                value: day,
+                label: day,
+              }))}
               placeholder="01"
             />
           </Form.Item>
