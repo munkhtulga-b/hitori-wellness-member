@@ -38,6 +38,7 @@ const fetchData = async (endpoint, method, body) => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "x-user-type": "1",
           },
           body: JSON.stringify({ refreshToken: refreshToken }),
           credentials: "include",
