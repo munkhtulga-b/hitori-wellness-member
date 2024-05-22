@@ -44,8 +44,6 @@ const fetchData = async (endpoint, method, body) => {
         if (accessResponse.ok && accessResponse.status !== 401) {
           window.location.reload();
         } else {
-          Cookies.remove("token");
-          Cookies.remove("access_token");
           authRedirect();
         }
       } else {
