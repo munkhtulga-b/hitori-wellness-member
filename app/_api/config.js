@@ -11,7 +11,7 @@ const fetchData = async (endpoint, method, body) => {
   try {
     const headers = {
       "Content-Type": "application/json",
-      "x-user-type": "user",
+      "x-user-type": "1",
     };
 
     const init = {
