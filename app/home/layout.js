@@ -1,6 +1,5 @@
 "use client";
 
-import Cookies from "js-cookie";
 import NavigationBar from "../_components/home/NavigationBar";
 import { useLayoutEffect, useState, Suspense } from "react";
 import { redirect, useRouter, usePathname } from "next/navigation";
@@ -15,19 +14,17 @@ const UserAuthenticatedLayout = ({ children }) => {
   const router = useRouter();
   const pathName = usePathname();
   const [isMounted, setIsMounted] = useState(false);
+  const user = useUserStore((state) => state.user);
   const clearUser = useUserStore((state) => state.logOut);
 
   useLayoutEffect(() => {
-    const token = Cookies.get("access_token");
-    if (!token) {
+    if (!user) {
       redirect("/auth/login");
     }
     setIsMounted(true);
   }, []);
 
   const logOut = () => {
-    Cookies.remove("token");
-    Cookies.remove("access_token");
     clearUser();
     router.push("/auth/login");
   };
