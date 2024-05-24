@@ -22,7 +22,7 @@ const EditUserInfo = () => {
   const [address, setAddress] = useState(null);
 
   const minAge = 15;
-  const maxAge = 45;
+  const maxAge = 100;
 
   useEffect(() => {
     fetchUserDetails();

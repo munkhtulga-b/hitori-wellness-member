@@ -7,6 +7,7 @@ import { Layout } from "antd";
 import { useUserStore } from "../_store/user";
 import SideBar from "../_components/home/SideBar";
 import { motion } from "framer-motion";
+import Cookies from "js-cookie";
 
 const { Header, Content, Sider } = Layout;
 
@@ -16,6 +17,7 @@ const UserAuthenticatedLayout = ({ children }) => {
   const clearUser = useUserStore((state) => state.logOut);
 
   const logOut = () => {
+    Cookies.remove("session");
     clearUser();
     router.push("/auth/login");
   };
