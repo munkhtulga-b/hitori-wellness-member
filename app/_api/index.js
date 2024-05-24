@@ -6,6 +6,7 @@ import verify from "@/app/_api/auth/VerifyEmailController";
 import forgotPassword from "./auth/ForgotPasswordController";
 import * as resetPassword from "./auth/ResetPasswordController";
 import changeEmail from "./auth/ChangeEmailController";
+import checkEmail from "./auth/CheckEmailController";
 
 // Member API
 import * as branch from "./member/BranchController";
@@ -30,6 +31,7 @@ const $api = {
     forgotPassword,
     resetPassword,
     changeEmail,
+    checkEmail,
   },
   member: {
     post,

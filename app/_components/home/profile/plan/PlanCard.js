@@ -44,7 +44,10 @@ const MemberPlanCard = ({ memberPlan }) => {
         </span>
         <div className="tw-flex tw-justify-end tw-items-center tw-gap-4 tw-mt-4">
           <Button
-            disabled={!memberPlan?.plan?.is_enabled_withdraw}
+            disabled={
+              !memberPlan?.plan?.is_enabled_withdraw ||
+              memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL
+            }
             loading={isLoading}
             className="tw-w-[100px]"
             onClick={() => setIsModalOpen(true)}

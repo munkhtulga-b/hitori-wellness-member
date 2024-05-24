@@ -38,6 +38,7 @@ const SignupStepTwo = ({ onComplete }) => {
       form.setFieldsValue({
         address1: address?.city,
         address2: address?.town,
+        address3: signupStore?.address3,
         prefecture: address?.pref,
       });
     } else {
