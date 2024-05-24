@@ -6,6 +6,7 @@ import { Button, Form, Input } from "antd";
 import $api from "@/app/_api";
 import { useUserStore } from "@/app/_store/user";
 import { motion, AnimatePresence } from "framer-motion";
+import Cookies from "js-cookie";
 
 const AuthLogin = () => {
   const router = useRouter();
@@ -27,6 +28,7 @@ const AuthLogin = () => {
     params.email = params.email.toLowerCase().trim();
     const { isOk, data } = await $api.auth.login(params);
     if (isOk) {
+      Cookies.set("session", true);
       setUser({ ...data?.user });
       router.push("/home");
     } else {

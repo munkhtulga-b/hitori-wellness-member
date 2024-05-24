@@ -21,6 +21,9 @@ const EditUserInfo = () => {
   const [user, setUser] = useState(null);
   const [address, setAddress] = useState(null);
 
+  const minAge = 15;
+  const maxAge = 45;
+
   useEffect(() => {
     fetchUserDetails();
   }, []);
@@ -240,7 +243,7 @@ const EditUserInfo = () => {
                     width: "100%",
                   }}
                   size="large"
-                  options={getYears()}
+                  options={getYears(minAge, maxAge)}
                   placeholder="1990"
                 />
               </Form.Item>

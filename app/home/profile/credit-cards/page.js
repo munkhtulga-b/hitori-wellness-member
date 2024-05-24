@@ -46,6 +46,7 @@ const CreditCards = () => {
   };
 
   const updateCard = async () => {
+    if (selectedCard?.is_default) return;
     setIsLoading({ isUpdating: true });
     const { isOk } = await $api.member.card.update(selectedCard.id, {
       is_default: true,
@@ -254,7 +255,11 @@ const CreditCards = () => {
               className={`${
                 isLoading.isUpdating
                   ? "tw-bg-gray-100 tw-animate-pulse"
-                  : "tw-bg-white"
+                  : `${
+                      selectedCard?.is_default
+                        ? "tw-bg-gray-100 tw-cursor-not-allowed"
+                        : "tw-bg-white"
+                    }`
               } tw-flex tw-justify-between tw-items-center tw-gap-4 tw-p-4 tw-rounded-xl tw-shadow`}
               onClick={() => updateCard()}
             >

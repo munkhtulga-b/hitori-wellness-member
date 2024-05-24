@@ -46,7 +46,10 @@ const fetchData = async (endpoint, method, body) => {
         if (accessResponse.ok && accessResponse.status !== 401) {
           window.location.reload();
         } else {
-          authRedirect();
+          Cookies.remove("session");
+          setTimeout(() => {
+            authRedirect();
+          }, 1000);
         }
       } else {
         toast.error(data?.error?.message || "An error occurred");

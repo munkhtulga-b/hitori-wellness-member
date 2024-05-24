@@ -29,7 +29,11 @@ const MainHeader = () => {
 
   return (
     <div className="tw-h-auto tw-w-full tw-bg-primary tw-relative">
-      <div className={`tw-p-4 tw-flex tw-justify-between tw-items-center`}>
+      <div
+        className={`tw-p-4 tw-flex ${
+          path === "/auth/login" ? "tw-justify-center" : "tw-justify-between"
+        } tw-items-center`}
+      >
         {path !== "/auth/login" && searchParams.get("step") !== "complete" ? (
           <Image
             src="/assets/back-arrow-white.svg"
@@ -44,18 +48,27 @@ const MainHeader = () => {
             }}
           />
         ) : null}
-        <Image
-          priority
-          src="/assets/logo-white.png"
-          alt="logo"
-          width={188}
-          height={28}
-          style={{
-            cursor: "pointer",
-          }}
-          onClick={() => router.push("/")}
-        />
-        <span className="tw-w-[28px] tw-h-[28px]"></span>
+        <figure className="tw-w-[188px]">
+          <Image
+            priority
+            src="/assets/logo-white.png"
+            alt="logo"
+            width={0}
+            height={0}
+            style={{
+              cursor: "pointer",
+              justifySelf: "center",
+              height: "auto",
+              width: "100%",
+              objectFit: "contain",
+            }}
+            unoptimized
+            onClick={() => router.push("/")}
+          />
+        </figure>
+        {path !== "/auth/login" && (
+          <span className="tw-w-[28px] tw-h-[28px]"></span>
+        )}
       </div>
     </div>
   );

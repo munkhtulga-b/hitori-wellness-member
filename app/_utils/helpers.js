@@ -109,13 +109,15 @@ export const createQueryString = (queryObject) => {
  *
  * @return {Array} An array of objects containing the value and label of each year.
  */
-export const getYears = () => {
+export const getYears = (min, max) => {
   const years = [];
-  for (let i = 0; i < 100; i++) {
-    years.push({
-      value: dayjs().year() - i,
-      label: dayjs().year() - i,
-    });
+  if (min && max) {
+    for (let i = min; i < max; i++) {
+      years.push({
+        value: dayjs().year() - i,
+        label: dayjs().year() - i,
+      });
+    }
   }
   return years;
 };
