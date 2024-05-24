@@ -105,6 +105,8 @@ const SignupStepTwo = ({ onComplete }) => {
             required: true,
             message: "電話番号を入力してください。",
             whitespace: false,
+            min: 10,
+            max: 11,
           },
         ]}
         getValueFromEvent={(e) => {
@@ -238,6 +240,8 @@ const SignupStepTwo = ({ onComplete }) => {
             required: true,
             message: "緊急連絡先電話番号を入力してください。",
             whitespace: false,
+            min: 10,
+            max: 11,
           },
         ]}
         getValueFromEvent={(e) => {
