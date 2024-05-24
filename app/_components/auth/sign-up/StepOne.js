@@ -5,8 +5,10 @@ import { useEffect, useState } from "react";
 import { getYears, getMonths, getDays } from "@/app/_utils/helpers";
 import _ from "lodash";
 import $api from "@/app/_api";
+import { useRouter } from "next/navigation";
 
 const SignupStepOne = ({ onComplete }) => {
+  const router = useRouter();
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const signupStore = useSignupStore((state) => state.getBody());
@@ -16,10 +18,13 @@ const SignupStepOne = ({ onComplete }) => {
   const [isEmailAvailable, setIsEmailAvailable] = useState(true);
 
   const minAge = 15;
-  const maxAge = 45;
+  const maxAge = 100;
 
   useEffect(() => {
     assignFieldsValue();
+    if (Object.keys(signupStore)?.length < 2) {
+      form.setFieldValue("birthYear", 1980);
+    }
   }, []);
 
   useEffect(() => {
@@ -73,9 +78,6 @@ const SignupStepOne = ({ onComplete }) => {
     });
     if (data?.success === false) {
       setIsEmailAvailable(false);
-      messageApi.info(
-        "このメールアドレスは既に登録されています。ログインするか、別のメールアドレスで新規アカウントを作成してください。パスワードをお忘れの場合はこちら。"
-      );
     } else {
       setIsEmailAvailable(true);
     }
@@ -136,6 +138,32 @@ const SignupStepOne = ({ onComplete }) => {
         >
           <Input placeholder="メールアドレス" onBlur={() => checkEmail()} />
         </Form.Item>
+
+        {!isEmailAvailable && (
+          <Form.Item>
+            <section className="tw-p-4 tw-rounded-xl tw-border tw-border-warning">
+              <p className="tw-leading-[22px] tw-tracking-[0.14px]">
+                このメールアドレスは既に登録されています。
+                <br />
+                <span
+                  onClick={() => router.push("/auth/login")}
+                  className="tw-underline tw-underline-offset-4 tw-text-support"
+                >
+                  ログイン
+                </span>
+                するか、別のメールアドレスで新規アカウントを作成してください。{" "}
+                <br /> パスワードをお忘れの場合は
+                <span
+                  onClick={() => router.push("/auth/forgot-password")}
+                  className="tw-underline tw-underline-offset-4 tw-text-support"
+                >
+                  こちら
+                </span>
+                。
+              </p>
+            </section>
+          </Form.Item>
+        )}
 
         <section className="tw-flex tw-flex-col tw-gap-2">
           <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
