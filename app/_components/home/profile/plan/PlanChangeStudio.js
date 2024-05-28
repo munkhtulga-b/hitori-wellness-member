@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import $api from "@/app/_api";
 import _ from "lodash";
 
-const PurchasePage = () => {
+const PlanChangeStudio = () => {
   const [branchList, setBranchList] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeFilterId, setActiveFilterId] = useState(null);
@@ -84,4 +84,4 @@ const PurchasePage = () => {
   );
 };
 
-export default PurchasePage;
+export default PlanChangeStudio;

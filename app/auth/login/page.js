@@ -28,6 +28,9 @@ const AuthLogin = () => {
     params.email = params.email.toLowerCase().trim();
     const { isOk, data } = await $api.auth.login(params);
     if (isOk) {
+      if (process.env.NODE_ENV === "development") {
+        Cookies.set("access_token", data?.tokens?.access_token);
+      }
       Cookies.set("session", true);
       setUser({ ...data?.user });
       router.push("/home");

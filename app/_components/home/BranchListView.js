@@ -1,16 +1,32 @@
 import { nullSafety } from "@/app/_utils/helpers";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "antd";
+import { useCallback } from "react";
 
 const BranchListView = ({ list, cardType }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const path = usePathname();
 
   const onselect = ({ id }) => {
+    if (path === "/home/profile/plan/change") {
+      return router.push(`${path}?${createQueryString("studioId", id)}`);
+    }
     if (!cardType) {
       router.push(`/home/branch/${id}`);
     }
   };
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   return (
     <>

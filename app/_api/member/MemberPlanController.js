@@ -11,3 +11,7 @@ export const getOne = (id) => {
 export const cancel = (id) => {
   return fetchData(`memberplans/cancel/${id}`, "DELETE");
 };
+
+export const change = (body) => {
+  return fetchData(`memberPlans/change`, "PATCH", body);
+};
