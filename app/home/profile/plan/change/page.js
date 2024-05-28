@@ -66,12 +66,12 @@ const ChangePlanPage = () => {
     }
   };
 
-  const fetchChangedPlan = async (changedPlan, studioId) => {
+  const fetchChangedPlan = async (changePlan, studioId) => {
     const { isOk, data } = await $api.member.plan.getOne(
       getPlanChangeStorage?.current?.plan_id,
       {
         studioId,
-        changedPlan,
+        changePlan,
       }
     );
     if (isOk) {
