@@ -9,20 +9,17 @@ import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import EEnumPlanStatus from "@/app/_enums/EEnumPlanStatus";
 
-const MemberPlanCard = ({ memberPlan }) => {
+const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const cancelMemberPlan = async () => {
     setIsLoading(true);
     const { isOk } = await $api.member.memberPlan.cancel(memberPlan.id);
-
     if (isOk) {
+      await fetchData();
       toast.success("解約が完了しました。");
       setIsModalOpen(false);
-      setTimeout(() => {
-        router.refresh();
-      }, 2000);
     }
     setIsLoading(false);
   };
@@ -42,25 +39,33 @@ const MemberPlanCard = ({ memberPlan }) => {
             memberPlan?.plan?.monthly_item?.prices[0]?.price
           )}円 （税込）／月`}
         </span>
-        <div className="tw-flex tw-justify-end tw-items-center tw-gap-4 tw-mt-4">
-          <Button
-            disabled={
-              !memberPlan?.plan?.is_enabled_withdraw ||
-              memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL
-            }
-            loading={isLoading}
-            className="tw-w-[100px]"
-            onClick={() => setIsModalOpen(true)}
-          >
-            解約
-          </Button>
-          <Button
-            disabled={!memberPlan?.plan?.is_enabled_change_plan}
-            className="tw-w-[100px]"
-          >
-            変更
-          </Button>
-        </div>
+        {!isChanging ? (
+          <div className="tw-flex tw-justify-end tw-items-center tw-gap-4 tw-mt-4">
+            <Button
+              disabled={
+                !memberPlan?.plan?.is_enabled_withdraw ||
+                memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL
+              }
+              loading={isLoading}
+              className="tw-w-[100px]"
+              onClick={() => setIsModalOpen(true)}
+            >
+              解約
+            </Button>
+            <Button
+              disabled={
+                !memberPlan?.plan?.is_enabled_change_plan ||
+                memberPlan?.status === EEnumPlanStatus.SCHEDULED_CHANGE
+              }
+              className="tw-w-[100px]"
+              onClick={() => {
+                router.push("/home/profile/plan/change");
+              }}
+            >
+              変更
+            </Button>
+          </div>
+        ) : null}
         {memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL && (
           <div>
             {`当プランは利用規約通り${dayjs(memberPlan?.cancel_date).format(

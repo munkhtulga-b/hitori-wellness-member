@@ -39,7 +39,10 @@ const ActiveSubscription = () => {
         </section>
         {memberPlan?.length ? (
           <>
-            <MemberPlanCard memberPlan={memberPlan[0]} />
+            <MemberPlanCard
+              memberPlan={memberPlan[0]}
+              fetchData={fetchMemberPlan}
+            />
           </>
         ) : (
           <>

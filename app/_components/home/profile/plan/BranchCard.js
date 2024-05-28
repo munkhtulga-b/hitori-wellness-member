@@ -1,17 +1,33 @@
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "antd";
 import { usePurchaseStore } from "@/app/_store/purchase";
+import { useCallback } from "react";
 
 const PurchaseBranchCard = ({ branch }) => {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const path = usePathname();
   const setBranch = usePurchaseStore((state) => state.setBody);
 
   const onSelect = () => {
+    if (path === "/home/profile/plan/change") {
+      return router.push(`${path}?${createQueryString("studioId", branch.id)}`);
+    }
     setBranch({ branch: branch });
     router.push("/home/profile/purchase/plan");
   };
+
+  const createQueryString = useCallback(
+    (name, value) => {
+      const params = new URLSearchParams(searchParams);
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   return (
     <div className="tw-p-2 tw-rounded-[16px] tw-shadow tw-w-fit tw-bg-white">
