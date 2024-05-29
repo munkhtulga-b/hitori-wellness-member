@@ -42,6 +42,19 @@ const TimeSlotSelect = ({
         content: "プログラムをご選択ください。",
       });
     }
+    const branchStartHour = dayjs(
+      `${dayjs().format("YYYY-MM-DD")} ${
+        getReservation?.branch?.timeperiod_details[0]?.start_hour
+      }`,
+      "HH:mm"
+    );
+    const branchEndHour = dayjs(
+      `${dayjs().format("YYYY-MM-DD")} ${
+        getReservation?.branch?.timeperiod_details[0]?.end_hour
+      }`,
+      "HH:mm"
+    );
+    const branchBusinessHours = branchEndHour.diff(branchStartHour, "hour");
     const slotsToCheck = getReservation.program.service_minutes / slotInterval;
     const shallowSlots = [];
     for (let i = 0; i <= slotsToCheck - 1; i++) {
@@ -59,28 +72,20 @@ const TimeSlotSelect = ({
           });
         }
         if (dateIdx + 1 < 7) {
+          if (
+            branchBusinessHours < 23 ||
+            timeIdx + slotsToCheck > timeSlots.length
+          ) {
+            return messageApi.info(
+              "選択不可能な時間です。別の開始時間をご選択ください。"
+            );
+          }
           shallowSlots.push(
             `${dayjs(day).add(1, "day").format("YYYY-MM-DD")} ${
               getDaysOfWeek()[dateIdx + 1].timeSlots[nextDayIndex].time
             }`
           );
         } else {
-          const branchStartHour = dayjs(
-            `${dayjs().format("YYYY-MM-DD")} ${
-              getReservation?.branch?.timeperiod_details[0]?.start_hour
-            }`,
-            "HH:mm"
-          );
-          const branchEndHour = dayjs(
-            `${dayjs().format("YYYY-MM-DD")} ${
-              getReservation?.branch?.timeperiod_details[0]?.end_hour
-            }`,
-            "HH:mm"
-          );
-          const branchBusinessHours = branchEndHour.diff(
-            branchStartHour,
-            "hour"
-          );
           if (
             branchBusinessHours < 23 ||
             timeIdx + slotsToCheck > timeSlots.length
