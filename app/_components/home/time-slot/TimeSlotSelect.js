@@ -65,6 +65,30 @@ const TimeSlotSelect = ({
             }`
           );
         } else {
+          const branchStartHour = dayjs(
+            `${dayjs().format("YYYY-MM-DD")} ${
+              getReservation?.branch?.timeperiod_details[0]?.start_hour
+            }`,
+            "HH:mm"
+          );
+          const branchEndHour = dayjs(
+            `${dayjs().format("YYYY-MM-DD")} ${
+              getReservation?.branch?.timeperiod_details[0]?.end_hour
+            }`,
+            "HH:mm"
+          );
+          const branchBusinessHours = branchEndHour.diff(
+            branchStartHour,
+            "hour"
+          );
+          if (
+            branchBusinessHours < 23 ||
+            timeIdx + slotsToCheck > timeSlots.length
+          ) {
+            return messageApi.info(
+              "選択不可能な時間です。別の開始時間をご選択ください。"
+            );
+          }
           shallowSlots.push(
             dayjs(shallowSlots[0])
               .add(getReservation.program.service_minutes, "minutes")
