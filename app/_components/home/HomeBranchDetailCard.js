@@ -81,7 +81,12 @@ const HomeBranchDetailCard = ({
                 height={0}
                 style={{ width: "auto", height: "auto" }}
               />
-              <span className="tw-text-lg">営業時間</span>
+              <span className="tw-text-lg">
+                営業時間{" "}
+                {`(${nullSafety(
+                  branch?.timeperiod_details?.[0]?.start_hour
+                )} - ${nullSafety(branch?.timeperiod_details?.[0]?.end_hour)})`}
+              </span>
             </div>
             <p
               dangerouslySetInnerHTML={{

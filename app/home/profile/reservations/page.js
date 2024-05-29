@@ -114,7 +114,6 @@ const ReservationHistory = () => {
   };
 
   const onPaginationChange = (page, size) => {
-    console.log(page, size);
     setPagination((prev) => ({
       ...prev,
       current: page,
