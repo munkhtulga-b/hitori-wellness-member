@@ -1,7 +1,9 @@
+import { createQueryString } from "@/app/_utils/helpers";
 import fetchData from "../config";
 
-export const getMany = (token) => {
-  return fetchData("purchases", "GET", undefined, token);
+export const getMany = (queries) => {
+  const queryString = createQueryString(queries);
+  return fetchData(`purchases${queryString}`, "GET", undefined);
 };
 
 export const getOne = (id) => {

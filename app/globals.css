@@ -9,6 +9,20 @@ body {
   color: #121316;
 }
 
+ol:not([class]) {
+  list-style-type: decimal;
+  margin-left: 20px;
+}
+
+ul:not([class]) {
+  list-style-type: disc; /* This will show bullets */
+  margin-left: 20px;     /* Adjust margin as needed */
+}
+
+li:not([class]) {
+  margin: 5px 0;
+}
+
 .ant-input::placeholder {
   font-weight: 300 !important;
 }

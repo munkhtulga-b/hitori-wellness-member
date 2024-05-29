@@ -117,7 +117,7 @@ const BranchDetailCard = ({
           </section>
           <section className="tw-flex tw-flex-col tw-gap-4">
             <div className="tw-flex tw-flex-col tw-gap-1">
-              <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
+              <section className="tw-flex tw-justify-start tw-items-center tw-gap-2">
                 <Image
                   src="/assets/branch/schedule-icon.svg"
                   alt="schedule"
@@ -125,13 +125,20 @@ const BranchDetailCard = ({
                   height={0}
                   style={{ width: "auto", height: "auto" }}
                 />
-                <span className="tw-text-lg">営業時間</span>
-              </div>
+                <span className="tw-text-lg">
+                  営業時間{" "}
+                  {`(${nullSafety(
+                    branch?.timeperiod_details?.[0]?.start_hour
+                  )} - ${nullSafety(
+                    branch?.timeperiod_details?.[0]?.end_hour
+                  )})`}
+                </span>
+              </section>
               <p
                 dangerouslySetInnerHTML={{
-                  __html: nullSafety(branch.business_hours),
+                  __html: branch.business_hours,
                 }}
-                className="tw-whitespace-pre-line"
+                className="tw-whitespace-pre-wrap"
               ></p>
             </div>
             <div className="tw-flex tw-flex-col tw-gap-1">
