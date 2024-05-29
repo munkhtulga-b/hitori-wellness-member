@@ -72,10 +72,7 @@ const TimeSlotSelect = ({
           });
         }
         if (dateIdx + 1 < 7) {
-          if (
-            branchBusinessHours < 23 ||
-            timeIdx + slotsToCheck > timeSlots.length
-          ) {
+          if (branchBusinessHours < 23) {
             return messageApi.info(
               "選択不可能な時間です。別の開始時間をご選択ください。"
             );
