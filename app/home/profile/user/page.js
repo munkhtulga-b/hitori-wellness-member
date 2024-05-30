@@ -8,6 +8,7 @@ import { nullSafety, getYears, getMonths, getDays } from "@/app/_utils/helpers";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/app/_store/user";
 import $api from "@/app/_api";
+import _ from "lodash";
 
 const EditUserInfo = () => {
   const router = useRouter();
@@ -16,6 +17,8 @@ const EditUserInfo = () => {
   const getUser = useUserStore((state) => state.getUser());
   const zipCode2 = Form.useWatch("zipCode2", form);
   const zipCode1 = Form.useWatch("zipCode1", form);
+  const birthYear = Form.useWatch("birthYear", form);
+  const birthMonth = Form.useWatch("birthMonth", form);
   const [isFetching, setIsFetching] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   const [user, setUser] = useState(null);
@@ -27,6 +30,17 @@ const EditUserInfo = () => {
   useEffect(() => {
     fetchUserDetails();
   }, []);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      birthMonth: null,
+      birthDay: null,
+    });
+  }, [birthYear]);
+
+  useEffect(() => {
+    form.setFieldValue("birthDay", null);
+  }, [birthMonth]);
 
   useEffect(() => {
     const fullPostalCode = `${zipCode1}${zipCode2}`;
@@ -239,6 +253,13 @@ const EditUserInfo = () => {
                 ]}
               >
                 <Select
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label?.toString() ?? "")
+                      .toLowerCase()
+                      .includes(input.toString().toLowerCase())
+                  }
                   style={{
                     width: "100%",
                   }}
@@ -257,6 +278,14 @@ const EditUserInfo = () => {
                 ]}
               >
                 <Select
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label?.toString() ?? "")
+                      .toLowerCase()
+                      .includes(input.toString().toLowerCase())
+                  }
+                  disabled={!birthYear}
                   style={{
                     width: "100%",
                   }}
@@ -275,11 +304,22 @@ const EditUserInfo = () => {
                 ]}
               >
                 <Select
+                  showSearch
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (option?.label?.toString() ?? "")
+                      .toLowerCase()
+                      .includes(input.toString().toLowerCase())
+                  }
+                  disabled={!birthYear || !birthMonth}
                   style={{
                     width: "100%",
                   }}
                   size="large"
-                  options={getDays()}
+                  options={_.map(getDays(birthYear, birthMonth), (day) => ({
+                    value: day,
+                    label: day,
+                  }))}
                   placeholder="01"
                 />
               </Form.Item>
