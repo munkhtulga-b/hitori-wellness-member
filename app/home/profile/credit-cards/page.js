@@ -169,7 +169,7 @@ const CreditCards = () => {
                   </span>
                 </div>
                 <div className="tw-flex tw-justify-between">
-                  <ul>
+                  <ul className="tw-flex tw-flex-col">
                     <li className="tw-text-white tw-text-sm tw-tracking-[0.12px]">
                       Card Holder Name
                     </li>
@@ -177,7 +177,7 @@ const CreditCards = () => {
                       {nullSafety(card.card_name)}
                     </li>
                   </ul>
-                  <ul>
+                  <ul className="tw-flex tw-flex-col">
                     <li className="tw-text-white tw-text-sm tw-tracking-[0.12px]">
                       Expiry Date
                     </li>

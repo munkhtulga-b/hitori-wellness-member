@@ -37,7 +37,7 @@ const PlanChangeConfirm = ({ plan, onConfirm, isRequesting }) => {
         <section>
           <div className="tw-flex tw-flex-col tw-justify-between tw-h-full">
             <section className="tw-flex tw-flex-col tw-gap-4 tw-pt-4 tw-border-t tw-border-dividerLight">
-              <ul>
+              <ul className="tw-flex tw-flex-col">
                 <>
                   <li className="tw-flex tw-justify-between">
                     <span className="tw-text-lg tw-text-secondary">項目</span>

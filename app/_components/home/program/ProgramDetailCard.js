@@ -107,11 +107,13 @@ const ProgramDetailCard = () => {
                     className="tw-leading-[22px] tw-tracking-[0.14px] tw-whitespace-pre-line"
                   ></p>
                 </section>
-                <section className="tw-p-4 tw-rounded-xl tw-border tw-border-info">
-                  <p className="w-leading-[26px] tw-tracking-[0.14px]">
-                    {nullSafety(program.cancellation_policy)}
-                  </p>
-                </section>
+                {program.cancellation_policy ? (
+                  <section className="tw-p-4 tw-rounded-xl tw-border tw-border-info">
+                    <p className="w-leading-[26px] tw-tracking-[0.14px]">
+                      {nullSafety(program.cancellation_policy)}
+                    </p>
+                  </section>
+                ) : null}
               </div>
               <div className="tw-mt-10">
                 <Button
