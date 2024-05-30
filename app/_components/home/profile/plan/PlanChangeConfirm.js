@@ -46,6 +46,42 @@ const PlanChangeConfirm = ({ plan, onConfirm, isRequesting }) => {
                     </span>
                   </li>
                   <li className="tw-flex tw-justify-between">
+                    <span className="tw-text-lg tw-font-light">
+                      新プラン初月（日割り）＋翌月
+                    </span>
+                    <div className="tw-flex tw-justify-start tw-gap-2">
+                      <span
+                        className={`tw-leading-[22px] tw-tracking-[0.14px] tw-font-light`}
+                      >
+                        ￥
+                        {thousandSeparator(
+                          Math.round(
+                            plan?.change?.monthly_price +
+                              plan?.change?.calculated_price
+                          )
+                        )}
+                      </span>
+                    </div>
+                  </li>
+                  <li className="tw-flex tw-justify-between">
+                    <span className="tw-text-lg tw-font-light">
+                      現プラン初月（日割り）＋翌月
+                    </span>
+                    <div className="tw-flex tw-justify-start tw-gap-2">
+                      <span
+                        className={`tw-leading-[22px] tw-tracking-[0.14px] tw-font-light`}
+                      >
+                        -￥
+                        {thousandSeparator(
+                          Math.round(
+                            plan?.current?.monthly_price +
+                              plan?.current?.calculated_price
+                          )
+                        )}
+                      </span>
+                    </div>
+                  </li>
+                  <li className="tw-flex tw-justify-between">
                     <span className="tw-text-lg tw-font-semibold">合計額</span>
                     <div className="tw-flex tw-justify-start tw-gap-2">
                       <span
