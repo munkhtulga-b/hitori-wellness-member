@@ -73,6 +73,24 @@ const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
             )}まで有効です。`}
           </div>
         )}
+        {memberPlan?.status === EEnumPlanStatus.SCHEDULED_CHANGE && (
+          <div className="tw-flex tw-flex-col tw-gap-2">
+            {memberPlan?.end_date ? (
+              <span>
+                {`現プランは${dayjs(memberPlan?.end_date).format(
+                  "YYYY年MM月DD日"
+                )}まで有効です。`}
+              </span>
+            ) : null}
+            {memberPlan?.cancel_date ? (
+              <span>
+                {`現プランは${dayjs(memberPlan?.cancel_date)
+                  .add(1, "day")
+                  .format("YYYY年MM月DD日")}日から有効になります。`}
+              </span>
+            ) : null}
+          </div>
+        )}
       </section>
 
       <Modal

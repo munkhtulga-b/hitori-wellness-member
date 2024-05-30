@@ -197,7 +197,7 @@ const SubscriptionDetail = () => {
                 </section>
               </section>
               <section className="tw-flex tw-flex-col tw-gap-4 tw-pt-4 tw-border-t tw-border-dividerLight">
-                <ul>
+                <ul className="tw-flex tw-flex-col">
                   {itemType === "plan" ? (
                     <>
                       <li className="tw-flex tw-justify-between">
