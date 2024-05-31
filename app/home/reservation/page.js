@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useLayoutEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import FilterButtonGroup from "@/app/_components/custom/FilterButtonGroup";
 import SwitchSlider from "@/app/_components/custom/SwitchSlider";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
@@ -43,6 +43,8 @@ const ProgramsPage = () => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isMounted, setIsMounted] = useState(false);
+
   const reservationBody = useReservationStore((state) => state.getBody());
   const setReservationBody = useReservationStore((state) => state.setBody);
   const [isFetching, setIsFetching] = useState({
@@ -50,6 +52,7 @@ const ProgramsPage = () => {
     coaches: false,
     timeslots: false,
   });
+
   const [programList, setProgramList] = useState(null);
   const [coachList, setCoachList] = useState(null);
   const [timeslotList, setTimeslotList] = useState(null);
@@ -57,7 +60,13 @@ const ProgramsPage = () => {
   const [activeFilterId, setActiveFilterId] = useState(null);
   const [activeStepId, setActiveStepId] = useState(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    if (activeStepId) {
+      setIsMounted(true);
+    }
+  }, [activeStepId]);
+
+  useEffect(() => {
     if (!reservationBody.branch) {
       toast.info("Please select a branch", {
         position: "bottom-center",
@@ -78,7 +87,7 @@ const ProgramsPage = () => {
     setReservationBody({
       ...reservationBody,
       time: null,
-      program: null,
+      program: reservationBody?.program ?? null,
     });
     fetchMemberPlan();
   }, []);
@@ -183,92 +192,96 @@ const ProgramsPage = () => {
 
   return (
     <>
-      <div className="tw-flex tw-flex-col tw-gap-4">
-        <SwitchSlider
-          options={sliderOptions}
-          activeStepId={activeStepId}
-          setActiveStepId={setActiveStepId}
-        />
-        {activeStepId === 1 && (
-          <>
-            {!isFetching.programs ? (
-              <>
-                {programList?.length ? (
-                  <>
-                    <FilterButtonGroup
-                      options={programList}
-                      activeFilterId={activeFilterId}
-                      setActiveFilterId={setActiveFilterId}
-                      filterName={"service_minutes"}
-                      filterNameSuffix={"分"}
+      {isMounted ? (
+        <div className="tw-flex tw-flex-col tw-gap-4">
+          <SwitchSlider
+            options={sliderOptions}
+            activeStepId={activeStepId}
+            setActiveStepId={setActiveStepId}
+          />
+          {activeStepId === 1 && (
+            <>
+              {!isFetching.programs ? (
+                <>
+                  {programList?.length ? (
+                    <>
+                      <FilterButtonGroup
+                        options={programList}
+                        activeFilterId={activeFilterId}
+                        setActiveFilterId={setActiveFilterId}
+                        filterName={"service_minutes"}
+                        filterNameSuffix={"分"}
+                      />
+                      {activeFilterId === null ? (
+                        <>
+                          {programList.map((programs) => {
+                            return (
+                              <ProgramScrollView
+                                key={programs[0].service_minutes}
+                                list={programs}
+                              />
+                            );
+                          })}
+                        </>
+                      ) : (
+                        <ProgramListView list={programList[activeFilterId]} />
+                      )}
+                    </>
+                  ) : (
+                    <NoData
+                      message={
+                        "選択した時間帯に予約可能なプログラムがありません。"
+                      }
                     />
-                    {activeFilterId === null ? (
-                      <>
-                        {programList.map((programs) => {
-                          return (
-                            <ProgramScrollView
-                              key={programs[0].service_minutes}
-                              list={programs}
-                            />
-                          );
-                        })}
-                      </>
-                    ) : (
-                      <ProgramListView list={programList[activeFilterId]} />
-                    )}
-                  </>
-                ) : (
-                  <NoData
-                    message={
-                      "選択した時間帯に予約可能なプログラムがありません。"
-                    }
-                  />
-                )}
-              </>
-            ) : (
-              <FullScreenLoading isLoading={isFetching.programs} />
-            )}
-          </>
-        )}
-        {activeStepId === 2 && (
-          <>
-            {coachList?.length ? (
-              <>
-                <CoachSelect />
-              </>
-            ) : (
-              <NoData message={"No Data"} />
-            )}
-          </>
-        )}
-        {activeStepId === 3 && (
-          <>
-            {reservationBody.program ? (
-              <TimeSlotSelect
-                maxDailyReservation={
-                  memberPlan?.length
-                    ? memberPlan[0]?.plan?.max_reservable_num_at_day_by_plan
-                    : 0
-                }
-                isFetching={isFetching.timeslots}
-                timeSlotList={timeslotList}
-                fetchTimeslots={fetchTimeslots}
-              />
-            ) : (
-              <TimeSlotSelectNoProgram
-                maxDailyReservation={
-                  memberPlan?.length
-                    ? memberPlan[0]?.plan?.max_reservable_num_at_day_by_plan
-                    : 0
-                }
-                isFetching={isFetching.timeslots}
-                timeSlotList={timeslotList}
-                fetchTimeslots={fetchTimeslots}
-              />
-            )}
-          </>
-        )}
-      </div>
+                  )}
+                </>
+              ) : (
+                <FullScreenLoading isLoading={isFetching.programs} />
+              )}
+            </>
+          )}
+          {activeStepId === 2 && (
+            <>
+              {coachList?.length ? (
+                <>
+                  <CoachSelect />
+                </>
+              ) : (
+                <NoData message={"No Data"} />
+              )}
+            </>
+          )}
+          {activeStepId === 3 && (
+            <>
+              {reservationBody.program ? (
+                <TimeSlotSelect
+                  maxDailyReservation={
+                    memberPlan?.length
+                      ? memberPlan[0]?.plan?.max_reservable_num_at_day_by_plan
+                      : 0
+                  }
+                  isFetching={isFetching.timeslots}
+                  timeSlotList={timeslotList}
+                  fetchTimeslots={fetchTimeslots}
+                />
+              ) : (
+                <TimeSlotSelectNoProgram
+                  maxDailyReservation={
+                    memberPlan?.length
+                      ? memberPlan[0]?.plan?.max_reservable_num_at_day_by_plan
+                      : 0
+                  }
+                  isFetching={isFetching.timeslots}
+                  timeSlotList={timeslotList}
+                  fetchTimeslots={fetchTimeslots}
+                />
+              )}
+            </>
+          )}
+        </div>
+      ) : (
+        <FullScreenLoading isLoading={!isMounted} />
+      )}
     </>
   );
 };

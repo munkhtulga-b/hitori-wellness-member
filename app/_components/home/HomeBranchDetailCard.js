@@ -18,6 +18,8 @@ const HomeBranchDetailCard = ({
   const router = useRouter();
   const getReservationBody = useReservationStore((state) => state.getBody());
   const setReservationBody = useReservationStore((state) => state.setBody);
+  const setReservationEdit = useReservationStore((state) => state.setEdit);
+
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   // const [isHomeBranch, setIsHomeBranch] = useState(false);
 
@@ -34,6 +36,10 @@ const HomeBranchDetailCard = ({
       branch: reservation.m_studio,
       program: reservation.m_program,
       time: [reservation.start_at, reservation.end_at],
+    });
+    setReservationEdit({
+      isEditing: true,
+      date: reservation.start_at,
     });
     router.push(`/home/reservation/confirm`);
   };
