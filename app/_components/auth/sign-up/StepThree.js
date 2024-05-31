@@ -8,7 +8,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
   const onFinish = (params) => {
     if (!isValidPassword(params.confirm)) {
       return messageApi.error(
-        "半角英大文字、半角英小文字、数字、記号の中から3種類を含む8文字以上を指定してください。"
+        "半角英大文字、半角英小文字、数字、記号の中から2種類を含む8文字以上を指定してください。"
       );
     }
     delete params.confirm;
@@ -71,7 +71,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
         <section className="tw-mt-[28px]">
           <div className="tw-bg-grayLight tw-p-4 tw-rounded-xl tw-border tw-border-info">
             <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px]">
-              半角英大文字、半角英小文字、数字、記号の中から3種類を含む8文字以上を指定してください。
+              半角英大文字、半角英小文字、数字、記号の中から2種類を含む8文字以上を指定してください。
             </p>
           </div>
         </section>
@@ -111,7 +111,15 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
             >
               <Checkbox>
                 <span className="tw-text-lg after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
-                  <u>利用規約</u>に同意する
+                  <a
+                    href="https://lp.hitoriwellness.jp/tos"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="tw-text-current tw-underline tw-underline-offset-4 tw-deco"
+                  >
+                    利用規約
+                  </a>
+                  に同意する
                 </span>
               </Checkbox>
             </Form.Item>

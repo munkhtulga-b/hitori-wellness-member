@@ -331,11 +331,37 @@ const EditUserInfo = () => {
             label="電話番号"
             rules={[
               {
-                required: true,
-                message: "電話番号を入力してください。",
-                whitespace: false,
+                validator: (_, value) => {
+                  const pattern = /^(?!-)(?!.*-$)[0-9-]+$/;
+                  const minLength = 10 + (value?.split("-")?.length - 1 || 0);
+                  const maxLength = 11 + (value?.split("-")?.length - 1 || 0);
+
+                  if (!value) {
+                    return Promise.reject(
+                      new Error("電話番号を入力してください。")
+                    );
+                  }
+
+                  if (!pattern.test(value)) {
+                    return Promise.reject(
+                      new Error("電話番号を入力してください。")
+                    );
+                  }
+
+                  if (value.length < minLength || value.length > maxLength) {
+                    return Promise.reject(
+                      new Error(`電話番号を入力してください。`)
+                    );
+                  }
+
+                  return Promise.resolve();
+                },
               },
             ]}
+            getValueFromEvent={(e) => {
+              const value = e.target.value;
+              return value.replace(/[^0-9-]/g, "");
+            }}
           >
             <Input placeholder="電話番号" type="number" />
           </Form.Item>
@@ -446,11 +472,37 @@ const EditUserInfo = () => {
             label="緊急連絡先"
             rules={[
               {
-                required: true,
-                message: "緊急連絡先電話番号を入力してください。",
-                whitespace: false,
+                validator: (_, value) => {
+                  const pattern = /^(?!-)(?!.*-$)[0-9-]+$/;
+                  const minLength = 10 + (value?.split("-")?.length - 1 || 0);
+                  const maxLength = 11 + (value?.split("-")?.length - 1 || 0);
+
+                  if (!value) {
+                    return Promise.reject(
+                      new Error("電話番号を入力してください。")
+                    );
+                  }
+
+                  if (!pattern.test(value)) {
+                    return Promise.reject(
+                      new Error("電話番号を入力してください。")
+                    );
+                  }
+
+                  if (value.length < minLength || value.length > maxLength) {
+                    return Promise.reject(
+                      new Error(`電話番号を入力してください。`)
+                    );
+                  }
+
+                  return Promise.resolve();
+                },
               },
             ]}
+            getValueFromEvent={(e) => {
+              const value = e.target.value;
+              return value.replace(/[^0-9-]/g, "");
+            }}
           >
             <Input placeholder="電話番号" type="number" />
           </Form.Item>
