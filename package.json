@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build:dev": "env-cmd -f .env.dev next build",
+    "build": "env-cmd -f .env.prod next build",
     "start": "next start",
     "lintfix": "next lint"
   },
@@ -12,6 +13,7 @@
     "@ant-design/nextjs-registry": "^1.0.0",
     "antd": "^5.14.0",
     "dotenv": "^16.4.5",
+    "env-cmd": "^10.1.0",
     "framer-motion": "^11.0.5",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
