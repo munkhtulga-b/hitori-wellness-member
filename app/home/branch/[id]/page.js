@@ -51,6 +51,7 @@ const BranchDetail = () => {
   const fetchReservations = async () => {
     const { isOk, data } = await $api.member.reservation.getMany({
       status: ReservationStatusEnum.ACTIVE,
+      position: "PLAN",
     });
     if (isOk) {
       setReservations(data);

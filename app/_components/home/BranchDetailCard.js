@@ -73,39 +73,37 @@ const BranchDetailCard = ({
   };
 
   const isBranchPermitted = () => {
-    let result = false;
+    let result = {
+      plan: false,
+      ticket: false,
+    };
     if (permittedBranches) {
       if (
         permittedBranches.plan?.includes(branch.id) ||
         permittedBranches.plan?.length === 0
       ) {
-        console.log("plan permitted");
-        result = true;
+        result.plan = true;
       }
       if (
         permittedBranches.ticket?.includes(branch.id) ||
         permittedBranches.ticket?.length === 0
       ) {
-        console.log("ticket permitted");
-        result = true;
+        result.ticket = true;
       }
     }
-    console.log("branch permitted", result);
+    console.log(result);
     return result;
   };
 
   const isReserveDisabled = () => {
     let result = false;
-    if (isReachedMaxReservation()) {
-      if (isBranchPermitted()) {
-        result = false;
-      } else {
+    if (isBranchPermitted().ticket) {
+      result = false;
+    } else {
+      if (isReachedMaxReservation()) {
         result = true;
       }
-    } else {
-      result = false;
     }
-    console.log("isReserveDisabled", result);
     return result;
   };
 
