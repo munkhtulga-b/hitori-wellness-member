@@ -119,13 +119,23 @@ const AuthLogin = () => {
         </span>
       </section>
       <div className="tw-bg-dividerLight tw-w-full tw-h-[1px] tw-mt-[36px]"></div>
-      <section className="tw-mt-[38px]">
-        <span
-          onClick={() => router.push("/auth/sign-up")}
-          className="tw-text-lg tw-tracking-[0.16px] tw-cursor-pointer"
+      <section className="tw-mt-[38px] tw-w-full">
+        <Button
+          size="large"
+          type="default"
+          style={{
+            width: "100%",
+            border: "0px",
+            background: "#F4F5F6",
+          }}
         >
-          新規会員登録
-        </span>
+          <span
+            onClick={() => router.push("/auth/sign-up")}
+            className="tw-text-lg tw-tracking-[0.16px] tw-cursor-pointer"
+          >
+            新規会員登録
+          </span>
+        </Button>
       </section>
     </motion.div>
   );

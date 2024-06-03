@@ -246,13 +246,15 @@ const SignupStepOne = ({ onComplete }) => {
               ]}
             >
               <Select
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label?.toString() ?? "")
-                    .toLowerCase()
-                    .includes(input.toString().toLowerCase())
-                }
+                placement="topLeft"
+                popupMatchSelectWidth={200}
+                // showSearch
+                // optionFilterProp="children"
+                // filterOption={(input, option) =>
+                //   (option?.label?.toString() ?? "")
+                //     .toLowerCase()
+                //     .includes(input.toString().toLowerCase())
+                // }
                 style={{
                   width: "100%",
                 }}
@@ -271,13 +273,15 @@ const SignupStepOne = ({ onComplete }) => {
               ]}
             >
               <Select
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label?.toString() ?? "")
-                    .toLowerCase()
-                    .includes(input.toString().toLowerCase())
-                }
+                placement="bottomLeft"
+                popupMatchSelectWidth={200}
+                // showSearch
+                // optionFilterProp="children"
+                // filterOption={(input, option) =>
+                //   (option?.label?.toString() ?? "")
+                //     .toLowerCase()
+                //     .includes(input.toString().toLowerCase())
+                // }
                 disabled={!birthYear}
                 style={{
                   width: "100%",
@@ -297,13 +301,15 @@ const SignupStepOne = ({ onComplete }) => {
               ]}
             >
               <Select
-                showSearch
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label?.toString() ?? "")
-                    .toLowerCase()
-                    .includes(input.toString().toLowerCase())
-                }
+                placement="bottomLeft"
+                popupMatchSelectWidth={200}
+                // showSearch
+                // optionFilterProp="children"
+                // filterOption={(input, option) =>
+                //   (option?.label?.toString() ?? "")
+                //     .toLowerCase()
+                //     .includes(input.toString().toLowerCase())
+                // }
                 disabled={!birthYear || !birthMonth}
                 style={{
                   width: "100%",

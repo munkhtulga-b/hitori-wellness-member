@@ -116,6 +116,11 @@ const AddCreditCard = () => {
                   whitespace: true,
                 },
               ]}
+              getValueFromEvent={(e) => {
+                const value = e.target.value;
+                const alphabetString = value.replace(/[^a-zA-Z]/g, "");
+                return alphabetString;
+              }}
             >
               <Input placeholder="Name" />
             </Form.Item>

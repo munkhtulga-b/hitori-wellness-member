@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { Button, Modal, message } from "antd";
+import { Button, Modal } from "antd";
 import dayjs from "dayjs";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 import ReservationStatusEnum from "@/app/_enums/EEnumReservationStatus";
 import $api from "@/app/_api";
+import { toast } from "react-toastify";
 
 const ReservationCard = ({
   reservation,
@@ -12,7 +13,6 @@ const ReservationCard = ({
   editReservation,
   fetchList,
 }) => {
-  const [messageApi, contextHolder] = message.useMessage();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
 
@@ -22,7 +22,7 @@ const ReservationCard = ({
     if (isOk) {
       await fetchList();
       setIsModalOpen(false);
-      messageApi.success("キャンセルされました。");
+      toast.success("キャンセルされました。");
     }
     setIsRequesting(false);
   };
@@ -38,7 +38,6 @@ const ReservationCard = ({
 
   return (
     <>
-      {contextHolder}
       <>
         {activeFilterId === ReservationStatusEnum.CANCELLED ||
         activeFilterId === ReservationStatusEnum.AUTOMATIC_CANCELLATION ? (

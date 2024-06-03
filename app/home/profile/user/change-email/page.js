@@ -16,12 +16,12 @@ const UserChangeEmail = () => {
 
   const changeEmail = async (params) => {
     setIsLoading(true);
-    params.email = params.email.toLowerCase();
+    params.mailAddress = params.mailAddress.toLowerCase();
     const { isOk } = await $api.auth.changeEmail(params);
     if (isOk) {
       setSentEmail(params.mailAddress);
       setIsEmailSent(true);
-      Cookies.remove("token");
+      Cookies.remove("session");
     }
     setIsLoading(false);
   };

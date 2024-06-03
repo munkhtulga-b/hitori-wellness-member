@@ -99,8 +99,12 @@ const EditUserInfo = () => {
       for (const { camel, snake } of fields) {
         if (snake === "birthday") {
           form.setFieldValue("birthYear", dayjs(user[snake]).format("YYYY"));
-          form.setFieldValue("birthMonth", dayjs(user[snake]).format("MM"));
-          form.setFieldValue("birthDay", dayjs(user[snake]).format("DD"));
+          setTimeout(() => {
+            form.setFieldValue("birthMonth", dayjs(user[snake]).format("MM"));
+          }, 200);
+          setTimeout(() => {
+            form.setFieldValue("birthDay", dayjs(user[snake]).format("DD"));
+          }, 400);
         } else {
           form.setFieldsValue({
             [camel]: user[snake],
@@ -376,27 +380,35 @@ const EditUserInfo = () => {
                 rules={[
                   {
                     required: true,
-                    message: "郵便番号１を入力してください。",
+                    message: "を入力してください。",
                     whitespace: false,
                   },
                 ]}
+                getValueFromEvent={(e) => {
+                  const value = e.target.value;
+                  const numberString = value.replace(/\D/g, "").slice(0, 3);
+                  return numberString;
+                }}
               >
-                <Input placeholder="000" type="number" maxLength={3} />
+                <Input placeholder="000" />
               </Form.Item>
               <Form.Item
                 name="zipCode2"
                 rules={[
                   {
                     required: true,
-                    message: "Please i郵便番号２を入力してください。",
+                    message: "を入力してください。",
                     whitespace: false,
                   },
                 ]}
+                getValueFromEvent={(e) => {
+                  const value = e.target.value;
+                  const numberString = value.replace(/\D/g, "").slice(0, 4);
+                  return numberString;
+                }}
               >
                 <Input
                   placeholder="0000"
-                  type="number"
-                  maxLength={4}
                   suffix={
                     <Spin
                       indicator={

@@ -147,37 +147,35 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "郵便番号１を入力してください。",
+                message: "を入力してください。",
                 whitespace: false,
               },
             ]}
             getValueFromEvent={(e) => {
               const value = e.target.value;
-              const numberString = value.replace(/^\D*(\d{3})\D*$/, "$1");
+              const numberString = value.replace(/\D/g, "").slice(0, 3);
               return numberString;
             }}
           >
-            <Input placeholder="000" maxLength={3} />
+            <Input placeholder="000" />
           </Form.Item>
           <Form.Item
             name="zipCode2"
             rules={[
               {
                 required: true,
-                message: "郵便番号２を入力してください。",
+                message: "を入力してください。",
                 whitespace: false,
               },
             ]}
             getValueFromEvent={(e) => {
               const value = e.target.value;
-              const numberString = value.replace(/^\D*(\d{4})\D*$/, "$1");
+              const numberString = value.replace(/\D/g, "").slice(0, 4);
               return numberString;
             }}
           >
             <Input
               placeholder="0000"
-              type="number"
-              maxLength={4}
               suffix={
                 <Spin
                   indicator={
