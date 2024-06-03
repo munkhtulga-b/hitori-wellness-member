@@ -100,7 +100,7 @@ const BranchDetailCard = ({
     if (isBranchPermitted().ticket) {
       result = false;
     } else {
-      if (isReachedMaxReservation()) {
+      if (!isBranchPermitted().plan || isReachedMaxReservation()) {
         result = true;
       }
     }
