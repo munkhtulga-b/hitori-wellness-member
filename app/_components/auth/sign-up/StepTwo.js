@@ -147,7 +147,7 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "郵便番号１を入力してください。",
+                message: "を入力してください。",
                 whitespace: false,
               },
             ]}
@@ -164,7 +164,7 @@ const SignupStepTwo = ({ onComplete }) => {
             rules={[
               {
                 required: true,
-                message: "郵便番号２を入力してください。",
+                message: "を入力してください。",
                 whitespace: false,
               },
             ]}

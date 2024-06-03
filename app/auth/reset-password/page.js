@@ -68,7 +68,7 @@ const NewPassword = () => {
             <Form.Item
               required={false}
               name="password"
-              label="パスワード "
+              label="新しいパスワード"
               rules={[
                 {
                   required: true,

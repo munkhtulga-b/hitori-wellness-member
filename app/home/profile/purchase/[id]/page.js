@@ -33,6 +33,9 @@ const SubscriptionDetail = () => {
     isRequesting: false,
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [purchaseError, setPurchaseError] = useState(
+    "カードの内容を確認の上再度お試しください。"
+  );
 
   useEffect(() => {
     fetchCreditCards();
@@ -59,10 +62,11 @@ const SubscriptionDetail = () => {
 
   const createPurchase = async (body) => {
     setIsLoading((prev) => ({ ...prev, isRequesting: true }));
-    const { isOk } = await $api.member.purchase.create(body);
+    const { isOk, data } = await $api.member.purchase.create(body);
     if (isOk) {
       setStep(3);
     } else {
+      setPurchaseError(data?.error?.message);
       setIsModalOpen(true);
     }
     setIsLoading((prev) => ({ ...prev, isRequesting: false }));
@@ -463,7 +467,7 @@ const SubscriptionDetail = () => {
           <div className="tw-flex tw-flex-col tw-gap-6 tw-mt-6">
             <section className="tw-rounded-xl tw-border-2 tw-border-warning tw-p-4">
               <p className="tw-leading-[26px] tw-tracking-[0.14px]">
-                カードの内容を確認の上再度お試しください。
+                {purchaseError}
               </p>
             </section>
             <section className="tw-flex tw-justify-center">
@@ -572,6 +576,11 @@ const SubscriptionDetail = () => {
                 whitespace: true,
               },
             ]}
+            getValueFromEvent={(e) => {
+              const value = e.target.value;
+              const alphabetString = value.replace(/[^a-zA-Z]/g, "");
+              return alphabetString;
+            }}
           >
             <Input placeholder="Name" />
           </Form.Item>
