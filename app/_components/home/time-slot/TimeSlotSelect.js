@@ -228,15 +228,16 @@ const TimeSlotSelect = ({
       });
       if (matched) {
         result = matched.user_reserved;
-        if (
-          matched.user_reserved >= maxDailyReservation &&
-          getReservationEdit.date
-        ) {
+        if (getReservationEdit.date) {
           if (
             dayjs(dayjs(currentDate).format("YYYY-MM-DD")).isSame(
               dayjs.utc(getReservationEdit.date).format("YYYY-MM-DD")
             )
           ) {
+            return false;
+          }
+        } else {
+          if (matched.user_reserved < maxDailyReservation) {
             return false;
           }
         }
