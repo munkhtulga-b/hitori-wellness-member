@@ -202,7 +202,7 @@ const BranchDetailCard = ({
         </section> */}
           <section className="tw-mt-1">
             <Button
-              disabled={isReachedMaxReservation() || !isBranchPermitted()}
+              disabled={isReachedMaxReservation() && !isBranchPermitted()}
               onClick={handleMakeReservation}
               size="large"
               type="primary"
