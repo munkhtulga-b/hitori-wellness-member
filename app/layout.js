@@ -26,19 +26,14 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      {/* <head>
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-B53SHX53M8"
-        ></Script>
-        <Script id="google-analytics" strategy="afterInteractive">
-          {` window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-B53SHX53M8');`}
-        </Script>
-      </head> */}
+      <head>
+        {
+          <meta
+            name="robots"
+            content={process.env.NEXT_PUBLIC_META_CONTENT}
+          ></meta>
+        }
+      </head>
       <body className={fontFamily.className}>
         <AntdRegistry>
           <ToastContainer pauseOnFocusLoss={false} />
