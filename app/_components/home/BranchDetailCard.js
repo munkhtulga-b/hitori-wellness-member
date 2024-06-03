@@ -66,6 +66,9 @@ const BranchDetailCard = ({
     ) {
       result = true;
     }
+    console.log(
+      `reservations: ${reservations?.length}, max: ${memberPlan[0]?.plan?.max_cc_reservable_num_by_plan}`
+    );
     return result;
   };
 
@@ -76,15 +79,18 @@ const BranchDetailCard = ({
         permittedBranches.plan?.includes(branch.id) ||
         permittedBranches.plan?.length === 0
       ) {
+        console.log("plan permitted");
         result = true;
       }
       if (
         permittedBranches.ticket?.includes(branch.id) ||
         permittedBranches.ticket?.length === 0
       ) {
+        console.log("ticket permitted");
         result = true;
       }
     }
+    console.log("branch permitted", result);
     return result;
   };
 
@@ -97,8 +103,9 @@ const BranchDetailCard = ({
         result = true;
       }
     } else {
-      result = true;
+      result = false;
     }
+    console.log("isReserveDisabled", result);
     return result;
   };
 
