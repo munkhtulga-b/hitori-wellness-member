@@ -103,9 +103,13 @@ const SignupStepTwo = ({ onComplete }) => {
         rules={[
           {
             validator: (_, value) => {
-              const pattern = /^(?!-)(?!.*-$)[0-9-]+$/;
-              const minLength = 10 + (value?.split("-")?.length - 1 || 0);
-              const maxLength = 11 + (value?.split("-")?.length - 1 || 0);
+              // Allow only digits and hyphens, with at most one hyphen between digits
+              const pattern = /^(?!.*--)(?!-)(?!.*-$)(\d+-?)*\d+$/;
+
+              // Count the number of hyphens to adjust the length check
+              const hyphenCount = value?.split("-")?.length - 1 || 0;
+              const minLength = 10 + hyphenCount;
+              const maxLength = 11 + hyphenCount;
 
               if (!value) {
                 return Promise.reject(
@@ -121,7 +125,7 @@ const SignupStepTwo = ({ onComplete }) => {
 
               if (value.length < minLength || value.length > maxLength) {
                 return Promise.reject(
-                  new Error(`電話番号を入力してください。`)
+                  new Error("電話番号を入力してください。")
                 );
               }
 
@@ -131,6 +135,7 @@ const SignupStepTwo = ({ onComplete }) => {
         ]}
         getValueFromEvent={(e) => {
           const value = e.target.value;
+          // Remove any character that is not a digit or hyphen
           return value.replace(/[^0-9-]/g, "");
         }}
       >
