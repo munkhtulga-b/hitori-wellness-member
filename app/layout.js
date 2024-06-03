@@ -1,5 +1,4 @@
 // import Script from "next/script";
-import Head from "next/head";
 import { Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
@@ -15,6 +14,18 @@ export const metadata = {
     template: "%s | " + process.env.BASE_META_TITLE,
   },
   description: process.env.BASE_META_DESCRIPTION,
+  robots: {
+    index: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? true : false,
+    follow: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? true : false,
+    googleBot: {
+      index: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? true : false,
+      follow: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? true : false,
+      noimageindex: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export const viewport = {
@@ -27,14 +38,6 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
-        {
-          <meta
-            name="robots"
-            content={process.env.NEXT_PUBLIC_META_CONTENT}
-          ></meta>
-        }
-      </Head>
       <body className={fontFamily.className}>
         <AntdRegistry>
           <ToastContainer pauseOnFocusLoss={false} />
