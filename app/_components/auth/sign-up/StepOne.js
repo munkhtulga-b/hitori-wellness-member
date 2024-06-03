@@ -246,8 +246,9 @@ const SignupStepOne = ({ onComplete }) => {
               ]}
             >
               <Select
-                placement="topLeft"
+                placement="bottomLeft"
                 popupMatchSelectWidth={200}
+                virtual={false}
                 // showSearch
                 // optionFilterProp="children"
                 // filterOption={(input, option) =>
@@ -257,6 +258,7 @@ const SignupStepOne = ({ onComplete }) => {
                 // }
                 style={{
                   width: "100%",
+                  WebkitOverflowScrolling: "touch",
                 }}
                 size="large"
                 options={getYears(minAge, maxAge)}
@@ -273,6 +275,8 @@ const SignupStepOne = ({ onComplete }) => {
               ]}
             >
               <Select
+                open
+                virtual={false}
                 placement="bottomLeft"
                 popupMatchSelectWidth={200}
                 // showSearch
@@ -303,6 +307,7 @@ const SignupStepOne = ({ onComplete }) => {
               <Select
                 placement="bottomLeft"
                 popupMatchSelectWidth={200}
+                virtual={false}
                 // showSearch
                 // optionFilterProp="children"
                 // filterOption={(input, option) =>
@@ -313,6 +318,7 @@ const SignupStepOne = ({ onComplete }) => {
                 disabled={!birthYear || !birthMonth}
                 style={{
                   width: "100%",
+                  WebkitOverflowScrolling: "touch",
                 }}
                 size="large"
                 options={_.map(getDays(birthYear, birthMonth), (day) => ({
