@@ -99,8 +99,12 @@ const EditUserInfo = () => {
       for (const { camel, snake } of fields) {
         if (snake === "birthday") {
           form.setFieldValue("birthYear", dayjs(user[snake]).format("YYYY"));
-          form.setFieldValue("birthMonth", dayjs(user[snake]).format("MM"));
-          form.setFieldValue("birthDay", dayjs(user[snake]).format("DD"));
+          setTimeout(() => {
+            form.setFieldValue("birthMonth", dayjs(user[snake]).format("MM"));
+          }, 200);
+          setTimeout(() => {
+            form.setFieldValue("birthDay", dayjs(user[snake]).format("DD"));
+          }, 400);
         } else {
           form.setFieldsValue({
             [camel]: user[snake],
@@ -388,7 +392,7 @@ const EditUserInfo = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please i郵便番号２を入力してください。",
+                    message: "郵便番号２を入力してください。",
                     whitespace: false,
                   },
                 ]}
