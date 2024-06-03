@@ -248,7 +248,9 @@ const SignupStepOne = ({ onComplete }) => {
               <Select
                 placement="bottomLeft"
                 popupMatchSelectWidth={200}
-                onPopupScroll={(e) => e.stopPropagation()}
+                onPopupScroll={(e) => {
+                  e.stopPropagation();
+                }}
                 // showSearch
                 // optionFilterProp="children"
                 // filterOption={(input, option) =>
