@@ -72,7 +72,10 @@ const BranchDetailCard = ({
   const isBranchPermitted = () => {
     let result = false;
     if (permittedBranches) {
-      if (permittedBranches.plan?.includes(branch.id)) {
+      if (
+        permittedBranches.plan?.includes(branch.id) ||
+        permittedBranches.plan?.length === 0
+      ) {
         result = true;
       }
       if (
