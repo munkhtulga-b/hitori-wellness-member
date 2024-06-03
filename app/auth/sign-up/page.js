@@ -36,6 +36,8 @@ const AuthSignup = () => {
   };
 
   const handleStepTwo = (params) => {
+    params.tel = params.tel?.replace("-", "");
+    params.emergencyTel = params.emergencyTel?.replace("-", "");
     updateRequestBody(params);
     router.push(pathName + "?" + createQueryString("step", 3));
     setCurrentForm((prev) => prev + 1);
