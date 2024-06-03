@@ -8,8 +8,9 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
   const newPassword = Form.useWatch("password", form);
 
   const onFinish = (params) => {
+    console.log(isValidPassword(params.confirm));
     if (
-      !isValidPassword(params.confirm)?.cretariasMet < 2 ||
+      !isValidPassword(params.confirm)?.cretariasMet < 2 &&
       !isValidPassword(params.confirm)?.isLongEnough
     ) {
       return messageApi.error(
