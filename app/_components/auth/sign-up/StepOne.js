@@ -275,7 +275,6 @@ const SignupStepOne = ({ onComplete }) => {
               ]}
             >
               <Select
-                open
                 virtual={false}
                 placement="bottomLeft"
                 popupMatchSelectWidth={200}
