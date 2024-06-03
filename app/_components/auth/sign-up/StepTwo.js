@@ -85,7 +85,7 @@ const SignupStepTwo = ({ onComplete }) => {
   const formatPhoneNumber = (value) => {
     let result = "";
     if (value) {
-      result = value.toString().replace("-", "");
+      result = value.toString().replace(/-/g, "");
     }
     return result;
   };
