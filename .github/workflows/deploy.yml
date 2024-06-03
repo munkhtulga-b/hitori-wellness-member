@@ -20,6 +20,6 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            cd /var/www/html/besta_fe_admin
+            cd /var/www/html/besta_fe
             git pull origin release
             ./deploy.sh
