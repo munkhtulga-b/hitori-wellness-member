@@ -15,14 +15,11 @@ const EditUserInfo = () => {
   const [form] = Form.useForm();
   const [messageApi, contextHolder] = message.useMessage();
   const getUser = useUserStore((state) => state.getUser());
-  const zipCode2 = Form.useWatch("zipCode2", form);
-  const zipCode1 = Form.useWatch("zipCode1", form);
   const birthYear = Form.useWatch("birthYear", form);
   const birthMonth = Form.useWatch("birthMonth", form);
   const [isFetching, setIsFetching] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   const [user, setUser] = useState(null);
-  const [address, setAddress] = useState(null);
 
   const minAge = 15;
   const maxAge = 100;
@@ -41,40 +38,6 @@ const EditUserInfo = () => {
   useEffect(() => {
     form.setFieldValue("birthDay", null);
   }, [birthMonth]);
-
-  useEffect(() => {
-    const fullPostalCode = `${zipCode1}${zipCode2}`;
-    const fetchAddress = async () => {
-      setIsFetching(true);
-      const { isOk, data } = await $api.member.post.getOne(fullPostalCode);
-      if (isOk) {
-        setAddress(data);
-      } else {
-        setAddress(null);
-      }
-      setIsFetching(false);
-    };
-    if (!isNaN(+fullPostalCode) && fullPostalCode.toString().length === 7) {
-      fetchAddress();
-    }
-  }, [zipCode2, zipCode1]);
-
-  useEffect(() => {
-    if (address) {
-      form.setFieldsValue({
-        address1: address?.city,
-        address2: address?.town,
-        prefecture: address?.pref,
-      });
-    } else {
-      form.setFieldsValue({
-        address1: "",
-        address2: "",
-        address3: "",
-        prefecture: "",
-      });
-    }
-  }, [address]);
 
   useEffect(() => {
     const fields = [

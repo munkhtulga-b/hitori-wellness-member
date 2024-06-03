@@ -44,7 +44,8 @@ const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
             <Button
               disabled={
                 !memberPlan?.plan?.is_enabled_withdraw ||
-                memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL
+                memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL ||
+                memberPlan?.status === EEnumPlanStatus.SCHEDULED_CHANGE
               }
               loading={isLoading}
               className="tw-w-[100px]"

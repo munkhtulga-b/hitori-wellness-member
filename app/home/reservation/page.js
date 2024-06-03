@@ -46,7 +46,6 @@ const ProgramsPage = () => {
   const [isMounted, setIsMounted] = useState(false);
 
   const reservationBody = useReservationStore((state) => state.getBody());
-  const setReservationBody = useReservationStore((state) => state.setBody);
   const [isFetching, setIsFetching] = useState({
     programs: false,
     coaches: false,
@@ -84,11 +83,6 @@ const ProgramsPage = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    setReservationBody({
-      ...reservationBody,
-      time: null,
-      program: reservationBody?.program ?? null,
-    });
     fetchMemberPlan();
   }, []);
 
