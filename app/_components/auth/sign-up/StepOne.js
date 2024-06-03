@@ -248,7 +248,7 @@ const SignupStepOne = ({ onComplete }) => {
               <Select
                 placement="bottomLeft"
                 popupMatchSelectWidth={200}
-                virtual={false}
+                onPopupScroll={(e) => e.stopPropagation()}
                 // showSearch
                 // optionFilterProp="children"
                 // filterOption={(input, option) =>
@@ -275,7 +275,7 @@ const SignupStepOne = ({ onComplete }) => {
               ]}
             >
               <Select
-                virtual={false}
+                onPopupScroll={(e) => e.stopPropagation()}
                 placement="bottomLeft"
                 popupMatchSelectWidth={200}
                 // showSearch
@@ -306,7 +306,7 @@ const SignupStepOne = ({ onComplete }) => {
               <Select
                 placement="bottomLeft"
                 popupMatchSelectWidth={200}
-                virtual={false}
+                onPopupScroll={(e) => e.stopPropagation()}
                 // showSearch
                 // optionFilterProp="children"
                 // filterOption={(input, option) =>
