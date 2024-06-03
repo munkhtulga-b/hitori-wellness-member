@@ -88,6 +88,8 @@ const EditUserInfo = () => {
   };
 
   const updateUserDetails = async (params) => {
+    params.tel = params.tel?.replace("-", "");
+    params.emergencyTel = params.emergencyTel?.replace("-", "");
     const birthday = `${params.birthYear}-${params.birthMonth}-${params.birthDay}`;
     delete params.birthYear;
     delete params.birthMonth;
