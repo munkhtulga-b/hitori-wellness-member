@@ -9,7 +9,7 @@ export default function AuthLayout({ children }) {
   const pathName = usePathname();
 
   return (
-    <div className="tw-flex tw-flex-col">
+    <div className="tw-flex tw-flex-col tw-overflow-auto">
       <>
         <Suspense fallback={<></>}>
           <MainHeader />

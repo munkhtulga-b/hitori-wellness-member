@@ -246,7 +246,7 @@ const SignupStepOne = ({ onComplete }) => {
               ]}
             >
               <Select
-                placement="bottomLeft"
+                placement="topLeft"
                 popupMatchSelectWidth={200}
                 // showSearch
                 // optionFilterProp="children"
