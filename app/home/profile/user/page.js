@@ -87,20 +87,24 @@ const EditUserInfo = () => {
     setIsFetching(false);
   };
 
-  const updateUserDetails = async (params) => {
-    params.tel = params.tel?.replace("-", "");
-    params.emergencyTel = params.emergencyTel?.replace("-", "");
-    const birthday = `${params.birthYear}-${params.birthMonth}-${params.birthDay}`;
-    delete params.birthYear;
-    delete params.birthMonth;
-    delete params.birthDay;
-    const body = { ...params, birthday };
+  const updateUserDetails = async (body) => {
     setIsRequesting(true);
     const { isOk } = await $api.member.user.update(getUser.id, body);
     if (isOk) {
       messageApi.success("更新されました。");
     }
     setIsRequesting(false);
+  };
+
+  const beforeComplete = (params) => {
+    params.tel = params.tel?.replace(/-/g, "");
+    params.emergencyTel = params.emergencyTel?.replace(/-/g, "");
+    const birthday = `${params.birthYear}-${params.birthMonth}-${params.birthDay}`;
+    delete params.birthYear;
+    delete params.birthMonth;
+    delete params.birthDay;
+    const body = { ...params, birthday };
+    updateUserDetails(body);
   };
 
   const customizeRequiredMark = (label, { required }) => (
@@ -122,7 +126,7 @@ const EditUserInfo = () => {
           requiredMark={customizeRequiredMark}
           form={form}
           name="UserInfo"
-          onFinish={(params) => updateUserDetails(params)}
+          onFinish={(params) => beforeComplete(params)}
         >
           <Form.Item>
             <section className="tw-p-3 tw-rounded-lg tw-bg-bgForm tw-border tw-border-form">
