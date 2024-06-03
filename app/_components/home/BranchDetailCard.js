@@ -85,6 +85,20 @@ const BranchDetailCard = ({
     return result;
   };
 
+  const isReserveDisabled = () => {
+    let result = false;
+    if (isReachedMaxReservation()) {
+      if (isBranchPermitted()) {
+        result = false;
+      } else {
+        result = true;
+      }
+    } else {
+      result = true;
+    }
+    return result;
+  };
+
   return (
     <>
       {isMounted ? (
@@ -202,7 +216,7 @@ const BranchDetailCard = ({
         </section> */}
           <section className="tw-mt-1">
             <Button
-              disabled={isReachedMaxReservation() && !isBranchPermitted()}
+              disabled={isReserveDisabled()}
               onClick={handleMakeReservation}
               size="large"
               type="primary"
