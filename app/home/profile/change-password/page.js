@@ -17,7 +17,7 @@ const ChangePassword = () => {
 
   const onFinish = (params) => {
     if (
-      !isValidPassword(params.newConfirm)?.cretariasMet < 2 &&
+      isValidPassword(params.newConfirm)?.cretariasMet < 2 ||
       !isValidPassword(params.newConfirm)?.isLongEnough
     ) {
       return messageApi.error(
