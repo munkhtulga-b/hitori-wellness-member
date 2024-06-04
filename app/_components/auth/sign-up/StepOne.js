@@ -1,11 +1,9 @@
-import dayjs from "dayjs";
-import { Button, Form, Input, Select, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useSignupStore } from "@/app/_store/user-signup";
 import { useEffect, useState } from "react";
-import { getYears, getMonths, getDays } from "@/app/_utils/helpers";
-import _ from "lodash";
 import $api from "@/app/_api";
 import { useRouter } from "next/navigation";
+import MobileDOBSelector from "../../custom/MobileDOBSelector";
 
 const SignupStepOne = ({ onComplete }) => {
   const router = useRouter();
@@ -17,14 +15,8 @@ const SignupStepOne = ({ onComplete }) => {
   const birthMonth = Form.useWatch("birthMonth", form);
   const [isEmailAvailable, setIsEmailAvailable] = useState(true);
 
-  const minAge = 15;
-  const maxAge = 100;
-
   useEffect(() => {
     assignFieldsValue();
-    if (Object.keys(signupStore)?.length < 2) {
-      form.setFieldValue("birthYear", 1980);
-    }
   }, []);
 
   useEffect(() => {
@@ -53,17 +45,6 @@ const SignupStepOne = ({ onComplete }) => {
         if (key === "gender") {
           setGenderValue(value);
           form.setFieldValue("gender", value);
-        } else if (key === "birthday") {
-          const birthYear = dayjs(value).format("YYYY");
-          const birthMonth = dayjs(value).format("MM");
-          const birthDay = dayjs(value).format("DD");
-          form.setFieldValue("birthYear", Number(birthYear));
-          setTimeout(() => {
-            form.setFieldValue("birthMonth", Number(birthMonth));
-          }, 200);
-          setTimeout(() => {
-            form.setFieldValue("birthDay", Number(birthDay));
-          }, 300);
         } else {
           form.setFieldValue(key, value);
         }
@@ -89,13 +70,6 @@ const SignupStepOne = ({ onComplete }) => {
         "このメールアドレスは既に登録されています。ログインするか、別のメールアドレスで新規アカウントを作成してください。パスワードをお忘れの場合はこちら。"
       );
     }
-    const birthday = dayjs(
-      `${params.birthYear}-${params.birthMonth}-${params.birthDay}`
-    ).format("YYYY-MM-DD");
-    delete params.birthYear;
-    delete params.birthMonth;
-    delete params.birthDay;
-    params["birthday"] = birthday;
     params.mailAddress = params.mailAddress.toLowerCase();
     onComplete(params);
   };
@@ -235,7 +209,18 @@ const SignupStepOne = ({ onComplete }) => {
           <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
             生年月日
           </label>
-          <div className="tw-grid tw-grid-cols-3 tw-gap-2">
+          <Form.Item
+            name="birthday"
+            rules={[
+              { required: true, message: "生年月日を入力してください。" },
+            ]}
+          >
+            <MobileDOBSelector
+              data={signupStore?.birthday}
+              onChange={(value) => form.setFieldValue("birthday", value)}
+            />
+          </Form.Item>
+          {/* <div className="tw-grid tw-grid-cols-3 tw-gap-2">
             <Form.Item
               name="birthYear"
               rules={[
@@ -329,7 +314,7 @@ const SignupStepOne = ({ onComplete }) => {
                 placeholder="01"
               />
             </Form.Item>
-          </div>
+          </div> */}
         </section>
 
         <section className="tw-flex tw-flex-col tw-gap-2">
