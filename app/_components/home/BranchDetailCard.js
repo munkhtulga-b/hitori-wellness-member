@@ -66,9 +66,6 @@ const BranchDetailCard = ({
     ) {
       result = true;
     }
-    console.log(
-      `reservations: ${reservations?.length}, max: ${memberPlan[0]?.plan?.max_cc_reservable_num_by_plan}`
-    );
     return result;
   };
 
@@ -91,7 +88,6 @@ const BranchDetailCard = ({
         result.ticket = true;
       }
     }
-    console.log(result);
     return result;
   };
 
