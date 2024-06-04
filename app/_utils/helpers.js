@@ -169,9 +169,13 @@ export const getDays = (year, month) => {
   const daysInMonth = date.daysInMonth();
 
   // Generate an array of days for the month
-  const days = Array.from({ length: daysInMonth }, (_, i) =>
-    String(i + 1).padStart(2, "0")
-  );
+  const days = Array.from({ length: daysInMonth }, (_, i) => {
+    const day = String(i + 1).padStart(2, "0");
+    return {
+      value: day,
+      label: day,
+    };
+  });
 
   return days;
 };

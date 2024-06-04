@@ -93,10 +93,14 @@ const TimeSlotSelectNoProgram = ({
     const branchEndTime =
       getReservation.branch?.timeperiod_details[0]?.end_hour;
     const start = dayjs(`01/01/2024 ${branchStartTime}`);
-    const end = dayjs(`01/01/2024 ${branchEndTime}`);
+    let end = dayjs(`01/01/2024 ${branchEndTime}`);
+
+    // If the end time is earlier than the start time, it means it spans to the next day
+    if (end.isBefore(start)) {
+      end = end.add(1, "day");
+    }
 
     const times = [];
-
     let currentTime = start;
 
     while (currentTime.isBefore(end)) {
