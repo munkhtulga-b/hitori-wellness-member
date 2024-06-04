@@ -15,11 +15,11 @@ export const metadata = {
   },
   description: process.env.BASE_META_DESCRIPTION,
   robots: {
-    index: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? true : false,
-    follow: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? true : false,
+    index: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? false : false, // Disables indexing in search engines (made it dynamic for future use)
+    follow: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? false : false,
     googleBot: {
-      index: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? true : false,
-      follow: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? true : false,
+      index: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? false : false,
+      follow: process.env.NEXT_PUBLIC_APP_ENV === "prod" ? false : false,
       noimageindex: true,
       "max-video-preview": -1,
       "max-image-preview": "large",
