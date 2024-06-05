@@ -10,6 +10,18 @@ import $api from "@/app/_api";
 import { usePurchaseStore } from "@/app/_store/purchase";
 import { useRouter } from "next/navigation";
 import _ from "lodash";
+import PlanTicketFilter from "@/app/_components/home/profile/plan/PlanTicketFilter";
+
+const filterOptions = [
+  {
+    value: "PLAN",
+    label: "プラン",
+  },
+  {
+    value: "TICKET",
+    label: "チケット",
+  },
+];
 
 const PurchaseSubscription = () => {
   const router = useRouter();
@@ -19,6 +31,8 @@ const PurchaseSubscription = () => {
   const [plans, setPlans] = useState(null);
   const [tickets, setTickets] = useState(null);
   const [expandedItems, setExpandedItems] = useState([]);
+
+  const [activeFilterId, setActiveFilterId] = useState(null);
 
   useEffect(() => {
     fetchPlans();
@@ -95,9 +109,16 @@ const PurchaseSubscription = () => {
             プラン・チケットをお選びください
           </span>
         </section>
+        <section>
+          <PlanTicketFilter
+            options={filterOptions}
+            activeFilterId={activeFilterId}
+            setActiveFilterId={setActiveFilterId}
+          />
+        </section>
         {!isLoading ? (
           <>
-            {plans?.length ? (
+            {plans?.length && (activeFilterId === "PLAN" || !activeFilterId) ? (
               <>
                 {plans.map((plan) => {
                   return (
@@ -150,10 +171,9 @@ const PurchaseSubscription = () => {
                   );
                 })}
               </>
-            ) : (
-              <NoData message={"No data"} />
-            )}
-            {tickets?.length ? (
+            ) : null}
+            {tickets?.length &&
+            (activeFilterId === "TICKET" || !activeFilterId) ? (
               <>
                 {tickets.map((ticket) => {
                   return (
@@ -208,6 +228,9 @@ const PurchaseSubscription = () => {
                   );
                 })}
               </>
+            ) : null}
+            {!plans?.length && tickets?.length ? (
+              <NoData message={"No data"} />
             ) : null}
           </>
         ) : (
