@@ -22,7 +22,7 @@ const PlanTicketFilter = ({ activeFilterId, setActiveFilterId, options }) => {
           }}
         >
           <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
-            <span>絞り込み</span>
+            <span>全て</span>
             {!activeFilterId === null ? (
               <Image
                 src="/assets/branch/close-icon-blue.svg"
