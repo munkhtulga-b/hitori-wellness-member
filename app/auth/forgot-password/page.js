@@ -14,6 +14,7 @@ const AuthPasswordReset = () => {
     setIsLoading(true);
     const { isOk } = await $api.auth.forgotPassword(params);
     if (isOk) {
+      form.resetFields();
       setRequestedEmail(params.email);
       setIsSent(true);
     }
@@ -69,13 +70,19 @@ const AuthPasswordReset = () => {
         </Form>
       </section>
       {isSent && (
-        <section className="tw-mt-6 tw-p-4 tw-border tw-border-info tw-rounded-xl">
+        <section className="tw-mt-6 tw-p-4 tw-border tw-border-info tw-rounded-xl tw-flex tw-flex-col">
           <p className="tw-text-sm tw-leading-6 tw-tracking-[0.12px]">
             {`登録されたメールアドレス（${
               requestedEmail ?? "mailaddress"
             }）に　パスワードリセットメールを送信しました。
             メールを確認して本文内のリンクからパスワードリセットページにアクセスしてください。`}
           </p>
+          <span
+            onClick={() => onFinish({ email: requestedEmail })}
+            className="tw-self-center tw-text-support tw-underline tw-underline-offset-2 tw-cursor-pointer"
+          >
+            確認メールを再送信する
+          </span>
         </section>
       )}
     </div>
