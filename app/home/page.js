@@ -10,6 +10,7 @@ import $api from "../_api";
 import _ from "lodash";
 import BranchCard from "../_components/home/BranchCard";
 import VerificationReminder from "../_components/home/VerificationReminder";
+import EEnumDataBaseStatus from "../_enums/EEnumDataBaseStatus";
 
 const HomePage = () => {
   const [branchList, setBranchList] = useState(null);
@@ -37,7 +38,9 @@ const HomePage = () => {
   const fetchHomeBranch = async () => {
     const { isOk, data } = await $api.member.memberPlan.getMany();
     if (isOk && data?.length) {
-      setHomeBranch(data[0].studio);
+      if (data[0]?.studio?.status === EEnumDataBaseStatus.ACTIVE) {
+        setHomeBranch(data[0].studio);
+      }
     }
   };
 

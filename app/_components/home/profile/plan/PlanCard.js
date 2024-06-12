@@ -86,9 +86,9 @@ const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
             ) : null}
             {memberPlan?.cancel_date ? (
               <span>
-                {`現プランは${dayjs(memberPlan?.cancel_date)
+                {`新プラン${dayjs(memberPlan?.cancel_date)
                   .add(1, "day")
-                  .format("YYYY年MM月DD日")}日から有効になります。`}
+                  .format("YYYY年MM月DD日")}から有効になります。`}
               </span>
             ) : null}
           </div>
