@@ -3,13 +3,16 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Button } from "antd";
 import { useCallback } from "react";
+import { usePurchaseStore } from "@/app/_store/purchase";
 
 const BranchListView = ({ list, cardType }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const path = usePathname();
 
-  const onselect = ({ id }) => {
+  const setPurchaseBody = usePurchaseStore((state) => state.setBody);
+
+  const onSelect = ({ id }) => {
     if (path === "/home/profile/plan/change") {
       return router.push(`${path}?${createQueryString("studioId", id)}`);
     }
@@ -44,7 +47,7 @@ const BranchListView = ({ list, cardType }) => {
             {list.map((branch) => {
               return (
                 <div
-                  onClick={() => onselect(branch)}
+                  onClick={() => onSelect(branch)}
                   key={branch.id}
                   className="tw-flex tw-flex-col tw-gap-2 tw-p-2 tw-rounded-lg tw-shadow tw-bg-white"
                 >
@@ -86,9 +89,12 @@ const BranchListView = ({ list, cardType }) => {
                   {cardType === "purchase" ? (
                     <section>
                       <Button
-                        onClick={() =>
-                          router.push(`/home/profile/purchase/plan`)
-                        }
+                        onClick={() => {
+                          setPurchaseBody({ branch: branch });
+                          setTimeout(() => {
+                            router.push(`/home/profile/purchase/plan`);
+                          });
+                        }}
                         size="small"
                         className="tw-w-full"
                       >
