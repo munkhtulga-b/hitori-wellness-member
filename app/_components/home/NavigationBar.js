@@ -29,11 +29,13 @@ const NavigationBar = ({ setCollapsed, collapsed }) => {
           src="/assets/logo-white.png"
           alt="logo"
           width={188}
-          height={28}
+          height={0}
           style={{
             cursor: "pointer",
+            height: "auto",
           }}
           onClick={() => router.push("/")}
+          unoptimized
         />
         <Image
           src="/assets/navbar-menu-toggler.svg"
