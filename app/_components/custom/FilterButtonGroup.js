@@ -18,8 +18,6 @@ const FilterButtonGroup = ({
     setActiveFilterId(value);
   };
 
-  console.log(options);
-
   return (
     <>
       <div className="tw-flex tw-flex-wrap tw-justify-start tw-items-center tw-gap-2">

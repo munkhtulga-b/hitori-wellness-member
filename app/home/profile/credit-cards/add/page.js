@@ -14,7 +14,6 @@ const AddCreditCard = () => {
 
   const onFinish = (params) => {
     params.cardNumber = +params.cardNumber;
-    params.cvc = +params.cvc;
 
     const body = {
       cardName: params.cardName,
