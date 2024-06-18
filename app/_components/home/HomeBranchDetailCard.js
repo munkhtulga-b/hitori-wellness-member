@@ -147,7 +147,7 @@ const HomeBranchDetailCard = ({
           <>
             <ReservationCard
               reservation={nearestReservation}
-              activeFilterId={{
+              activeFilter={{
                 id: ReservationStatusEnum.ACTIVE,
                 text: "予約中",
               }}
