@@ -67,7 +67,7 @@ const SignupStepOne = ({ onComplete }) => {
   const onFinish = (params) => {
     if (!isEmailAvailable) {
       return messageApi.error(
-        "このメールアドレスは既に登録されています。ログインするか、別のメールアドレスで新規アカウントを作成してください。パスワードをお忘れの場合はこちら。"
+        "このメールアドレスは既に登録されています。ログインするか、別のメールアドレスで新規アカウントを作成してください。"
       );
     }
     params.mailAddress = params.mailAddress.toLowerCase();
@@ -182,7 +182,7 @@ const SignupStepOne = ({ onComplete }) => {
                 {
                   required: true,
                   message: "姓（カナ）を入力してください。",
-                  pattern: /^[\u30A1-\u30F6\s]+$/, // Katakana characters and spaces
+                  pattern: /^[\u30A1-\u30F6\u30FC\s]+$/, // Katakana characters and spaces
                   whitespace: true,
                 },
               ]}
@@ -195,7 +195,7 @@ const SignupStepOne = ({ onComplete }) => {
                 {
                   required: true,
                   message: "名（カナ）を入力してください。",
-                  pattern: /^[\u30A1-\u30F6\s]+$/, // Katakana characters and spaces
+                  pattern: /^[\u30A1-\u30F6\u30FC\s]+$/, // Katakana characters and spaces
                   whitespace: true,
                 },
               ]}
