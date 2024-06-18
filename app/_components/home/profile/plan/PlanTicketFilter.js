@@ -5,6 +5,8 @@ import { nullSafety } from "@/app/_utils/helpers";
 const PlanTicketFilter = ({ activeFilterId, setActiveFilterId, options }) => {
   const handleFilterClick = (value) => {
     if (activeFilterId === value) {
+      const el = document.getElementById(`filter-${value}`);
+      el?.blur();
       return setActiveFilterId(null);
     }
     setActiveFilterId(value);
@@ -37,6 +39,7 @@ const PlanTicketFilter = ({ activeFilterId, setActiveFilterId, options }) => {
         {options.map((option) => {
           return (
             <Button
+              id={`filter-${option.value}`}
               size="small"
               key={option.value}
               onClick={() => handleFilterClick(option.value)}

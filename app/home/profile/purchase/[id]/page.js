@@ -158,7 +158,7 @@ const SubscriptionDetail = () => {
               itemType === "plan"
                 ? getPuchaseBody[itemType].monthly_price
                 : getPuchaseBody[itemType].prices[0].price
-            )}（税込）／月`}</span>
+            )}（税込）${itemType === "plan" ? "／月" : "／回"}`}</span>
           </div>
         </section>
         <section className="tw-grow tw-mt-4">
@@ -608,7 +608,7 @@ const SubscriptionDetail = () => {
             <Button
               size="large"
               className="tw-w-[80px]"
-              onClick={() => router.back()}
+              onClick={() => setStep(2)}
             >
               戻る
             </Button>

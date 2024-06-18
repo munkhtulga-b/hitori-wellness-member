@@ -11,10 +11,14 @@ const FilterButtonGroup = ({
 }) => {
   const handleFilterClick = (value) => {
     if (activeFilterId === value) {
+      const el = document.getElementById(`filter-${value}`);
+      el?.blur();
       return setActiveFilterId(null);
     }
     setActiveFilterId(value);
   };
+
+  console.log(options);
 
   return (
     <>
@@ -43,6 +47,7 @@ const FilterButtonGroup = ({
         {options.map((filter, idx) => {
           return (
             <Button
+              id={`filter-${idx}`}
               size="small"
               key={idx}
               onClick={() => handleFilterClick(idx)}
