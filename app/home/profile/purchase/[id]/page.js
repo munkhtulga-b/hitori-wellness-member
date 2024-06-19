@@ -64,6 +64,7 @@ const SubscriptionDetail = () => {
     setIsLoading((prev) => ({ ...prev, isRequesting: true }));
     const { isOk, data } = await $api.member.purchase.create(body);
     if (isOk) {
+      setPurchaseBody({ item: data?.memberTicket });
       setStep(3);
     } else {
       setPurchaseError(data?.error?.message);
@@ -120,6 +121,11 @@ const SubscriptionDetail = () => {
 
   const onContinueReservation = () => {
     setReservationBody({ branch: getPuchaseBody.branch });
+    if (getPuchaseBody?.item) {
+      setReservationBody({
+        ticket: getPuchaseBody.item,
+      });
+    }
     router.push(`/home/reservation`);
     reserPurchaseBody();
   };
@@ -554,7 +560,9 @@ const SubscriptionDetail = () => {
             ]}
             getValueFromEvent={(e) => {
               const value = e.target.value;
-              const alphabetString = value.replace(/[^a-zA-Z]/g, "");
+              const alphabetString = value
+                .replace(/[^a-zA-Z\s]/g, "")
+                .replace(/\s\s+/g, " ");
               return alphabetString;
             }}
           >

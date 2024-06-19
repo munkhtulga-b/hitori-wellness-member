@@ -94,7 +94,9 @@ const AddCreditCard = () => {
               ]}
               getValueFromEvent={(e) => {
                 const value = e.target.value;
-                const alphabetString = value.replace(/[^a-zA-Z]/g, "");
+                const alphabetString = value
+                  .replace(/[^a-zA-Z\s]/g, "")
+                  .replace(/\s\s+/g, " ");
                 return alphabetString;
               }}
             >

@@ -229,9 +229,7 @@ const PurchaseSubscription = () => {
                 })}
               </>
             ) : null}
-            {!plans?.length && tickets?.length ? (
-              <NoData message={"No data"} />
-            ) : null}
+            {!plans?.length && tickets?.length ? <NoData /> : null}
           </>
         ) : (
           <FullScreenLoading isLoading={isLoading} />

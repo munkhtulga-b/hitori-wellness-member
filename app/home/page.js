@@ -11,16 +11,20 @@ import _ from "lodash";
 import BranchCard from "../_components/home/BranchCard";
 import VerificationReminder from "../_components/home/VerificationReminder";
 import EEnumDataBaseStatus from "../_enums/EEnumDataBaseStatus";
+import { useUserStore } from "../_store/user";
 
 const HomePage = () => {
+  const user = useUserStore((state) => state.getUser());
   const [branchList, setBranchList] = useState(null);
   const [homeBranch, setHomeBranch] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeFilterId, setActiveFilterId] = useState(null);
 
   useEffect(() => {
-    fetchBranches();
-    fetchHomeBranch();
+    if (user?.is_verified) {
+      fetchBranches();
+      fetchHomeBranch();
+    }
   }, []);
 
   const fetchBranches = async () => {
@@ -90,7 +94,7 @@ const HomePage = () => {
               )}
             </>
           ) : (
-            <NoData message={"No data found"} />
+            <NoData message={"データがありません。"} />
           )}
         </>
       ) : (

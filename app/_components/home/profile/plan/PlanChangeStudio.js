@@ -74,7 +74,7 @@ const PlanChangeStudio = () => {
               )}
             </>
           ) : (
-            <NoData message={"No data found"} />
+            <NoData />
           )}
         </>
       ) : (

@@ -86,7 +86,7 @@ const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
             ) : null}
             {memberPlan?.change_date ? (
               <span>
-                {`新プラン${dayjs
+                {`新プランは${dayjs
                   .utc(memberPlan?.change_date)
                   .add(1, "day")
                   .format("YYYY年MM月DD日")}から有効になります。`}

@@ -144,7 +144,7 @@ const PlanChangePlan = ({ currentPlan }) => {
                 })}
               </>
             ) : (
-              <NoData message={"No data"} />
+              <NoData />
             )}
           </>
         ) : (

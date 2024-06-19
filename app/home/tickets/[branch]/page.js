@@ -56,7 +56,7 @@ const ReservationTickets = () => {
               ))}
             </>
           ) : (
-            <NoData message={"No tickets found"} />
+            <NoData />
           )}
         </div>
       ) : (

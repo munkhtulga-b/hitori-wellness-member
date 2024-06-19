@@ -127,7 +127,7 @@ const ProgramDetailCard = () => {
               </div>
             </div>
           ) : (
-            <NoData message={"No Data"} />
+            <NoData />
           )}
         </>
       ) : (
