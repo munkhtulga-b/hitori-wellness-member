@@ -13,7 +13,7 @@ const VerificationReminder = () => {
       email: user?.mail_address,
     });
     if (isOk) {
-      Cookies.remove("token");
+      Cookies.remove("session");
       router.push(`/auth/sign-up?step=complete&email=${user?.mail_address}`);
     }
   };

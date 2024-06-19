@@ -7,15 +7,15 @@ import {
   nullSafety,
   thousandSeparator,
 } from "@/app/_utils/helpers";
-import { Form, Button, Input, Radio, Select, Modal } from "antd";
+import { Form, Button, Input, Radio, Modal } from "antd";
 import Image from "next/image";
 import SuccessAnimation from "@/app/_components/animation/StatusAnimation";
 import FullScreenLoading from "@/app/_components/animation/FullScreenLoading";
 import { motion, AnimatePresence } from "framer-motion";
 import $api from "@/app/_api";
-import dayjs from "dayjs";
 import { usePurchaseStore } from "@/app/_store/purchase";
 import { useReservationStore } from "@/app/_store/reservation";
+import CreditCardExpirySelector from "@/app/_components/custom/CreditCardExpirySelector";
 
 const SubscriptionDetail = () => {
   const router = useRouter();
@@ -64,6 +64,7 @@ const SubscriptionDetail = () => {
     setIsLoading((prev) => ({ ...prev, isRequesting: true }));
     const { isOk, data } = await $api.member.purchase.create(body);
     if (isOk) {
+      setPurchaseBody({ item: data?.memberTicket });
       setStep(3);
     } else {
       setPurchaseError(data?.error?.message);
@@ -120,6 +121,11 @@ const SubscriptionDetail = () => {
 
   const onContinueReservation = () => {
     setReservationBody({ branch: getPuchaseBody.branch });
+    if (getPuchaseBody?.item) {
+      setReservationBody({
+        ticket: getPuchaseBody.item,
+      });
+    }
     router.push(`/home/reservation`);
     reserPurchaseBody();
   };
@@ -158,7 +164,7 @@ const SubscriptionDetail = () => {
               itemType === "plan"
                 ? getPuchaseBody[itemType].monthly_price
                 : getPuchaseBody[itemType].prices[0].price
-            )}（税込）／月`}</span>
+            )}（税込）${itemType === "plan" ? "／月" : "／回"}`}</span>
           </div>
         </section>
         <section className="tw-grow tw-mt-4">
@@ -489,40 +495,16 @@ const SubscriptionDetail = () => {
   const RegisterCreditCard = () => {
     const onFinish = (params) => {
       params.cardNumber = +params.cardNumber;
-      params.cvc = +params.cvc;
 
       const body = {
         cardName: params.cardName,
         cardNumber: params.cardNumber,
         cvc: params.cvc,
-        expireYear: +params.expireYear,
-        expireMonth: +dayjs(params.expireMonth, "MM").format("MM"),
+        expireYear: params?.expiry?.year,
+        expireMonth: params?.expiry?.month,
       };
 
       addCard(body);
-    };
-
-    const generateYears = () => {
-      const numbers = [];
-      const currentYear = dayjs().year().toString();
-      for (let i = currentYear.slice(-2); i < 100; i++) {
-        numbers.push({
-          label: `20${i.toString().padStart(2, "0")}`,
-          value: `20${i.toString().padStart(2, "0")}`,
-        });
-      }
-      return numbers;
-    };
-
-    const generateMonths = () => {
-      const numbers = [];
-      for (let i = 1; i <= 12; i++) {
-        numbers.push({
-          label: i.toString().padStart(2, "0"),
-          value: i.toString().padStart(2, "0"),
-        });
-      }
-      return numbers;
     };
 
     return (
@@ -578,60 +560,29 @@ const SubscriptionDetail = () => {
             ]}
             getValueFromEvent={(e) => {
               const value = e.target.value;
-              const alphabetString = value.replace(/[^a-zA-Z]/g, "");
+              const alphabetString = value
+                .replace(/[^a-zA-Z\s]/g, "")
+                .replace(/\s\s+/g, " ");
               return alphabetString;
             }}
           >
             <Input placeholder="Name" />
           </Form.Item>
 
-          <section className="tw-grid tw-grid-cols-2 tw-auto-rows-auto tw-gap-2">
-            <label className="tw-col-span-full">有効期限</label>
-            <Form.Item
-              name="expireYear"
-              rules={[
-                {
-                  required: true,
-                  message: "年を選択してください。",
-                },
-              ]}
-            >
-              <Select
-                size="large"
-                showSearch
-                placeholder="年"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? "")
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-                options={generateYears()}
-              />
-            </Form.Item>
-            <Form.Item
-              name="expireMonth"
-              rules={[
-                {
-                  required: true,
-                  message: "月を選択してください。",
-                },
-              ]}
-            >
-              <Select
-                size="large"
-                showSearch
-                placeholder="月"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  (option?.label ?? "")
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-                options={generateMonths()}
-              />
-            </Form.Item>
-          </section>
+          <Form.Item
+            name="expiry"
+            label="有効期限"
+            rules={[
+              {
+                required: true,
+                message: "有効期限を入力してください。",
+              },
+            ]}
+          >
+            <CreditCardExpirySelector
+              onChange={(value) => form.setFieldValue("expiry", value)}
+            />
+          </Form.Item>
 
           <section className="tw-flex tw-flex-col tw-gap-1 tw-mb-4">
             <Form.Item
@@ -664,7 +615,7 @@ const SubscriptionDetail = () => {
             <Button
               size="large"
               className="tw-w-[80px]"
-              onClick={() => router.back()}
+              onClick={() => setStep(2)}
             >
               戻る
             </Button>

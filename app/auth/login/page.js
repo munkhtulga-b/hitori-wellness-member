@@ -128,13 +128,9 @@ const AuthLogin = () => {
             border: "0px",
             background: "#F4F5F6",
           }}
+          onClick={() => router.push("/auth/sign-up")}
         >
-          <span
-            onClick={() => router.push("/auth/sign-up")}
-            className="tw-text-lg tw-tracking-[0.16px] tw-cursor-pointer"
-          >
-            新規会員登録
-          </span>
+          新規会員登録
         </Button>
       </section>
     </motion.div>

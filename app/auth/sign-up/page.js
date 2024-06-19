@@ -36,6 +36,8 @@ const AuthSignup = () => {
   };
 
   const handleStepTwo = (params) => {
+    params.tel = params.tel?.replace(/-/g, "");
+    params.emergencyTel = params.emergencyTel?.replace(/-/g, "");
     updateRequestBody(params);
     router.push(pathName + "?" + createQueryString("step", 3));
     setCurrentForm((prev) => prev + 1);
@@ -48,16 +50,18 @@ const AuthSignup = () => {
 
   const registerUser = async (params) => {
     setIsLoading(true);
-    // const utm_source = searchParams.get("utm_source");
-    // const utm_medium = searchParams.get("utm_medium");
-    // const utm_campaign = searchParams.get("utm_campaign");
-    // const utm_term = searchParams.get("utm_term");
-    // if (utm_source) {
-    //   params.utmSource = utm_source;
-    //   params.utmMedium = utm_medium;
-    //   params.utmCampaign = utm_campaign;
-    //   params.utmTerm = utm_term;
-    // }
+    const utm_source = searchParams.get("utm_source");
+    const utm_medium = searchParams.get("utm_medium");
+    const utm_campaign = searchParams.get("utm_campaign");
+    const utm_term = searchParams.get("utm_term");
+    if (utm_source && utm_campaign && utm_medium) {
+      params.utmSource = utm_source;
+      params.utmMedium = utm_medium;
+      params.utmCampaign = utm_campaign;
+      if (utm_term) {
+        params.utmTerm = utm_term;
+      }
+    }
     const { isOk } = await $api.auth.register(params);
     if (isOk) {
       router.push(pathName + "?" + createQueryString("step", "complete"));

@@ -68,7 +68,7 @@ const PlanDetailCard = () => {
               </section>
             </div>
           ) : (
-            <NoData message="No plan was found" />
+            <NoData />
           )}
         </>
       ) : (

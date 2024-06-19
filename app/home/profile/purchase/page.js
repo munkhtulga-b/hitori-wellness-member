@@ -74,7 +74,7 @@ const PurchasePage = () => {
               )}
             </>
           ) : (
-            <NoData message={"No data found"} />
+            <NoData />
           )}
         </>
       ) : (

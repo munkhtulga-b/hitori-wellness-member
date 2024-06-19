@@ -9,7 +9,7 @@ const SignupStepThree = ({ onComplete, isLoading }) => {
 
   const onFinish = (params) => {
     if (
-      !isValidPassword(params.confirm)?.cretariasMet < 2 ||
+      isValidPassword(params.confirm)?.cretariasMet < 2 ||
       !isValidPassword(params.confirm)?.isLongEnough
     ) {
       return messageApi.error(

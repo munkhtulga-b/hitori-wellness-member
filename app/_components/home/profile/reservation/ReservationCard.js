@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 const ReservationCard = ({
   reservation,
-  activeFilterId,
+  activeFilter,
   editReservation,
   fetchList,
 }) => {
@@ -39,11 +39,11 @@ const ReservationCard = ({
   return (
     <>
       <>
-        {activeFilterId === ReservationStatusEnum.CANCELLED ||
-        activeFilterId === ReservationStatusEnum.AUTOMATIC_CANCELLATION ? (
+        {activeFilter?.id === ReservationStatusEnum.CANCELLED ||
+        activeFilter?.id === ReservationStatusEnum.AUTOMATIC_CANCELLATION ? (
           <section className="tw-absolute tw-top-4 tw--right-4 tw-rotate-[38deg]">
             <span className="tw-text-sm tw-leading-6 tw-tracking-[0.12px] tw-py-[2px] tw-px-2 tw-rounded-full tw-shadow">
-              キャンセル済み
+              {activeFilter?.text}
             </span>
           </section>
         ) : null}
@@ -129,7 +129,7 @@ const ReservationCard = ({
             </section>
           </div>
         </section> */}
-        {activeFilterId === ReservationStatusEnum.ACTIVE ? (
+        {activeFilter?.id === ReservationStatusEnum.ACTIVE ? (
           <>
             {reservation.m_program?.cancellation_policy ? (
               <section className="tw-p-2 tw-rounded-xl tw-border-2 tw-border-info">

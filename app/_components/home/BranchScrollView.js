@@ -15,7 +15,7 @@ const BranchScroller = ({ list, setActiveFilterId, filterId, cardType }) => {
               onClick={() => setActiveFilterId(filterId)}
               className="tw-text-sm tw-text-support tw-font-medium tw-tracking-[0.12px] tw-underline tw-underline-offset-2"
             >
-              全て
+              絞り込み
             </span>
           </section>
           <section className="tw-flex tw-justify-start tw-items-stretch tw-gap-4 tw-overflow-x-auto tw-pb-1">

@@ -11,7 +11,8 @@ const CheckInHistory = () => {
         </section>
 
         {/* <section className="tw-flex tw-flex-wrap tw-justify-start tw-items-center tw-gap-2">
-          <Button>全て</Button>
+          <Button>全て
+</Button>
           <Button>チェックイン</Button>
           <Button>チェックアウト</Button>
         </section> */}

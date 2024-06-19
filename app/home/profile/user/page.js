@@ -1,14 +1,13 @@
 "use client";
 
-import dayjs from "dayjs";
 import { useRouter } from "next/navigation";
-import { Button, Form, Input, Select, Checkbox, Spin, message } from "antd";
+import { Button, Form, Input, Checkbox, Spin, message } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import { nullSafety, getYears, getMonths, getDays } from "@/app/_utils/helpers";
+import { nullSafety } from "@/app/_utils/helpers";
 import { useEffect, useState } from "react";
 import { useUserStore } from "@/app/_store/user";
 import $api from "@/app/_api";
-import _ from "lodash";
+import MobileDOBSelector from "@/app/_components/custom/MobileDOBSelector";
 
 const EditUserInfo = () => {
   const router = useRouter();
@@ -20,9 +19,6 @@ const EditUserInfo = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [isRequesting, setIsRequesting] = useState(false);
   const [user, setUser] = useState(null);
-
-  const minAge = 15;
-  const maxAge = 100;
 
   useEffect(() => {
     fetchUserDetails();
@@ -60,19 +56,9 @@ const EditUserInfo = () => {
     ];
     if (user) {
       for (const { camel, snake } of fields) {
-        if (snake === "birthday") {
-          form.setFieldValue("birthYear", dayjs(user[snake]).format("YYYY"));
-          setTimeout(() => {
-            form.setFieldValue("birthMonth", dayjs(user[snake]).format("MM"));
-          }, 200);
-          setTimeout(() => {
-            form.setFieldValue("birthDay", dayjs(user[snake]).format("DD"));
-          }, 400);
-        } else {
-          form.setFieldsValue({
-            [camel]: user[snake],
-          });
-        }
+        form.setFieldsValue({
+          [camel]: user[snake],
+        });
       }
     }
   }, [user]);
@@ -87,18 +73,19 @@ const EditUserInfo = () => {
     setIsFetching(false);
   };
 
-  const updateUserDetails = async (params) => {
-    const birthday = `${params.birthYear}-${params.birthMonth}-${params.birthDay}`;
-    delete params.birthYear;
-    delete params.birthMonth;
-    delete params.birthDay;
-    const body = { ...params, birthday };
+  const updateUserDetails = async (body) => {
     setIsRequesting(true);
     const { isOk } = await $api.member.user.update(getUser.id, body);
     if (isOk) {
       messageApi.success("更新されました。");
     }
     setIsRequesting(false);
+  };
+
+  const beforeComplete = (params) => {
+    params.tel = params.tel?.replace(/-/g, "");
+    params.emergencyTel = params.emergencyTel?.replace(/-/g, "");
+    updateUserDetails(params);
   };
 
   const customizeRequiredMark = (label, { required }) => (
@@ -120,7 +107,7 @@ const EditUserInfo = () => {
           requiredMark={customizeRequiredMark}
           form={form}
           name="UserInfo"
-          onFinish={(params) => updateUserDetails(params)}
+          onFinish={(params) => beforeComplete(params)}
         >
           <Form.Item>
             <section className="tw-p-3 tw-rounded-lg tw-bg-bgForm tw-border tw-border-form">
@@ -182,7 +169,7 @@ const EditUserInfo = () => {
                   {
                     required: true,
                     message: "姓（カナ）を入力してください。",
-                    pattern: /^[\u30A1-\u30F6\s]+$/, // Katakana characters and spaces
+                    pattern: /^[\u30A1-\u30F6\u30FC\s]+$/, // Katakana characters and spaces
                     whitespace: true,
                   },
                 ]}
@@ -195,7 +182,7 @@ const EditUserInfo = () => {
                   {
                     required: true,
                     message: "名（カナ）を入力してください。",
-                    pattern: /^[\u30A1-\u30F6\s]+$/, // Katakana characters and spaces
+                    pattern: /^[\u30A1-\u30F6\u30FC\s]+$/, // Katakana characters and spaces
                     whitespace: true,
                   },
                 ]}
@@ -209,88 +196,17 @@ const EditUserInfo = () => {
             <label className="after:tw-content-['*'] after:tw-text-required after:tw-ml-1">
               生年月日
             </label>
-            <div className="tw-grid tw-grid-cols-3 tw-gap-2">
-              <Form.Item
-                name="birthYear"
-                rules={[
-                  {
-                    required: true,
-                    message: "ご選択ください。",
-                  },
-                ]}
-              >
-                <Select
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label?.toString() ?? "")
-                      .toLowerCase()
-                      .includes(input.toString().toLowerCase())
-                  }
-                  style={{
-                    width: "100%",
-                  }}
-                  size="large"
-                  options={getYears(minAge, maxAge)}
-                  placeholder="1990"
-                />
-              </Form.Item>
-              <Form.Item
-                name="birthMonth"
-                rules={[
-                  {
-                    required: true,
-                    message: "ご選択ください。",
-                  },
-                ]}
-              >
-                <Select
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label?.toString() ?? "")
-                      .toLowerCase()
-                      .includes(input.toString().toLowerCase())
-                  }
-                  disabled={!birthYear}
-                  style={{
-                    width: "100%",
-                  }}
-                  size="large"
-                  options={getMonths()}
-                  placeholder="01"
-                />
-              </Form.Item>
-              <Form.Item
-                name="birthDay"
-                rules={[
-                  {
-                    required: true,
-                    message: "ご選択ください。",
-                  },
-                ]}
-              >
-                <Select
-                  showSearch
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (option?.label?.toString() ?? "")
-                      .toLowerCase()
-                      .includes(input.toString().toLowerCase())
-                  }
-                  disabled={!birthYear || !birthMonth}
-                  style={{
-                    width: "100%",
-                  }}
-                  size="large"
-                  options={_.map(getDays(birthYear, birthMonth), (day) => ({
-                    value: day,
-                    label: day,
-                  }))}
-                  placeholder="01"
-                />
-              </Form.Item>
-            </div>
+            <Form.Item
+              name="birthday"
+              rules={[
+                { required: true, message: "生年月日を入力してください。" },
+              ]}
+            >
+              <MobileDOBSelector
+                data={user?.birthday}
+                onChange={(value) => form.setFieldValue("birthday", value)}
+              />
+            </Form.Item>
           </section>
 
           <Form.Item
@@ -330,7 +246,7 @@ const EditUserInfo = () => {
               return value.replace(/[^0-9-]/g, "");
             }}
           >
-            <Input placeholder="電話番号" type="number" />
+            <Input placeholder="電話番号" />
           </Form.Item>
 
           <section className="tw-flex tw-flex-col tw-gap-2">
@@ -479,7 +395,7 @@ const EditUserInfo = () => {
               return value.replace(/[^0-9-]/g, "");
             }}
           >
-            <Input placeholder="電話番号" type="number" />
+            <Input placeholder="電話番号" />
           </Form.Item>
 
           <Form.Item

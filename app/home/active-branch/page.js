@@ -65,7 +65,7 @@ const HomeBranchDetailPage = () => {
                   fetchReservations={fetchReservations}
                 />
               ) : (
-                <NoData message={"No branch found"} />
+                <NoData />
               )}
             </>
           ) : null}

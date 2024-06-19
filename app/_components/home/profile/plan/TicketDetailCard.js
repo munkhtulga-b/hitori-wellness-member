@@ -66,7 +66,7 @@ const TicketDetailCard = () => {
               </section>
             </div>
           ) : (
-            <NoData message="No ticket found" />
+            <NoData />
           )}
         </>
       ) : (

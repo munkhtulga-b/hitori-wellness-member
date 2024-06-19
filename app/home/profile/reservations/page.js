@@ -38,9 +38,7 @@ const ReservationHistory = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [reservations, setReservations] = useState(null);
-  const [activeFilterId, setActiveFilterId] = useState(
-    ReservationStatusEnum.ACTIVE
-  );
+  const [activeFilter, setActiveFilter] = useState(filters[0]);
   const resetReservationBody = useReservationStore((state) => state.resetBody);
   const setReservationBody = useReservationStore((state) => state.setBody);
   const setReservationEdit = useReservationStore((state) => state.setEdit);
@@ -53,7 +51,7 @@ const ReservationHistory = () => {
 
   useEffect(() => {
     fetchReservations({
-      status: activeFilterId,
+      status: activeFilter?.id,
       page: pagination.current - 1,
       limit: pagination.size,
     });
@@ -65,7 +63,7 @@ const ReservationHistory = () => {
       queries
         ? queries
         : {
-            status: activeFilterId,
+            status: activeFilter?.id,
             page: pagination.current - 1,
             limit: pagination.size,
           }
@@ -95,19 +93,21 @@ const ReservationHistory = () => {
     router.push(`/home/reservation/confirm`);
   };
 
-  const onFilterChange = ({ id }) => {
+  const onFilterChange = (filter) => {
+    const el = document.getElementById(`filter-${filter?.id}`);
     setPagination((prev) => ({
       ...prev,
       current: 1,
       size: 10,
     }));
-    if (id === activeFilterId) {
-      setActiveFilterId(ReservationStatusEnum.ACTIVE);
+    if (filter?.id === activeFilter?.id) {
+      setActiveFilter(filters[0]);
     } else {
-      setActiveFilterId(id);
+      setActiveFilter(filter);
     }
+    el?.blur();
     fetchReservations({
-      status: id,
+      status: filter?.id,
       page: 0,
       limit: 10,
     });
@@ -120,14 +120,14 @@ const ReservationHistory = () => {
       size: size,
     }));
     fetchReservations({
-      status: activeFilterId,
+      status: activeFilter?.id,
       page: page - 1,
       limit: size,
     });
   };
 
   const isFilterActive = ({ id }) => {
-    return activeFilterId === id;
+    return activeFilter?.id === id;
   };
 
   return (
@@ -140,6 +140,7 @@ const ReservationHistory = () => {
           {filters.map((filter) => {
             return (
               <Button
+                id={`filter-${filter.id}`}
                 key={filter.text}
                 onClick={() => onFilterChange(filter)}
                 style={{
@@ -149,7 +150,7 @@ const ReservationHistory = () => {
               >
                 <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
                   <span>{filter.text}</span>
-                  {activeFilterId !== ReservationStatusEnum.ACTIVE &&
+                  {activeFilter?.id !== ReservationStatusEnum.ACTIVE &&
                   isFilterActive(filter) ? (
                     <Image
                       src="/assets/branch/close-icon-blue.svg"
@@ -178,7 +179,7 @@ const ReservationHistory = () => {
                       <div className="tw-flex tw-flex-col tw-gap-4 tw-relative">
                         <ReservationCard
                           reservation={reservation}
-                          activeFilterId={activeFilterId}
+                          activeFilter={activeFilter}
                           editReservation={editReservation}
                           fetchList={fetchReservations}
                         />

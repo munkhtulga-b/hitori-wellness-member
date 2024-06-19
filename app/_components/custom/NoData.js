@@ -4,7 +4,7 @@ const NoData = ({ message }) => {
   return (
     <>
       <div className="tw-py-20 tw-text-center">
-        <Empty description={message ?? "No Data"} />
+        <Empty description={message ?? "データがありません。"} />
       </div>
     </>
   );

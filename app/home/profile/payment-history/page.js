@@ -63,7 +63,7 @@ const PaymentHistory = () => {
           {!isLoading ? (
             <>
               {payments?.length ? (
-                <div className="tw-grow tw-flex tw-flex-col tw-justify-between tw-gap-6">
+                <div className="tw-h-full tw-flex tw-flex-col tw-justify-start tw-gap-6">
                   {payments.map((payment) => (
                     <section
                       key={payment.id}

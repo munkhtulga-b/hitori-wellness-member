@@ -70,15 +70,33 @@ const BranchDetailCard = ({
   };
 
   const isBranchPermitted = () => {
-    let result = false;
+    let result = {
+      plan: false,
+      ticket: false,
+    };
     if (permittedBranches) {
-      if (permittedBranches.plan?.includes(branch.id)) {
-        result = true;
+      if (
+        permittedBranches.plan?.includes(branch.id) ||
+        permittedBranches.plan?.length === 0
+      ) {
+        result.plan = true;
       }
       if (
         permittedBranches.ticket?.includes(branch.id) ||
         permittedBranches.ticket?.length === 0
       ) {
+        result.ticket = true;
+      }
+    }
+    return result;
+  };
+
+  const isReserveDisabled = () => {
+    let result = false;
+    if (isBranchPermitted().ticket) {
+      result = false;
+    } else {
+      if (!isBranchPermitted().plan || isReachedMaxReservation()) {
         result = true;
       }
     }
@@ -202,7 +220,7 @@ const BranchDetailCard = ({
         </section> */}
           <section className="tw-mt-1">
             <Button
-              disabled={isReachedMaxReservation() || !isBranchPermitted()}
+              disabled={isReserveDisabled()}
               onClick={handleMakeReservation}
               size="large"
               type="primary"

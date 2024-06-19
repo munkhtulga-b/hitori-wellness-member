@@ -112,7 +112,9 @@ const ProgramsPage = () => {
     if (reservationBody.ticket) {
       if (reservationBody.time) {
         queries = {
-          ticketId: reservationBody.ticket?.ticket_id,
+          ticketId:
+            reservationBody.ticket?.ticket_id ||
+            reservationBody.ticket?.m_ticket?.id,
           startAt: `${dayjs(reservationBody.time[0]).format(
             "YYYY-MM-DD"
           )}T${dayjs(reservationBody.time[0]).format("HH:mm:ss")}`,
@@ -241,7 +243,7 @@ const ProgramsPage = () => {
                   <CoachSelect />
                 </>
               ) : (
-                <NoData message={"No Data"} />
+                <NoData />
               )}
             </>
           )}

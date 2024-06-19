@@ -2,13 +2,7 @@ import { Button } from "antd";
 import Image from "next/image";
 import { nullSafety } from "@/app/_utils/helpers";
 
-const FilterButtonGroup = ({
-  activeFilterId,
-  setActiveFilterId,
-  filterName,
-  filterNameSuffix,
-  options,
-}) => {
+const PlanTicketFilter = ({ activeFilterId, setActiveFilterId, options }) => {
   const handleFilterClick = (value) => {
     if (activeFilterId === value) {
       const el = document.getElementById(`filter-${value}`);
@@ -42,23 +36,21 @@ const FilterButtonGroup = ({
             ) : null}
           </div>
         </Button>
-        {options.map((filter, idx) => {
+        {options.map((option) => {
           return (
             <Button
-              id={`filter-${idx}`}
+              id={`filter-${option.value}`}
               size="small"
-              key={idx}
-              onClick={() => handleFilterClick(idx)}
+              key={option.value}
+              onClick={() => handleFilterClick(option.value)}
               style={{
-                borderColor: activeFilterId === idx && "#B7DDFF",
-                color: activeFilterId === idx && "#1890FF",
+                borderColor: activeFilterId === option.value && "#B7DDFF",
+                color: activeFilterId === option.value && "#1890FF",
               }}
             >
               <div className="tw-flex tw-justify-start tw-items-center tw-gap-2">
-                <span>{`${nullSafety(filter[0][filterName])}${
-                  filterNameSuffix || ""
-                }`}</span>
-                {activeFilterId === idx ? (
+                <span>{`${nullSafety(option.label)}`}</span>
+                {activeFilterId === option.value ? (
                   <Image
                     src="/assets/branch/close-icon-blue.svg"
                     alt="remove"
@@ -76,4 +68,4 @@ const FilterButtonGroup = ({
   );
 };
 
-export default FilterButtonGroup;
+export default PlanTicketFilter;

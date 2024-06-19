@@ -56,7 +56,8 @@ const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
             <Button
               disabled={
                 !memberPlan?.plan?.is_enabled_change_plan ||
-                memberPlan?.status === EEnumPlanStatus.SCHEDULED_CHANGE
+                memberPlan?.status === EEnumPlanStatus.SCHEDULED_CHANGE ||
+                memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL
               }
               className="tw-w-[100px]"
               onClick={() => {
@@ -69,25 +70,26 @@ const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
         ) : null}
         {memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL && (
           <div>
-            {`当プランは利用規約通り${dayjs(memberPlan?.cancel_date).format(
-              "YYYY年MM月DD日"
-            )}まで有効です。`}
+            {`当プランは利用規約通り${dayjs
+              .utc(memberPlan?.cancel_date)
+              .format("YYYY年MM月DD日")}まで有効です。`}
           </div>
         )}
         {memberPlan?.status === EEnumPlanStatus.SCHEDULED_CHANGE && (
           <div className="tw-flex tw-flex-col tw-gap-2">
             {memberPlan?.end_date ? (
               <span>
-                {`現プランは${dayjs(memberPlan?.end_date).format(
-                  "YYYY年MM月DD日"
-                )}まで有効です。`}
+                {`現プランは${dayjs
+                  .utc(memberPlan?.end_date)
+                  .format("YYYY年MM月DD日")}まで有効です。`}
               </span>
             ) : null}
-            {memberPlan?.cancel_date ? (
+            {memberPlan?.change_date ? (
               <span>
-                {`現プランは${dayjs(memberPlan?.cancel_date)
+                {`新プランは${dayjs
+                  .utc(memberPlan?.change_date)
                   .add(1, "day")
-                  .format("YYYY年MM月DD日")}日から有効になります。`}
+                  .format("YYYY年MM月DD日")}から有効になります。`}
               </span>
             ) : null}
           </div>

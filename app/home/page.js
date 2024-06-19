@@ -10,16 +10,21 @@ import $api from "../_api";
 import _ from "lodash";
 import BranchCard from "../_components/home/BranchCard";
 import VerificationReminder from "../_components/home/VerificationReminder";
+import EEnumDataBaseStatus from "../_enums/EEnumDataBaseStatus";
+import { useUserStore } from "../_store/user";
 
 const HomePage = () => {
+  const user = useUserStore((state) => state.getUser());
   const [branchList, setBranchList] = useState(null);
   const [homeBranch, setHomeBranch] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [activeFilterId, setActiveFilterId] = useState(null);
 
   useEffect(() => {
-    fetchBranches();
-    fetchHomeBranch();
+    if (user?.is_verified) {
+      fetchBranches();
+      fetchHomeBranch();
+    }
   }, []);
 
   const fetchBranches = async () => {
@@ -37,7 +42,9 @@ const HomePage = () => {
   const fetchHomeBranch = async () => {
     const { isOk, data } = await $api.member.memberPlan.getMany();
     if (isOk && data?.length) {
-      setHomeBranch(data[0].studio);
+      if (data[0]?.studio?.status === EEnumDataBaseStatus.ACTIVE) {
+        setHomeBranch(data[0].studio);
+      }
     }
   };
 
@@ -87,7 +94,7 @@ const HomePage = () => {
               )}
             </>
           ) : (
-            <NoData message={"No data found"} />
+            <NoData message={"データがありません。"} />
           )}
         </>
       ) : (

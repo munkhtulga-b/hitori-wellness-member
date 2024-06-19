@@ -120,7 +120,9 @@ const PlanChangePlan = ({ currentPlan }) => {
                             <div className="tw-flex tw-justify-center tw-items-center tw-gap-2">
                               <span>詳細</span>
                               <Image
-                                src="/assets/program/arrow-right.svg"
+                                src={`/assets/program/arrow-${
+                                  isItemExpanded(plan) ? "up" : "down"
+                                }.svg`}
                                 alt="next"
                                 width={0}
                                 height={0}
@@ -142,7 +144,7 @@ const PlanChangePlan = ({ currentPlan }) => {
                 })}
               </>
             ) : (
-              <NoData message={"No data"} />
+              <NoData />
             )}
           </>
         ) : (
