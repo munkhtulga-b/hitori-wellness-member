@@ -14,10 +14,9 @@ const ReservationSuccess = () => {
 
   useEffect(() => {
     setReservationDetails(getReservationBody);
-    resetReservationBody();
-    if (!reservationDetails?.branch) {
-      router.push("/home");
-    }
+    return () => {
+      resetReservationBody();
+    };
   }, []);
 
   return (
