@@ -24,6 +24,8 @@ const HomePage = () => {
     if (user?.is_verified) {
       fetchBranches();
       fetchHomeBranch();
+    } else {
+      setIsLoading(false);
     }
   }, []);
 

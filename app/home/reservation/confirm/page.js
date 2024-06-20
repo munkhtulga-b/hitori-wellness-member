@@ -18,7 +18,6 @@ const ReservationConfirm = () => {
   const reservationBody = useReservationStore((state) => state.getBody());
   const setReservationBody = useReservationStore((state) => state.setBody);
   const editReservationBody = useReservationStore((state) => state.editBody);
-  const resetReservationBody = useReservationStore((state) => state.resetBody);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [bodyType, setBodyType] = useState(null);
@@ -51,7 +50,6 @@ const ReservationConfirm = () => {
     }
     const { isOk } = await $api.member.reservation.create(body);
     if (isOk) {
-      resetReservationBody();
       router.push("/home/reservation/success");
     }
     setIsLoading(false);
@@ -67,7 +65,6 @@ const ReservationConfirm = () => {
     };
     const { isOk } = await $api.member.reservation.update(requestBody.id, body);
     if (isOk) {
-      resetReservationBody();
       router.push("/home/reservation/success");
     }
     setIsLoading(false);

@@ -24,7 +24,7 @@ export const useReservationStore = create(
         const keys = Object.keys(get().body);
         const idx = keys.indexOf(payload);
         for (let i = idx; i < Object.keys(get().body).length; i++) {
-          if (keys[i] !== "id") {
+          if (keys[i] !== "id" && keys[i] !== "ticket") {
             set({ body: { ...get().body, [keys[i]]: null } });
           }
         }
