@@ -31,7 +31,7 @@ const ReservationSuccess = () => {
           </span>
         </section>
         {reservationDetails?.branch?.warning_desc?.length && (
-          <section className="tw-bg-grayLight tw-p-4 tw-h-[80px] tw-rounded-[12px] tw-border tw-border-info tw-w-full tw-grid tw-place-items-center">
+          <section className="tw-bg-grayLight tw-p-4 tw-rounded-[12px] tw-border tw-border-info tw-w-full tw-grid tw-place-items-center">
             <p
               dangerouslySetInnerHTML={{
                 __html: reservationDetails.branch.warning_desc,
