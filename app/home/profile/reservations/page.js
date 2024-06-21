@@ -84,6 +84,11 @@ const ReservationHistory = () => {
       id: reservation.id,
       branch: reservation.m_studio,
       program: reservation.m_program,
+      ticket: {
+        id: reservation.member_ticket_id,
+        ticket_id: reservation.memberTicket?.ticket?.id,
+        name: reservation.memberTicket?.ticket?.name,
+      },
       time: [reservation.start_at, reservation.end_at],
     });
     setReservationEdit({
