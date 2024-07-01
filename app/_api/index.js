@@ -21,6 +21,7 @@ import * as item from "./member/ItemController";
 import * as ticket from "./member/TicketController";
 import * as user from "./member/UserController";
 import * as post from "./member/PostJPController";
+import * as remoteLock from "./member/RemoteLockController";
 
 const $api = {
   auth: {
@@ -46,6 +47,7 @@ const $api = {
     item,
     ticket,
     user,
+    remoteLock,
   },
 };
 

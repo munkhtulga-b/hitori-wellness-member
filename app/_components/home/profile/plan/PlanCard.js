@@ -70,7 +70,7 @@ const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
         ) : null}
         {memberPlan?.status === EEnumPlanStatus.SCHEDULED_CANCEL && (
           <div>
-            {`当プランは利用規約通り${dayjs
+            {`当プランは解約申請済みですが、利用規約通り${dayjs
               .utc(memberPlan?.cancel_date)
               .format("YYYY年MM月DD日")}まで有効です。`}
           </div>
@@ -79,14 +79,14 @@ const MemberPlanCard = ({ memberPlan, isChanging, fetchData }) => {
           <div className="tw-flex tw-flex-col tw-gap-2">
             {memberPlan?.end_date ? (
               <span>
-                {`現プランは${dayjs
+                {`当プランは変更申請済みですが、利用規約通りは${dayjs
                   .utc(memberPlan?.end_date)
                   .format("YYYY年MM月DD日")}まで有効です。`}
               </span>
             ) : null}
             {memberPlan?.change_date ? (
               <span>
-                {`新プランは${dayjs
+                {`新プランは利用規約通り${dayjs
                   .utc(memberPlan?.change_date)
                   .add(1, "day")
                   .format("YYYY年MM月DD日")}から有効になります。`}
