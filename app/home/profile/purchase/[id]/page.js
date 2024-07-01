@@ -131,7 +131,20 @@ const SubscriptionDetail = () => {
   };
 
   const onPlanConfirm = () => {
-    setStep(2);
+    if (
+      getPuchaseBody.item &&
+      getPuchaseBody.item.prices?.length &&
+      Number(getPuchaseBody.item.prices[0]?.price) === 0
+    ) {
+      const body = {
+        studioId: getPuchaseBody.branch?.id,
+        itemId: getPuchaseBody.item.id,
+        cardId: 0,
+      };
+      createPurchase(body);
+    } else {
+      setStep(2);
+    }
   };
 
   const pageHeader = () => {
@@ -161,9 +174,9 @@ const SubscriptionDetail = () => {
               className="tw-leading-[22px] tw-tracking-[0.14px] tw-text-secondary tw-whitespace-pre-line"
             ></p>
             <span className="tw-leading-[22px] tw-tracking-[0.14px]">{`料金: ${thousandSeparator(
-              itemType === "plan"
+              itemType === "plan" && getPuchaseBody[itemType]
                 ? getPuchaseBody[itemType].monthly_price
-                : getPuchaseBody[itemType].prices[0].price
+                : getPuchaseBody[itemType].prices?.[0]?.price
             )}（税込）${itemType === "plan" ? "／月" : "／回"}`}</span>
           </div>
         </section>
@@ -359,7 +372,7 @@ const SubscriptionDetail = () => {
                               getPuchaseBody.item?.default_price
                             )
                               ? getPuchaseBody.item?.default_price
-                              : getPuchaseBody[itemType].prices[0].price)
+                              : getPuchaseBody[itemType].prices?.[0]?.price)
                         )}
                       </span>
                       {!isNullOrUndefined(
@@ -376,12 +389,17 @@ const SubscriptionDetail = () => {
                   </li>
                 </ul>
                 <Button
+                  loading={isLoading.isRequesting}
                   size="large"
                   type="primary"
                   className="tw-w-full"
                   onClick={() => onPlanConfirm()}
                 >
-                  次へ
+                  {getPuchaseBody.item &&
+                  getPuchaseBody.item.prices?.length &&
+                  Number(getPuchaseBody.item.prices[0]?.price) === 0
+                    ? "購入"
+                    : "次へ"}
                 </Button>
               </section>
             </div>
