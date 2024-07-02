@@ -132,6 +132,7 @@ const SubscriptionDetail = () => {
 
   const onPlanConfirm = () => {
     if (
+      !usedCouponCode &&
       getPuchaseBody.item &&
       getPuchaseBody.item.prices?.length &&
       Number(getPuchaseBody.item.prices[0]?.price) === 0
@@ -395,7 +396,8 @@ const SubscriptionDetail = () => {
                   className="tw-w-full"
                   onClick={() => onPlanConfirm()}
                 >
-                  {getPuchaseBody.item &&
+                  {!usedCouponCode &&
+                  getPuchaseBody.item &&
                   getPuchaseBody.item.prices?.length &&
                   Number(getPuchaseBody.item.prices[0]?.price) === 0
                     ? "購入"
