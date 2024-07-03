@@ -28,7 +28,7 @@ const UserMemberId = () => {
         <section>
           <span className="tw-text-xxl tw-font-medium">会員ID</span>
         </section>
-        <section className="tw-absolute tw-top-1/2 tw-left-1/2 tw-translate-x-[-50%] tw-translate-y-[-50%]">
+        <section className="tw-absolute tw-top-1/2 tw-left-1/2 tw-translate-x-[-50%] tw-translate-y-[-50%] tw-w-full">
           {qrCode !== null ? (
             <div className="tw-flex tw-flex-col tw-gap-6 tw-items-center">
               <section className="tw-size-[220px]">
@@ -55,7 +55,7 @@ const UserMemberId = () => {
               ) : null}
             </div>
           ) : (
-            <section className="tw-px-8">
+            <section className="tw-px-8 tw-w-full">
               <p className="tw-leading-[22px] tw-tracking-[0.14px]">
                 QRコード・ピンコードは予約が発生した場合のみ開始時間の10分前から表示されます。
               </p>
